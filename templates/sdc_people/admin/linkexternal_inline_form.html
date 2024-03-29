@@ -1,0 +1,37 @@
+{% include 'admin/edit_inline/tabular.html' %}
+<script>
+  function updateSelectUponInput(name_input) {
+    var name_select = document.getElementById(name_input.id.replace("-name", "-select_name"))
+    if(name_input != null) {
+      name_select.selectedIndex=0
+      for(p=0;p<name_select.options.length; p++) {
+        if(name_select.options[p].text == name_input.value) {
+          name_select.selectedIndex=p
+        }
+      }
+    }
+  }
+  function updateInputUponSelect(name_select) {
+    var name_input = document.getElementById(name_select.id.replace("select_name", "name"))
+    if(name_select.value) {
+        name_input.value=name_select.options[name_select.selectedIndex].text
+      }
+  }
+  document.getElementById("linkexternal_set-group").addEventListener("change",function(e) {
+    if(e.target.id.indexOf("id_linkexternal_set-")===0) {
+
+      if(e.target.id.search(/-name$/) > 20 ) {
+        updateSelectUponInput(e.target)
+      }
+      if(e.target.id.search(/-select_name$/) > 20 ) {
+        updateInputUponSelect(e.target)
+      }
+    }
+  })
+  var name_inputs = document.querySelectorAll("[id^='id_linkexternal_set-'][id$='-name']")
+  for(i=0;i<name_inputs.length-1;i++) {
+    updateSelectUponInput(name_inputs[i])
+  }
+
+  </script>
+

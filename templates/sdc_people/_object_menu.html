@@ -1,0 +1,59 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_person %}
+      {% if 'person-list' == request.resolver_match.url_name %}
+        <div class="menu-person menu-here">
+            <a href="{% url 'sdc_people:person-list' %}">List</a>
+        </div>
+      {% else %}
+        <div class="menu-person">
+          <a href="{% url 'sdc_people:person-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_person %}
+      {% if 'person-detail' == request.resolver_match.url_name %}
+        <div class="menu-person menu-here">
+            <a href="{% url 'sdc_people:person-detail' object.pk %}">View</a>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-person">
+          <a href="{% url 'sdc_people:person-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_person %}
+      {% if 'person-create' == request.resolver_match.url_name %}
+        <div class="menu-person menu-here">
+            <a href="{% url 'sdc_people:person-create' %}">Add</a>
+        </div>
+
+      {% else %}
+        <div class="menu-person">
+          <a href="{% url 'sdc_people:person-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_person %}
+      {% if 'person-update' == request.resolver_match.url_name %}
+        <div class="menu-person menu-here">
+            <a href="{% url 'sdc_people:person-update' object.pk %}">Edit</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-person">
+          <a href="{% url 'sdc_people:person-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>

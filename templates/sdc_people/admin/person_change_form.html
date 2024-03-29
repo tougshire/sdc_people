@@ -1,0 +1,54 @@
+{% extends "admin/change_form.html" %}
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script>
+      function parse_name(name_formal) {
+        known_suffixes = ["esq","esquire","ii","iii","iv","jr","phe","phd","sr"]
+        names = name_formal.trim().split(" ")
+        var parsed_name={}
+        parsed_name["honor"] = names.splice(0,1)
+        parsed_name["first"] = names.splice(0,1)
+        parsed_name["middles"] = ""
+        parsed_name["last"] = ""
+        parsed_name["suffix"]=""
+
+        if(names.length > 0) {
+          while(names[names.length-1].includes(".") || known_suffixes.includes(names[names.length-1].toLowerCase())) {
+            parsed_name["suffix"] = parsed_name["suffix"] + names.splice(-1,1) + " "
+          }
+        }
+        parsed_name["suffix"] = parsed_name["suffix"].trim()
+
+        if(names.length > 0) {
+          parsed_name["last"] = names.splice(-1,1)
+        }
+        parsed_name["middles"] = names.join(" ")
+
+        return parsed_name
+
+      }
+      var name_formal = document.getElementById("id_name_formal")
+      var name_first = document.getElementById("id_name_first")
+      var name_middles = document.getElementById("id_name_middles")
+      var name_last = document.getElementById("id_name_last")
+      var name_friendly = document.getElementById("id_name_friendly")
+
+      name_formal.addEventListener("change", function() {
+        parsed_name = parse_name(name_formal.value)
+        if(name_friendly.value=="") {
+          name_friendly.value = parsed_name["first"]
+        }
+        if(name_first.value=="") {
+          name_first.value = parsed_name["first"]
+        }
+        if(name_last.value=="") {
+          name_last.value = parsed_name["last"]
+        }
+        if(name_middles.value=="") {
+          name_middles.value = parsed_name["middles"]
+        }
+
+      })
+
+</script>
+{% endblock %}

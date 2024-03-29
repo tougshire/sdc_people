@@ -1,0 +1,220 @@
+  <h2>{{ object }}</h2>
+
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_person" method="POST">
+    {% csrf_token %}
+    {% include 'touglates/form_field.html' with field=form.name_formal %}
+    {% include 'touglates/form_field.html' with field=form.name_first %}
+    {% include 'touglates/form_field.html' with field=form.name_middles %}
+    {% include 'touglates/form_field.html' with field=form.name_last %}
+    {% include 'touglates/form_field.html' with field=form.name_friendly %}
+    {% include 'touglates/form_field.html' with field=form.membershipclass %}
+    {% include 'touglates/form_field.html' with field=form.membership_date %}
+    {% include 'touglates/form_field.html' with field=form.districtprecinct %}
+    {% include 'touglates/form_field.html' with field=form.districtborough %}
+    {% include 'touglates/form_field.html' with field=form.districtstatehouse %}
+    {% include 'touglates/form_field.html' with field=form.districtstatesenate %}
+    {% include 'touglates/form_field.html' with field=form.districtcongress %}
+    {% include 'touglates/form_field.html' with field=form.primary_voice %}
+    {% include 'touglates/form_field.html' with field=form.primary_text %}
+    {% include 'touglates/form_field.html' with field=form.primary_email %}
+    {% include 'touglates/form_field.html' with field=form.voting_address %}
+    {% include 'touglates/form_field.html' with field=form.mailing_address %}
+
+    <h3>Subcommittee Membership</h3>
+
+    {{ submemberships.management_form }}
+    {% if submemberships.errors %}{{ submemberships.errors }}{% endif %}
+    {% for submembershipform in submemberships.forms %}
+      {% if submembershipsform.errors %}{{ submembershipform.errors }}{% endif %}
+      {% if submembershipform.id.value  %}
+        <div id="div_submembershipform_{{ submembershipform.id.value }}" class="submembershipformsetform formsetform"  >
+          {% for hiddenfield in submembershipform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+          {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+        </div>
+      {% else %}
+        <div class="submembershipformsetform submembershipnewform formsetform formsetnewform" >
+          {% for hiddenfield in submembershipform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+          {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <table>
+      <tr>
+        <td><button type="button" id="button_addsubmembership" data-newform="submembershipnewform">Add</button></td><td span="*"></td>
+      </tr>
+      {% for submembership in object.submembership_set.all %}
+        <tr id="tr_submembership_{{ submembership.id }}">
+          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-dis  playid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.name }}</td><td><a href="{{ submembership.url }}">{{ submembership.url }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+
+    <h3>Links</h3>
+
+    {{ linkexternals.management_form }}
+    {% if linkexternals.errors %}{{ linkexternals.errors }}{% endif %}
+    {% for linkexternalform in linkexternals.forms %}
+      {% if linkexternalsform.errors %}{{ linkexternalform.errors }}{% endif %}
+      {% if linkexternalform.id.value  %}
+        <div id="div_linkexternalform_{{ linkexternalform.id.value }}" class="linkexternalformsetform formsetform"  >
+          {% for hiddenfield in linkexternalform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.name %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.url %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
+        </div>
+      {% else %}
+        <div class="linkexternalformsetform linkexternalnewform formsetform formsetnewform" >
+          {% for hiddenfield in linkexternalform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.name %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.url %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <table>
+      <tr>
+        <td><button type="button" id="button_addlinkexternal" data-newform="linkexternalnewform">Add</button></td><td span="*"></td>
+      </tr>
+      {% for linkexternal in object.linkexternal_set.all %}
+        <tr id="tr_linkexternal_{{ linkexternal.id }}">
+          <td><button type="button" id="button_editlinkexternal_{{ linkexternal.id }}" data-formid="div_linkexternalform_{{ linkexternal.id }}" data-dis  playid="tr_linkexternal_{{ linkexternal.id }}" class="linkexternal_edit_button">edit</button></td><td>{{ linkexternal.name }}</td><td><a href="{{ linkexternal.url }}">{{ linkexternal.url }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <h3>Attendance</h3>
+
+    {{ attendances.management_form }}
+    {% if attendances.errors %}{{ attendances.errors }}{% endif %}
+    {% for attendanceform in attendances.forms %}
+      {% if attendancesform.errors %}{{ attendanceform.errors }}{% endif %}
+      {% if attendanceform.id.value  %}
+        <div id="div_attendanceform_{{ attendanceform.id.value }}" class="attendanceformsetform formsetform"  >
+          {% for hiddenfield in attendanceform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
+          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
+        </div>
+      {% else %}
+        <div class="attendanceformsetform attendancenewform formsetform formsetnewform" >
+          {% for hiddenfield in attendanceform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
+          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <table>
+      <tr>
+        <td><button type="button" id="button_addattendance" data-newform="attendancenewform">Add</button></td><td span="*"></td>
+      </tr>
+      {% for attendance in object.attendance_set.all %}
+        <tr id="tr_attendance_{{ attendance.id }}">
+          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-dis  playid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.name }}</td><td><a href="{{ attendance.url }}">{{ attendance.url }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <button type="Submit">Submit</button>
+    </form>
+  </div>
+
+
+
+
+    <script>
+      function parse_name(name_formal) {
+        known_suffixes = ["esq","esquire","ii","iii","iv","jr","phe","phd","sr"]
+        names = name_formal.trim().split(" ")
+        var parsed_name={}
+        parsed_name["honor"] = names.splice(0,1)
+        parsed_name["first"] = names.splice(0,1)
+        parsed_name["middles"] = ""
+        parsed_name["last"] = ""
+        parsed_name["suffix"]=""
+
+        if(names.length > 0) {
+          while(names[names.length-1].includes(".") || known_suffixes.includes(names[names.length-1].toLowerCase())) {
+            parsed_name["suffix"] = parsed_name["suffix"] + names.splice(-1,1) + " "
+          }
+        }
+        parsed_name["suffix"] = parsed_name["suffix"].trim()
+
+        if(names.length > 0) {
+          parsed_name["last"] = names.splice(-1,1)
+        }
+        parsed_name["middles"] = names.join(" ")
+
+        return parsed_name
+
+      }
+      var name_formal = document.getElementById("id_name_formal")
+      var name_first = document.getElementById("id_name_first")
+      var name_middles = document.getElementById("id_name_middles")
+      var name_last = document.getElementById("id_name_last")
+      var name_friendly = document.getElementById("id_name_friendly")
+
+      name_formal.addEventListener("change", function() {
+        parsed_name = parse_name(name_formal.value)
+        if(name_friendly.value=="") {
+          name_friendly.value = parsed_name["first"]
+        }
+        if(name_first.value=="") {
+          name_first.value = parsed_name["first"]
+        }
+        if(name_middles.value=="") {
+          name_middles.value = parsed_name["middles"]
+        }
+
+        if(name_last.value=="") {
+          name_last.value = parsed_name["last"]
+        }
+
+      })
+    </script>
+    <script>
+      for(districttype of ["precinct", "borough"]) {
+        var district=document.getElementById("id_district" + districttype)
+        var pl = district.options.length
+        for(p=0; p<pl; p++) {
+          matches = district.options[p].innerText.match(/(\d+)\s(\w+.*)$/)
+          if(matches) {
+            var newOption = document.createElement('option')
+            newOption.value =district.options[p].value
+            newOption.innerText =matches[2] + '(' + matches[1] + ')'
+            district.appendChild(newOption)
+          }
+        }
+      }
+      </script>
+      <script>
+        // addRelatedPopupButton( 'id_districtborough', 'DistrictBorough', '{% url "sdc_people:districtborough-popup" %}')
+        // addRelatedPopupButton( 'id_districtprecinct', 'DistrictPrecinct', '{% url "sdc_people:districtprecinct-popup" %}')
+
+        function getControlIdsForPopups(modelName) {
+          controlIds={
+            'DistrictBorough': ['id_districtborough'],
+            'DistrictPrecinct': ['id_districtprecinct'],
+          }
+          return controlIds[modelName]
+        }
+
+      </script>
+
+    <script>
+      activateFormsetButtons(["attendance", "linkexternal", "submembership"])
+    </script>

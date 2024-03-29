@@ -1,0 +1,15 @@
+<div class="menu app-menu">
+
+  {% if perms.sdc_people.view_person %}
+    {% if 'person-' in request.resolver_match.url_name %}
+      <div class="menu-person menu-here">
+        <a href="{% url 'sdc_people:person-list' %}">People</a>
+      </div>
+    {% else %}
+      <div class="menu-person">
+        <a href="{% url 'sdc_people:person-list' %}">People</a>
+      </div>
+    {% endif %}
+  {% endif %}
+
+</div>
