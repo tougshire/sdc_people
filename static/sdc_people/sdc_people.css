@@ -149,8 +149,12 @@
     background-color:cadetblue
 }
 
-.menu a:link, .menu a:visited {
+.menu a:link, .menu a:visited, form.menu-item button {
     color:white;
+}
+
+form.menuitem button {
+    font:inherit;
 }
 
 
