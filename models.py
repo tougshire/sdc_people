@@ -424,10 +424,10 @@ class Person(models.Model):
         help_text="The person's class of membership",
     )
     membership_date = models.DateField(
-        "Date of current membership type/status",
+        "membership status date",
         blank=True,
         null=True,
-        help_text="The date of the current type and status of membership, if applicable",
+        help_text="The date of the current class and status of membership, if applicable",
     )
     application_date = models.DateField(
         "Most Recent Application Date",
