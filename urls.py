@@ -8,8 +8,8 @@ from . import filterset, views
 app_name = "sdc_people"
 
 urlpatterns = [
-    path("", RedirectView.as_view(url=reverse_lazy("sdc_site:homepage"))),
-    # path("homepage/", views.home_page, name="homepage"),
+    path("", RedirectView.as_view(url=reverse_lazy("sdc_people:person-list"))),
+    path("person/", RedirectView.as_view(url=reverse_lazy("sdc_people:person-list"))),
     path(
         "person/list/filterstore/<int:from_store>/",
         views.PersonList.as_view(),
