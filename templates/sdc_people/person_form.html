@@ -133,16 +133,15 @@
     </form>
   </div>
 
-
-
-
     <script>
       function parse_name(name_formal) {
-        known_suffixes = ["esq","esquire","ii","iii","iv","jr","phe","phd","sr"]
+        known_prefixes = ["captain","cdr","chief","cpo","capt","hon","lt","master","miss","mr","mrs","mx","rev","sgt","sir",]
+        known_preprefixes = ["her","his","the","their"]
+        known_suffixes = ["esq","esquire","ii","iii","iv", "v", "vi", "vii", "viii", "ix","x","jr","phe","phd","sr"]
         names = name_formal.trim().split(" ")
         var parsed_name={}
-        parsed_name["honor"] = names.splice(0,1)
-        parsed_name["first"] = names.splice(0,1)
+        parsed_name["prefix"] = ""
+        parsed_name["first"] = ""
         parsed_name["middles"] = ""
         parsed_name["last"] = ""
         parsed_name["suffix"]=""
@@ -157,11 +156,26 @@
         if(names.length > 0) {
           parsed_name["last"] = names.splice(-1,1)
         }
-        parsed_name["middles"] = names.join(" ")
+        if(names.length > 1) {
+          if(known_preprefixes.includes(names[0].toLowerCase())) {
+            parsed_name["prefix"] = names.splice(0,2).join(" ")
+          }
+         }
+
+         if(parsed_name["prefix"] == "" && names.length > 0 ) {
+            if(names[0].includes(".") || known_prefixes.includes(names[0].toLowerCase())) {
+              parsed_name["prefix"] = names.splice(0,1)
+          }
+        }
+
+        parsed_name["first"] = names.splice(0,1)
+
+				parsed_name["middles"] = names.join(" ")
 
         return parsed_name
 
       }
+
       var name_formal = document.getElementById("id_name_formal")
       var name_first = document.getElementById("id_name_first")
       var name_middles = document.getElementById("id_name_middles")
