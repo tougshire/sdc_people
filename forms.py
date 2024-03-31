@@ -156,18 +156,27 @@ class PersonForm(ModelForm):
                 }
             ),
             "membership_date": SelectDateWidget(
-                years=range(
-                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                years=[datetime.date.today().year - 1, datetime.date.today().year]
+                + list(
+                    range(
+                        datetime.date.today().year - 10, datetime.date.today().year + 10
+                    )
                 ),
             ),
             "dues_effective_date": SelectDateWidget(
-                years=range(
-                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                years=[datetime.date.today().year - 1, datetime.date.today().year]
+                + list(
+                    range(
+                        datetime.date.today().year - 10, datetime.date.today().year + 10
+                    )
                 ),
             ),
             "application_date": SelectDateWidget(
-                years=range(
-                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                years=[datetime.date.today().year - 1, datetime.date.today().year]
+                + list(
+                    range(
+                        datetime.date.today().year - 10, datetime.date.today().year + 10
+                    )
                 ),
             ),
         }
