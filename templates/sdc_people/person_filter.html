@@ -49,10 +49,10 @@
           {% include 'touglates/list_head.html' with field="membership class" %}
         {% endif %}
         {% if 'locldistricts' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field="local districts" %}
+          {% include 'touglates/list_head.html' with field="local districts<br>(prec,boro)" %}
         {% endif %}
         {% if 'statedistricts' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field="state districts" %}
+          {% include 'touglates/list_head.html' with field="state districts<br>(hod,ssen,usc)"|safe %}
         {% endif %}
         {% if 'phones' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="Phones(voice,txt)" %}
