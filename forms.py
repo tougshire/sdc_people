@@ -1,5 +1,6 @@
+import datetime
 from django.conf import settings
-from django.forms import ModelForm, inlineformset_factory, Select
+from django.forms import ModelForm, SelectDateWidget, inlineformset_factory, Select
 from django.urls import reverse_lazy
 from .models import (
     Attendance,
@@ -17,7 +18,7 @@ from .models import (
     Subposition,
 )
 from django import forms
-from touglates.widgets import TouglateDateInput, TouglateRelatedSelect
+from touglates.widgets import TouglateRelatedSelect
 
 
 class AttendanceForm(ModelForm):
@@ -142,7 +143,21 @@ class PersonForm(ModelForm):
                     "add_url": reverse_lazy("sdc_people:districtcongress-popup"),
                 }
             ),
-            "membership_date": TouglateDateInput(),
+            "membership_date": SelectDateWidget(
+                years=range(
+                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                ),
+            ),
+            "dues_effective_date": SelectDateWidget(
+                years=range(
+                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                ),
+            ),
+            "application_date": SelectDateWidget(
+                years=range(
+                    datetime.date.today().year - 10, datetime.date.today().year + 10
+                ),
+            ),
         }
 
 
