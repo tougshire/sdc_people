@@ -10,11 +10,11 @@
       {{ filter.form.as_table }}
       {{ as_csv.as_table }}
       {{ filterstore_save.as_table }}
-      <tr><td> </td><td><input type="submit" /></td></tr>
+      <tr><td>Search </td><td><input type="submit" />Search</td></tr>
     </form>
     <form method="GET" action="{% url 'sdc_people:person-list' %}">
       {{ filterstore_retrieve.as_table }}
-      <tr><td> </td><td><input type="submit" /></td></tr>
+      <tr><td>Get Saved Filter </td><td><input type="submit" />Retrieve</td></tr>
     </form>
   </table>
 </div>
@@ -57,51 +57,6 @@
         {% if 'primary_email' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field=person_labels.primary_email %}
         {% endif %}
-        {% if 'barcode' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.barcode %}
-        {% endif %}
-        {% if 'network_name' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.network_name %}
-        {% endif %}
-        {% if 'phone_number' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.phone_number %}
-        {% endif %}
-        {% if 'mobile_id' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.mobile_id %}
-        {% endif %}
-        {% if 'sim_iccid' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.sim_iccid %}
-        {% endif %}
-        {% if 'role' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.role %}
-        {% endif %}
-        {% if 'connected_to' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.connected_to %}
-        {% endif %}
-        {% if 'status' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.status %}
-        {% endif %}
-        {% if 'home' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.home %}
-        {% endif %}
-        {% if 'location' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.location %}
-        {% endif %}
-        {% if 'assignee' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.assignee %}
-        {% endif %}
-        {% if 'borrower' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.borrower %}
-        {% endif %}
-        {% if 'owner' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.owner %}
-        {% endif %}
-        {% if 'latest_inventory' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.latest_inventory %}
-        {% endif %}
-        {% if 'installation_date' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.installation_date %}
-        {% endif %}
 
       </div>
 
@@ -122,52 +77,6 @@
           {% endif %}
           {% if 'primary_email' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.primary_email %}
-          {% endif %}
-          {% if 'barcode' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.barcode %}
-          {% endif %}
-          {% if 'network_name' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.network_name %}
-          {% endif %}
-          {% if 'phone_number' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.phone_number %}
-          {% endif %}
-          {% if 'mobile_id' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.mobile_id %}
-          {% endif %}
-          {% if 'sim_iccid' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.sim_iccid %}
-          {% endif %}
-
-          {% if 'role' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.role %}
-          {% endif %}
-          {% if 'connected_to' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.connected_to %}
-          {% endif %}
-          {% if 'status' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.status %}
-          {% endif %}
-          {% if 'home' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.home.short_name %}
-          {% endif %}
-          {% if 'location' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.location.short_name %}
-          {% endif %}
-          {% if 'assignee' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.assignee.friendly_name %}
-          {% endif %}
-          {% if 'borrower' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.borrower.friendly_name %}
-          {% endif %}
-          {% if 'owner' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.owner.friendly_name %}
-          {% endif %}
-          {% if 'latest_inventory' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.latest_inventory %}
-          {% endif %}
-          {% if 'installation_date' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.installation_date %}
           {% endif %}
 
         </div>
