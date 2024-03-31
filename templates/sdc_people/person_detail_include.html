@@ -16,10 +16,15 @@
     {% include 'touglates/detail_field.html' with label=person_labels.primary_email field=object.primary_email %}
     {% include 'touglates/detail_field.html' with label=person_labels.voting_address field=object.voting_address %}
     {% include 'touglates/detail_field.html' with label=person_labels.mailing_address field=object.mailing_address %}
+    <h3>Images</h3>
+    {% for image in person.image_set.all %}
+      {% include 'touglates/detail_field.html' with label=image.name field=image.file  %}
+    {% endfor %}
     <h3>Links</h3>
     {% for linkexternal in person.linkexternal_set.all %}
       {% include 'touglates/detail_field.html' with label=linkexternal.name field='<a href="'|add:linkexternal.url|add:'">'|add:linkexternal.url|add:'</a>'|safe  %}
     {% endfor %}
+
   </div>
 
   <script>

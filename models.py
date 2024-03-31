@@ -451,6 +451,33 @@ class Person(models.Model):
         ordering = ("name_last", "name_friendly")
 
 
+class Imagetype(models.Model):
+    name = models.CharField("name", max_length=50, help_text="The type of the image,")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ("name",)
+        verbose_name = "Name of the image"
+
+
+class Image(models.Model):
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        help_text="The person to which this link belongs",
+    )
+    imagefile = models.ImageField("file", upload_to="personimages")
+    type = models.ForeignKey(
+        Imagetype,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="The type of image,",
+    )
+
+
 class Linkexternalname(models.Model):
     name = models.CharField("name", max_length=50, help_text="The name of the link,")
 

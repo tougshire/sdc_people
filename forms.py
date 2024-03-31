@@ -10,6 +10,8 @@ from .models import (
     DistrictPrecinct,
     DistrictStatehouse,
     DistrictStatesenate,
+    Image,
+    Imagetype,
     Linkexternal,
     Person,
     Subcommittee,
@@ -70,6 +72,16 @@ class DistrictCongressForm(ModelForm):
     class Meta:
         model = DistrictCongress
         fields = ["number", "name"]
+
+
+class ImageForm(ModelForm):
+    class Meta:
+        model = Image
+        fields = [
+            "person",
+            "imagefile",
+            "type",
+        ]
 
 
 class LinkexternalForm(ModelForm):
@@ -225,6 +237,8 @@ class SubpositionForm(ModelForm):
 PersonAttendanceFormset = inlineformset_factory(
     Person, Attendance, form=AttendanceForm, extra=10
 )
+
+PersonImageFormset = inlineformset_factory(Person, Image, form=ImageForm, extra=10)
 
 PersonLinkexternalFormset = inlineformset_factory(
     Person, Linkexternal, form=LinkexternalForm, extra=10

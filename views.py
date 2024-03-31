@@ -32,6 +32,7 @@ from .forms import (
     LinkexternalForm,
     PersonAttendanceFormset,
     PersonForm,
+    PersonImageFormset,
     PersonLinkexternalFormset,
     PersonsubmembershipFormset,
     SubcommitteeForm,
@@ -65,6 +66,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
         context_data = super().get_context_data(**kwargs)
 
         formsetclasses = {
+            "images": PersonImageFormset,
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
@@ -86,6 +88,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
         self.object = form.save(commit=False)
 
         formsetclasses = {
+            "images": PersonImageFormset,
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
@@ -140,6 +143,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
         context_data = super().get_context_data(**kwargs)
 
         formsetclasses = {
+            "images": PersonImageFormset,
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
@@ -163,6 +167,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
         self.object = form.save(commit=False)
 
         formsetclasses = {
+            "images": PersonImageFormset,
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,

@@ -52,7 +52,7 @@
       </tr>
       {% for submembership in object.submembership_set.all %}
         <tr id="tr_submembership_{{ submembership.id }}">
-          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-dis  playid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.name }}</td><td><a href="{{ submembership.url }}">{{ submembership.url }}</td>
+          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-displayid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.name }}</td><td><a href="{{ submembership.url }}">{{ submembership.url }}</td>
         </tr>
       {% endfor %}
     </table>
@@ -90,10 +90,49 @@
       </tr>
       {% for linkexternal in object.linkexternal_set.all %}
         <tr id="tr_linkexternal_{{ linkexternal.id }}">
-          <td><button type="button" id="button_editlinkexternal_{{ linkexternal.id }}" data-formid="div_linkexternalform_{{ linkexternal.id }}" data-dis  playid="tr_linkexternal_{{ linkexternal.id }}" class="linkexternal_edit_button">edit</button></td><td>{{ linkexternal.name }}</td><td><a href="{{ linkexternal.url }}">{{ linkexternal.url }}</td>
+          <td><button type="button" id="button_editlinkexternal_{{ linkexternal.id }}" data-formid="div_linkexternalform_{{ linkexternal.id }}" data-displayid="tr_linkexternal_{{ linkexternal.id }}" class="linkexternal_edit_button">edit</button></td><td>{{ linkexternal.name }}</td><td><a href="{{ linkexternal.url }}">{{ linkexternal.url }}</td>
         </tr>
       {% endfor %}
     </table>
+
+    <h3>Images</h3>
+
+    {{ images.management_form }}
+    {% if images.errors %}{{ images.errors }}{% endif %}
+    {% for imageform in images.forms %}
+      {% if imagesform.errors %}{{ imageform.errors }}{% endif %}
+      {% if imageform.id.value  %}
+        <div id="div_imageform_{{ imageform.id.value }}" class="imageformsetform formsetform"  >
+          {% for hiddenfield in imageform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=imageform.type %}
+          {% include 'touglates/form_field.html' with field=imageform.imagefile %}
+          {% include 'touglates/form_field.html' with field=imageform.DELETE %}
+        </div>
+      {% else %}
+        <div class="imageformsetform imagenewform formsetform formsetnewform" >
+          {% for hiddenfield in imageform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=imageform.type %}
+          {% include 'touglates/form_field.html' with field=imageform.imagefile %}
+          {% include 'touglates/form_field.html' with field=imageform.DELETE %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <table>
+      <tr>
+        <td><button type="button" id="button_addimage" data-newform="imagenewform">Add</button></td><td span="*"></td>
+      </tr>
+      {% for image in object.image_set.all %}
+        <tr id="tr_image_{{ image.id }}">
+          <td><button type="button" id="button_editimage_{{ image.id }}" data-formid="div_imageform_{{ image.id }}" data-displayid="tr_image_{{ image.id }}" class="image_edit_button">edit</button></td><td>{{ image.name }}</td><td><a href="{{ image.url }}">{{ image.url }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+
     <h3>Attendance</h3>
 
     {{ attendances.management_form }}
@@ -124,7 +163,7 @@
       </tr>
       {% for attendance in object.attendance_set.all %}
         <tr id="tr_attendance_{{ attendance.id }}">
-          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-dis  playid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.name }}</td><td><a href="{{ attendance.url }}">{{ attendance.url }}</td>
+          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-displayid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.name }}</td><td><a href="{{ attendance.url }}">{{ attendance.url }}</td>
         </tr>
       {% endfor %}
     </table>
@@ -230,5 +269,5 @@
       </script>
 
     <script>
-      activateFormsetButtons(["attendance", "linkexternal", "submembership"])
+      activateFormsetButtons(["attendance", "image","linkexternal", "submembership"])
     </script>
