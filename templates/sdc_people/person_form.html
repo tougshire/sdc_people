@@ -243,6 +243,16 @@
       });
     </script>
     <script>
+      var voting_address=document.getElementById("id_voting_address")
+      var mailing_address=document.getElementById("id_mailing_address")
+      voting_address.addEventListener("change", function(){
+        if (mailing_address.value == "") {
+          mailing_address.value = voting_address.value
+        }
+      })
+
+    </script>
+    <script>
       for(districttype of ["precinct", "borough"]) {
         var district=document.getElementById("id_district" + districttype)
         var pl = district.options.length
@@ -258,8 +268,6 @@
       }
       </script>
       <script>
-        // addRelatedPopupButton( 'id_districtborough', 'DistrictBorough', '{% url "sdc_people:districtborough-popup" %}')
-        // addRelatedPopupButton( 'id_districtprecinct', 'DistrictPrecinct', '{% url "sdc_people:districtprecinct-popup" %}')
 
         function getControlIdsForPopups(modelName) {
           controlIds={
