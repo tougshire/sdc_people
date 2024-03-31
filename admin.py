@@ -15,6 +15,8 @@ from .models import (
     DistrictStatesenate,
     Linkexternal,
     Linkexternalname,
+    Image,
+    Imagename,
     Meeting,
     Meetingtype,
     Membershipclass,
@@ -24,6 +26,15 @@ from .models import (
     Submembership,
     Subposition,
 )
+
+
+class ImageInlineForm(forms.ModelForm):
+    model = Image
+    select_name = forms.ModelChoiceField(
+        Imagename.objects,
+        required=False,
+        help_text="Select a name already in the system, or type a new name in the Name field",
+    )
 
 
 class LinkexternalInlineForm(forms.ModelForm):
@@ -85,6 +96,15 @@ class AttendanceInline(admin.TabularInline):
     extra = 0
 
 
+class ImageInline(admin.TabularInline):
+
+    model = Image
+    form = ImageInlineForm
+    template = "sdc_people/admin/image_inline_form.html"
+
+    extra = 0
+
+
 class LinkexternalInline(admin.TabularInline):
 
     model = Linkexternal
@@ -130,6 +150,14 @@ class DistrictCongressAdmin(admin.ModelAdmin):
     pass
 
 
+class ImageAdmin(admin.ModelAdmin):
+    pass
+
+
+class ImagenameAdmin(admin.ModelAdmin):
+    pass
+
+
 class LinkexternalAdmin(admin.ModelAdmin):
     pass
 
@@ -162,7 +190,7 @@ class PersonAdmin(admin.ModelAdmin):
         )
 
     list_display = ["__str__", "membershipclass", "submembershiplist"]
-    inlines = [SubmembershipInline, LinkexternalInline, AttendanceInline]
+    inlines = [SubmembershipInline, ImageInline, LinkexternalInline, AttendanceInline]
     form = PersonModelForm
     add_form_template = "sdc_people/admin/person_change_form.html"
     change_form_template = "sdc_people/admin/person_change_form.html"
@@ -195,6 +223,11 @@ admin.site.register(DistrictStatesenate, DistrictStatesenateAdmin)
 admin.site.register(DistrictStatehouse, DistrictStatehouseAdmin)
 
 admin.site.register(DistrictCongress, DistrictCongressAdmin)
+
+admin.site.register(Image, ImageAdmin)
+
+admin.site.register(Imagename, ImagenameAdmin)
+
 
 admin.site.register(Linkexternal, LinkexternalAdmin)
 
