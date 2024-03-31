@@ -215,29 +215,32 @@
 
       }
 
-      var name_formal = document.getElementById("id_name_formal")
-      var name_first = document.getElementById("id_name_first")
-      var name_middles = document.getElementById("id_name_middles")
-      var name_last = document.getElementById("id_name_last")
-      var name_friendly = document.getElementById("id_name_friendly")
+      name_formal = document.getElementById("id_name_formal")
+      name_friendly = document.getElementById("id_name_friendly")
+
+      name_parts=["prefix","first","middles","last","suffix"]
+
+      var name_elements = {}
+      for ( name_part of name_parts) {
+        name_elements[name_part] = document.getElementById("id_name_" + name_part )
+      }
 
       name_formal.addEventListener("change", function() {
         parsed_name = parse_name(name_formal.value)
-        if(name_friendly.value=="") {
-          name_friendly.value = parsed_name["first"]
+        for (name_part of name_parts) {
+          if (name_elements[name_part] !== null ) {
+            if( name_elements[name_part].value == "" ) {
+              name_elements[name_part].value = parsed_name[name_part]
+            }
+          }
         }
-        if(name_first.value=="") {
-          name_first.value = parsed_name["first"]
-        }
-        if(name_middles.value=="") {
-          name_middles.value = parsed_name["middles"]
+        if (name_friendly !== null ) {
+          if( name_friendly.value == "" ) {
+            name_friendly.value = parsed_name["first"]
+          }
         }
 
-        if(name_last.value=="") {
-          name_last.value = parsed_name["last"]
-        }
-
-      })
+      });
     </script>
     <script>
       for(districttype of ["precinct", "borough"]) {
