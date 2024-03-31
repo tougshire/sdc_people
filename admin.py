@@ -16,7 +16,7 @@ from .models import (
     Linkexternal,
     Linkexternalname,
     Image,
-    Imagename,
+    Imagetype,
     Meeting,
     Meetingtype,
     Membershipclass,
@@ -31,7 +31,7 @@ from .models import (
 class ImageInlineForm(forms.ModelForm):
     model = Image
     select_name = forms.ModelChoiceField(
-        Imagename.objects,
+        Imagetype.objects,
         required=False,
         help_text="Select a name already in the system, or type a new name in the Name field",
     )
@@ -100,7 +100,6 @@ class ImageInline(admin.TabularInline):
 
     model = Image
     form = ImageInlineForm
-    template = "sdc_people/admin/image_inline_form.html"
 
     extra = 0
 
@@ -154,7 +153,7 @@ class ImageAdmin(admin.ModelAdmin):
     pass
 
 
-class ImagenameAdmin(admin.ModelAdmin):
+class ImagetypeAdmin(admin.ModelAdmin):
     pass
 
 
@@ -226,8 +225,7 @@ admin.site.register(DistrictCongress, DistrictCongressAdmin)
 
 admin.site.register(Image, ImageAdmin)
 
-admin.site.register(Imagename, ImagenameAdmin)
-
+admin.site.register(Imagetype, ImagetypeAdmin)
 
 admin.site.register(Linkexternal, LinkexternalAdmin)
 
