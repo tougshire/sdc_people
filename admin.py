@@ -14,7 +14,7 @@ from .models import (
     DistrictStatehouse,
     DistrictStatesenate,
     Linkexternal,
-    Linkexternalname,
+    Linkexternaltype,
     Image,
     Imagetype,
     Meeting,
@@ -40,7 +40,7 @@ class ImageInlineForm(forms.ModelForm):
 class LinkexternalInlineForm(forms.ModelForm):
     model = Linkexternal
     select_name = forms.ModelChoiceField(
-        Linkexternalname.objects,
+        Linkexternaltype.objects,
         required=False,
         help_text="Select a name already in the system, or type a new name in the Name field",
     )
@@ -161,7 +161,7 @@ class LinkexternalAdmin(admin.ModelAdmin):
     pass
 
 
-class LinkexternalnameAdmin(admin.ModelAdmin):
+class LinkexternaltypeAdmin(admin.ModelAdmin):
     pass
 
 
@@ -229,7 +229,7 @@ admin.site.register(Imagetype, ImagetypeAdmin)
 
 admin.site.register(Linkexternal, LinkexternalAdmin)
 
-admin.site.register(Linkexternalname, LinkexternalnameAdmin)
+admin.site.register(Linkexternaltype, LinkexternaltypeAdmin)
 
 admin.site.register(Meeting, MeetingAdmin)
 

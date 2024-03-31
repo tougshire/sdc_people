@@ -89,7 +89,7 @@ class LinkexternalForm(ModelForm):
         model = Linkexternal
         fields = [
             "person",
-            "name",
+            "type",
             "url",
         ]
 

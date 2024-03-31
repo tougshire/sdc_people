@@ -478,7 +478,7 @@ class Image(models.Model):
     )
 
 
-class Linkexternalname(models.Model):
+class Linkexternaltype(models.Model):
     name = models.CharField("name", max_length=50, help_text="The name of the link,")
 
     def __str__(self):
@@ -495,8 +495,8 @@ class Linkexternal(models.Model):
         on_delete=models.CASCADE,
         help_text="The person to which this link belongs",
     )
-    name = models.ForeignKey(
-        Linkexternalname,
+    type = models.ForeignKey(
+        Linkexternaltype,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -509,7 +509,7 @@ class Linkexternal(models.Model):
 
     def save(self, *args, **kwargs):
         saved = super().save(*args, **kwargs)
-        name, created = Linkexternalname.objects.get_or_create(name=self.name)
+        name, created = Linkexternaltype.objects.get_or_create(name=self.name)
 
     class Meta:
         verbose_name = "External Link"

@@ -69,7 +69,7 @@
           {% for hiddenfield in linkexternalform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.name %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.type %}
           {% include 'touglates/form_field.html' with field=linkexternalform.url %}
           {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
         </div>
@@ -78,7 +78,7 @@
           {% for hiddenfield in linkexternalform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.name %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.type %}
           {% include 'touglates/form_field.html' with field=linkexternalform.url %}
           {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
         </div>
