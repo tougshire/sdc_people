@@ -48,8 +48,11 @@
         {% if 'membershipclass' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="membership class" %}
         {% endif %}
-        {% if 'districts' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field="districts" %}
+        {% if 'locldistricts' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="local districts" %}
+        {% endif %}
+        {% if 'statedistricts' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="state districts" %}
         {% endif %}
         {% if 'phones' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="Phones(voice,txt)" %}
@@ -69,8 +72,11 @@
           {% if 'membershipclass' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.membershipclass %}
           {% endif %}
-          {% if 'districts' in show_columns or not show_columns %}
-            {% include 'touglates/list_fields.html' with field_1=person.districtprecinct field_2=person.districtborough field_3=person.districtmagisterial field_4=person.districtstatehouse field_5=person.districtstatesenate field_6=person.districtcongress before_fields="<div>" between_fields="</div><div>"  after_fields="</div>"            %}
+          {% if 'localdistricts' in show_columns or not show_columns %}
+            {% include 'touglates/list_fields.html' with field_1=person.districtprecinct field_2=person.districtborough field_3=person.districtmagisterial before_fields="<div>" between_fields="</div><div>"  after_fields="</div>"            %}
+          {% endif %}
+          {% if 'statedistricts' in show_columns or not show_columns %}
+            {% include 'touglates/list_fields.html' with field_1=person.districtstatehouse field_2=person.districtstatesenate field_3=person.districtcongress before_fields="<div>" between_fields="</div><div>"  after_fields="</div>"            %}
           {% endif %}
           {% if 'phones' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field="<div>"|add:person.primary_voice|add:"</div><div>"|add:person.primary_text|add:"</div>"|safe %}
