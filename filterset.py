@@ -2,12 +2,12 @@ import django_filters
 from .models import Person, Membershipclass
 from django.db import models
 from django import forms
-from django_filters_stoex.filters import MultipleFieldsContainsFilter
+from django_filters_stoex.filters import CrossFieldSearchFilter
 
 
 class PersonFilter(django_filters.FilterSet):
     filterset_name = forms.CharField()
-    combined_text_search = MultipleFieldsContainsFilter(
+    combined_text_search = CrossFieldSearchFilter(
         label="text search",
         field_name="name_last,name_first,name_middles,name_friendly",
         lookup_expr="icontains",
