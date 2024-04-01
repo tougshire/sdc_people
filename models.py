@@ -1,4 +1,5 @@
-from datetime import date, timezone
+from datetime import date
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 
@@ -31,9 +32,7 @@ PRIORITY_CHOICES = [
 
 
 class Subcommitteetype(models.Model):
-    name = models.CharField(
-        "name", max_length=50, help_text="The name of the subcommittee type,"
-    )
+    name = models.CharField("name", max_length=50, help_text="The name of the type,")
     ordinal = models.IntegerField(
         "ordinal",
         choices=ORDINAL_CHOICES,
@@ -106,7 +105,9 @@ class Membershipclass(models.Model):
     MEMBERSHIP_PENDING = 11
     MEMBERSHIP_YES = 111
 
-    name = models.CharField("name", max_length=50, help_text="The name of the type,")
+    name = models.CharField(
+        "name", max_length=50, help_text="The name of the membership class,"
+    )
     is_member = models.IntegerField(
         "is member",
         choices=(
@@ -452,14 +453,14 @@ class Person(models.Model):
 
 
 class Personnotetype(models.Model):
-    name = models.CharField("name", max_length=50, help_text="The name of type of note")
+    name = models.CharField("name", max_length=50, help_text="The name of the type")
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ("name",)
-        verbose_name = "Name for the type of note"
+        verbose_name = "Type of note"
 
 
 class Personnote(models.Model):
@@ -468,7 +469,7 @@ class Personnote(models.Model):
         on_delete=models.CASCADE,
         help_text="The person to which this link belongs",
     )
-    type = models.ForeignKey(
+    personnotetype = models.ForeignKey(
         Personnotetype,
         blank=True,
         null=True,
@@ -496,14 +497,14 @@ class Personnote(models.Model):
 
 
 class Imagetype(models.Model):
-    name = models.CharField("name", max_length=50, help_text="The type of the image,")
+    name = models.CharField("name", max_length=50, help_text="The name of the type")
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ("name",)
-        verbose_name = "Name of the image"
+        verbose_name = "Image type"
 
 
 class Image(models.Model):
@@ -513,7 +514,7 @@ class Image(models.Model):
         help_text="The person to which this link belongs",
     )
     imagefile = models.ImageField("file", upload_to="personimages")
-    type = models.ForeignKey(
+    imagetype = models.ForeignKey(
         Imagetype,
         blank=True,
         null=True,
@@ -523,7 +524,7 @@ class Image(models.Model):
 
 
 class Linkexternaltype(models.Model):
-    name = models.CharField("name", max_length=50, help_text="The name of the link,")
+    name = models.CharField("name", max_length=50, help_text="The name of the type,")
 
     def __str__(self):
         return self.name
@@ -539,7 +540,7 @@ class Linkexternal(models.Model):
         on_delete=models.CASCADE,
         help_text="The person to which this link belongs",
     )
-    type = models.ForeignKey(
+    linkexternaltype = models.ForeignKey(
         Linkexternaltype,
         blank=True,
         null=True,
@@ -549,11 +550,7 @@ class Linkexternal(models.Model):
     url = models.URLField("url", help_text="The url of the link")
 
     def __str__(self):
-        return "[{}]({})".format(self.name, self.url)
-
-    def save(self, *args, **kwargs):
-        saved = super().save(*args, **kwargs)
-        name, created = Linkexternaltype.objects.get_or_create(name=self.name)
+        return "[{}]({})".format(self.type, self.url)
 
     class Meta:
         verbose_name = "External Link"
@@ -577,15 +574,22 @@ class Submembership(models.Model):
 
 
 class Meetingtype(models.Model):
-    name = models.CharField(
-        "name", max_length=100, help_text="The name of the type of meeting,"
+    name = models.CharField("name", max_length=100, help_text="The name of the type")
+    ordinal = models.IntegerField(
+        "ordinal",
+        choices=ORDINAL_CHOICES,
+        default=ORDINAL_MEDIUM,
+        help_text="A number assigned for sorting, with lowest number first",
     )
 
     def __str__(self):
         return self.name
 
     class Meta:
-        ordering = ("name",)
+        ordering = (
+            "ordinal",
+            "name",
+        )
 
 
 class Meeting(models.Model):

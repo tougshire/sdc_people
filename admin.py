@@ -218,6 +218,10 @@ class PersonnoteAdmin(admin.ModelAdmin):
     pass
 
 
+class PersonnotetypeAdmin(admin.ModelAdmin):
+    pass
+
+
 class SubcommitteetypeAdmin(admin.ModelAdmin):
     pass
 

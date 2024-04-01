@@ -16,6 +16,8 @@ from .models import (
     DistrictPrecinct,
     DistrictStatehouse,
     DistrictStatesenate,
+    Meeting,
+    Meetingtype,
     Person,
     Subcommittee,
     Subcommitteetype,
@@ -30,6 +32,8 @@ from .forms import (
     DistrictStatehouseForm,
     DistrictStatesenateForm,
     LinkexternalForm,
+    MeetingForm,
+    MeetingtypeForm,
     PersonAttendanceFormset,
     PersonForm,
     PersonImageFormset,
@@ -405,6 +409,60 @@ class DistrictCongressDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_districtcongress"
     model = DistrictCongress
     template_name = "sdc_people/subposition_detail.html"
+
+
+class MeetingCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_subcommittee"
+    model = Meeting
+    form_class = MeetingForm
+    template_name = "sdc_people/subcommittee_add.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Meeting",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:subcommittee-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class MeetingDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_subcommittee"
+    model = Meeting
+    template_name = "sdc_people/district_detail.html"
+
+
+class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_subcommitteetype"
+    model = Meetingtype
+    form_class = MeetingtypeForm
+    template_name = "sdc_people/subcommitteetype_add.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Meetingtype",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:subcommitteetype-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class MeetingtypeDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_subcommitteetype"
+    model = Meetingtype
+    template_name = "sdc_people/district_detail.html"
 
 
 class SubcommitteeCreate(PermissionRequiredMixin, CreateView):

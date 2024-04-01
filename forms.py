@@ -13,6 +13,8 @@ from .models import (
     Image,
     Imagetype,
     Linkexternal,
+    Meeting,
+    Meetingtype,
     Person,
     Personnote,
     Personnotetype,
@@ -32,6 +34,14 @@ class AttendanceForm(ModelForm):
             "person",
             "meeting",
         ]
+        widgets = {
+            "meeting": TouglateRelatedSelect(
+                related_data={
+                    "model": "Meeting",
+                    "add_url": reverse_lazy("sdc_people:meeting-popup"),
+                }
+            )
+        }
 
 
 class DistrictPrecinctForm(ModelForm):
@@ -82,7 +92,7 @@ class ImageForm(ModelForm):
         fields = [
             "person",
             "imagefile",
-            "type",
+            "imagetype",
         ]
 
 
@@ -91,8 +101,28 @@ class LinkexternalForm(ModelForm):
         model = Linkexternal
         fields = [
             "person",
-            "type",
+            "linkexternaltype",
             "url",
+        ]
+
+
+class MeetingForm(ModelForm):
+    class Meta:
+        model = Meeting
+        fields = [
+            "meetingtype",
+            "when_held",
+            "had_quorum",
+            "meetingtype",
+        ]
+
+
+class MeetingtypeForm(ModelForm):
+    class Meta:
+        model = Meetingtype
+        fields = [
+            "name",
+            "ordinal",
         ]
 
 
@@ -193,7 +223,7 @@ class PersonnoteForm(ModelForm):
         model = Personnote
         fields = [
             "person",
-            "type",
+            "personnotetype",
             "content",
             "when",
             "is_flagged",

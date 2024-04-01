@@ -158,4 +158,34 @@ urlpatterns = [
         views.SubcommitteetypeDetail.as_view(),
         name="subcommitteetype-detail",
     ),
+    path(
+        "meeting/add/",
+        views.MeetingCreate.as_view(),
+        name="submeeting-create",
+    ),
+    path(
+        "meeting/popup/",
+        views.MeetingCreate.as_view(),
+        name="submeeting-popup",
+    ),
+    path(
+        "meeting/detail/<int:pk>/",
+        views.MeetingDetail.as_view(),
+        name="submeeting-detail",
+    ),
+    path(
+        "meetingtype/add/",
+        views.MeetingtypeCreate.as_view(),
+        name="submeetingtype-create",
+    ),
+    path(
+        "meetingtype/popup/",
+        views.MeetingtypeCreate.as_view(),
+        name="submeetingtype-popup",
+    ),
+    path(
+        "meetingtype/detail/<int:pk>/",
+        views.MeetingtypeDetail.as_view(),
+        name="submeetingtype-detail",
+    ),
 ]
