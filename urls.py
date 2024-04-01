@@ -161,31 +161,31 @@ urlpatterns = [
     path(
         "meeting/add/",
         views.MeetingCreate.as_view(),
-        name="submeeting-create",
+        name="meeting-create",
     ),
     path(
         "meeting/popup/",
         views.MeetingCreate.as_view(),
-        name="submeeting-popup",
+        name="meeting-popup",
     ),
     path(
         "meeting/detail/<int:pk>/",
         views.MeetingDetail.as_view(),
-        name="submeeting-detail",
+        name="meeting-detail",
     ),
     path(
         "meetingtype/add/",
         views.MeetingtypeCreate.as_view(),
-        name="submeetingtype-create",
+        name="meetingtype-create",
     ),
     path(
         "meetingtype/popup/",
         views.MeetingtypeCreate.as_view(),
-        name="submeetingtype-popup",
+        name="meetingtype-popup",
     ),
     path(
         "meetingtype/detail/<int:pk>/",
         views.MeetingtypeDetail.as_view(),
-        name="submeetingtype-detail",
+        name="meetingtype-detail",
     ),
 ]

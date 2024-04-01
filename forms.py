@@ -115,6 +115,22 @@ class MeetingForm(ModelForm):
             "had_quorum",
             "meetingtype",
         ]
+        widgets = {
+            "meetingtype": TouglateRelatedSelect(
+                related_data={
+                    "model": "Meetingtype",
+                    "add_url": reverse_lazy("sdc_people:meetingtype-popup"),
+                }
+            ),
+            "when_held": SelectDateWidget(
+                years=[datetime.date.today().year - 1, datetime.date.today().year]
+                + list(
+                    range(
+                        datetime.date.today().year - 10, datetime.date.today().year + 10
+                    )
+                ),
+            ),
+        }
 
 
 class MeetingtypeForm(ModelForm):

@@ -24,6 +24,10 @@
     {% for linkexternal in person.linkexternal_set.all %}
       {% include 'touglates/detail_field.html' with label=linkexternal.type field='<a href="'|add:linkexternal.url|add:'">'|add:linkexternal.url|add:'</a>'|safe  %}
     {% endfor %}
+    <h3>Attendance</h3>
+    {% for attendance in person.attendance_set.all %}
+      {% include 'touglates/detail_field.html' with label="meeting" field=attendance.meeting  %}
+    {% endfor %}
 
   </div>
 

@@ -1,0 +1,13 @@
+  <h2>{{ object }}</h2>
+
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_meeting" method="POST">
+    {% csrf_token %}
+    {% include 'touglates/form_field.html' with field=form.name %}
+    {% include 'touglates/form_field.html' with field=form.meetingtype %}
+    {% include 'touglates/form_field.html' with field=form.when_held %}
+
+    <button type="Submit">Submit</button>
+    </form>
+  </div>

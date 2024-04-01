@@ -30,6 +30,10 @@ from .models import (
 )
 
 
+class AttendanceInlineForm(forms.ModelForm):
+    model = Attendance
+
+
 class ImageInlineForm(forms.ModelForm):
     model = Image
     select_type = forms.ModelChoiceField(
@@ -144,6 +148,10 @@ class SubmembershipInline(admin.TabularInline):
     extra = 0
 
 
+class AttendanceAdmin(admin.ModelAdmin):
+    pass
+
+
 class DistrictMagisterialAdmin(admin.ModelAdmin):
     pass
 
@@ -237,6 +245,8 @@ class SubpositionAdmin(admin.ModelAdmin):
 class SubmembershipAdmin(admin.ModelAdmin):
     pass
 
+
+admin.site.register(Attendance, AttendanceAdmin)
 
 admin.site.register(DistrictMagisterial, DistrictMagisterialAdmin)
 

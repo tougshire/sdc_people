@@ -412,10 +412,10 @@ class DistrictCongressDetail(PermissionRequiredMixin, DetailView):
 
 
 class MeetingCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "sdc_people.add_subcommittee"
+    permission_required = "sdc_people.add_meeting"
     model = Meeting
     form_class = MeetingForm
-    template_name = "sdc_people/subcommittee_add.html"
+    template_name = "sdc_people/meeting_add.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -427,22 +427,20 @@ class MeetingCreate(PermissionRequiredMixin, CreateView):
                     "model_name": "Meeting",
                 },
             )
-        return reverse_lazy(
-            "sdc_people:subcommittee-detail", kwargs={"pk": self.object.pk}
-        )
+        return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
 
 
 class MeetingDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "sdc_people.view_subcommittee"
+    permission_required = "sdc_people.view_meeting"
     model = Meeting
     template_name = "sdc_people/district_detail.html"
 
 
 class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "sdc_people.add_subcommitteetype"
+    permission_required = "sdc_people.add_meetingtype"
     model = Meetingtype
     form_class = MeetingtypeForm
-    template_name = "sdc_people/subcommitteetype_add.html"
+    template_name = "sdc_people/meetingtype_add.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -455,12 +453,12 @@ class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
                 },
             )
         return reverse_lazy(
-            "sdc_people:subcommitteetype-detail", kwargs={"pk": self.object.pk}
+            "sdc_people:meetingtype-detail", kwargs={"pk": self.object.pk}
         )
 
 
 class MeetingtypeDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "sdc_people.view_subcommitteetype"
+    permission_required = "sdc_people.view_meetingtype"
     model = Meetingtype
     template_name = "sdc_people/district_detail.html"
 

@@ -163,7 +163,7 @@
       </tr>
       {% for attendance in object.attendance_set.all %}
         <tr id="tr_attendance_{{ attendance.id }}">
-          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-displayid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.name }}</td><td><a href="{{ attendance.url }}">{{ attendance.url }}</td>
+          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-displayid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.meeting }}</td>
         </tr>
       {% endfor %}
     </table>
