@@ -14,6 +14,8 @@ from .models import (
     Imagetype,
     Linkexternal,
     Person,
+    Personnote,
+    Personnotetype,
     Subcommittee,
     Subcommitteetype,
     Submembership,
@@ -180,6 +182,23 @@ class PersonForm(ModelForm):
                 ),
             ),
         }
+
+
+class PersonnoteForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["author"].initial = self.request.user
+
+    class Meta:
+        model = Personnote
+        fields = [
+            "person",
+            "type",
+            "content",
+            "when",
+            "is_flagged",
+            "author",
+        ]
 
 
 class SubmembershipForm(ModelForm):

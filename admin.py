@@ -17,6 +17,8 @@ from .models import (
     Linkexternaltype,
     Image,
     Imagetype,
+    Personnote,
+    Personnotetype,
     Meeting,
     Meetingtype,
     Membershipclass,
@@ -30,19 +32,28 @@ from .models import (
 
 class ImageInlineForm(forms.ModelForm):
     model = Image
-    select_name = forms.ModelChoiceField(
+    select_type = forms.ModelChoiceField(
         Imagetype.objects,
         required=False,
-        help_text="Select a name already in the system, or type a new name in the Name field",
+        help_text="Select a type already in the system, or type a new type in the Name field",
     )
 
 
 class LinkexternalInlineForm(forms.ModelForm):
     model = Linkexternal
-    select_name = forms.ModelChoiceField(
+    select_type = forms.ModelChoiceField(
         Linkexternaltype.objects,
         required=False,
-        help_text="Select a name already in the system, or type a new name in the Name field",
+        help_text="Select a type already in the system, or type a new type in the Name field",
+    )
+
+
+class PersonnoteInlineForm(forms.ModelForm):
+    model = Personnote
+    select_type = forms.ModelChoiceField(
+        Linkexternaltype.objects,
+        required=False,
+        help_text="Select a type already in the system, or type a new type in the Name field",
     )
 
 
@@ -117,6 +128,14 @@ class MembershipclassInline(admin.TabularInline):
     model = Membershipclass
     extra = 0
     min_num = 1
+
+
+class PersonnoteInline(admin.TabularInline):
+
+    model = Personnote
+    form = PersonnoteInlineForm
+
+    extra = 0
 
 
 class SubmembershipInline(admin.TabularInline):
@@ -195,6 +214,10 @@ class PersonAdmin(admin.ModelAdmin):
     change_form_template = "sdc_people/admin/person_change_form.html"
 
 
+class PersonnoteAdmin(admin.ModelAdmin):
+    pass
+
+
 class SubcommitteetypeAdmin(admin.ModelAdmin):
     pass
 
@@ -238,6 +261,10 @@ admin.site.register(Meetingtype, MeetingtypeAdmin)
 admin.site.register(Membershipclass, MembershipclassAdmin)
 
 admin.site.register(Person, PersonAdmin)
+
+admin.site.register(Personnote, PersonnoteAdmin)
+
+admin.site.register(Personnotetype, PersonnotetypeAdmin)
 
 admin.site.register(Subcommitteetype, SubcommitteetypeAdmin)
 

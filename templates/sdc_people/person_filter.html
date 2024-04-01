@@ -58,7 +58,7 @@
           {% include 'touglates/list_head.html' with field="Phones(voice,txt)" %}
         {% endif %}
         {% if 'primary_email' in show_columns or not show_columns %}
-          {% include 'touglates/list_head.html' with field=person_labels.primary_email %}
+          {% include 'touglates/list_head.html' with field="email" %}
         {% endif %}
 
       </div>

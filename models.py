@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timezone
 from django.conf import settings
 from django.db import models
 
@@ -449,6 +449,50 @@ class Person(models.Model):
         verbose_name = "Person"
         verbose_name_plural = "People"
         ordering = ("name_last", "name_friendly")
+
+
+class Personnotetype(models.Model):
+    name = models.CharField("name", max_length=50, help_text="The name of type of note")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ("name",)
+        verbose_name = "Name for the type of note"
+
+
+class Personnote(models.Model):
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        help_text="The person to which this link belongs",
+    )
+    type = models.ForeignKey(
+        Personnotetype,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="The name of the link,",
+    )
+    content = models.CharField(
+        max_length=255, blank=True, help_text="The content of the note"
+    )
+    when = models.DateTimeField(
+        "date", default=timezone.now, help_text="The date of the note"
+    )
+    is_flagged = models.BooleanField(
+        "is flagged",
+        default=True,
+        help_text="Flagged notes display an icon in the list view and appear by default in the detail view",
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="The author of the note",
+    )
 
 
 class Imagetype(models.Model):
