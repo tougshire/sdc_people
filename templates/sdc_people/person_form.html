@@ -69,7 +69,7 @@
           {% for hiddenfield in linkexternalform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.type %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
           {% include 'touglates/form_field.html' with field=linkexternalform.url %}
           {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
         </div>
@@ -78,7 +78,7 @@
           {% for hiddenfield in linkexternalform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.type %}
+          {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
           {% include 'touglates/form_field.html' with field=linkexternalform.url %}
           {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
         </div>
@@ -106,7 +106,7 @@
           {% for hiddenfield in imageform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=imageform.type %}
+          {% include 'touglates/form_field.html' with field=imageform.imagetype %}
           {% include 'touglates/form_field.html' with field=imageform.imagefile %}
           {% include 'touglates/form_field.html' with field=imageform.DELETE %}
         </div>
@@ -115,7 +115,7 @@
           {% for hiddenfield in imageform.hidden_fields %}
             {{ hiddenfield }}
           {% endfor %}
-          {% include 'touglates/form_field.html' with field=imageform.type %}
+          {% include 'touglates/form_field.html' with field=imageform.imagetype %}
           {% include 'touglates/form_field.html' with field=imageform.imagefile %}
           {% include 'touglates/form_field.html' with field=imageform.DELETE %}
         </div>
