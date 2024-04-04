@@ -174,6 +174,11 @@ urlpatterns = [
         name="meeting-detail",
     ),
     path(
+        "meeting/list/",
+        views.MeetingList.as_view(),
+        name="meeting-list",
+    ),
+    path(
         "meetingtype/add/",
         views.MeetingtypeCreate.as_view(),
         name="meetingtype-create",

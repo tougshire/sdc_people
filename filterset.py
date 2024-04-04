@@ -1,5 +1,5 @@
 import django_filters
-from .models import Person, Membershipclass
+from .models import Person, Meeting, Membershipclass
 from django.db import models
 from django import forms
 from django_filters_stoex.filters import CrossFieldSearchFilter
@@ -50,4 +50,25 @@ class PersonFilter(django_filters.FilterSet):
             "primary_email",
             "voting_address",
             "mailing_address",
+        ]
+
+
+class MeetingFilter(django_filters.FilterSet):
+    filterset_name = forms.CharField()
+
+    membershiptype = django_filters.ModelMultipleChoiceFilter(
+        queryset=Membershipclass.objects.all(), widget=forms.CheckboxSelectMultiple()
+    )
+    orderbyfields = django_filters.OrderingFilter(
+        fields=(
+            "when_held",
+            "meetingtype",
+        ),
+    )
+
+    class Meta:
+        model = Meeting
+        fields = [
+            "when_held",
+            "meetingtype",
         ]

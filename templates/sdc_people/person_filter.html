@@ -48,7 +48,7 @@
         {% if 'membershipclass' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="membership class" %}
         {% endif %}
-        {% if 'locldistricts' in show_columns or not show_columns %}
+        {% if 'localdistricts' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="local districts<br>(prec,boro)" %}
         {% endif %}
         {% if 'statedistricts' in show_columns or not show_columns %}
@@ -65,7 +65,9 @@
 
       {% for person in filter.qs %}
         <div class="row">
-          <div class="list-field field column"><a href="{% url 'sdc_people:person-detail' person.pk %}">view</a></div>
+          <div class="list-field field column">
+            <div><a href="{% url 'sdc_people:person-detail' person.pk %}">view</a></div>
+            <div><a href="{% url 'sdc_people:person-update' person.pk %}">edit</a></div>
           {% if 'name' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.name_formal|add:"("|add:person.name_friendly|add:")" %}
           {% endif %}

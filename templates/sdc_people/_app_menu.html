@@ -13,7 +13,7 @@
   {% endif %}
   {% if user.is_authenticated %}
     <div class="menu-person">
-      <form class="menu-item" method="POST" action="{% url 'logout' %}">{% csrf_token %}<button type="submit" style="background:none; border:none; padding:0;">Log Out</button></form>
+      <form class="menu-item" method="POST" action="{% url 'logout' %}">{% csrf_token %}<button class="menu-item" type="submit" style="background:none; border:none; padding:0;">Log Out</button></form>
     </div>
   {% else %}
     <div class="menu-person">

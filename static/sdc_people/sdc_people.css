@@ -149,7 +149,7 @@
     background-color:cadetblue
 }
 
-.menu a:link, .menu a:visited, form.menu-item button {
+.menu a:link, .menu a:visited, button.menu-item  {
     color:white;
 }
 
