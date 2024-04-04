@@ -8,7 +8,7 @@ from django_filters_stoex.forms import (
     CSVOptionForm,
 )
 from django_filters_stoex.views import FilterView
-from sdc_people.filterset import PersonFilter
+from sdc_people.filterset import MeetingFilter, PersonFilter
 from .models import (
     DistrictBorough,
     DistrictCongress,
@@ -434,6 +434,23 @@ class MeetingDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_meeting"
     model = Meeting
     template_name = "sdc_people/district_detail.html"
+
+
+class MeetingList(PermissionRequiredMixin, FilterView):
+
+    permission_required = "sdc_people.view_person"
+    filterset_class = MeetingFilter
+    filterstore_urlname = "sdc_people:person-filterstore"
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
+        context_data["filterstore_save"] = FilterstoreSaveForm()
+        context_data["as_csv"] = CSVOptionForm()
+        context_data["count"] = self.object_list.count()
+        return context_data
 
 
 class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
