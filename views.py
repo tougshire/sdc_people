@@ -244,6 +244,13 @@ class PersonList(PermissionRequiredMixin, FilterView):
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
         context_data["filterstore_save"] = FilterstoreSaveForm()
         context_data["as_csv"] = CSVOptionForm()
+
+        context_data["person_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Person._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
         context_data["count"] = self.object_list.count()
         return context_data
 
@@ -449,6 +456,13 @@ class MeetingList(PermissionRequiredMixin, FilterView):
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
         context_data["filterstore_save"] = FilterstoreSaveForm()
         context_data["as_csv"] = CSVOptionForm()
+
+        context_data["meeting_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Meeting._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
         context_data["count"] = self.object_list.count()
         return context_data
 
