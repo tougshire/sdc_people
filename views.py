@@ -141,7 +141,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = "sdc_people.change_Person"
     model = Person
     form_class = PersonForm
-    template_name = "sdc_people/person_change.html"
+    template_name = "sdc_people/person_update.html"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
