@@ -68,6 +68,7 @@
           <div class="list-field field column">
             <div><a href="{% url 'sdc_people:person-detail' person.pk %}">view</a></div>
             <div><a href="{% url 'sdc_people:person-update' person.pk %}">edit</a></div>
+          </div>
           {% if 'name' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.name_formal|add:"("|add:person.name_friendly|add:")" %}
           {% endif %}
