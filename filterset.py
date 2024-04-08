@@ -38,7 +38,7 @@ class PersonFilter(django_filters.FilterSet):
             "name_first",
             "name_last",
             "membershipclass",
-            "membershipclass",
+            "membershipclass__is_quorum_member",
             "membership_date",
             "districtprecinct",
             "districtborough",
