@@ -6,7 +6,7 @@
     {% include 'touglates/detail_field.html' with label=person_labels.had_quorum field=object.had_quorum %}
     <h3>Attendees</h3>
     {% for attendance in meeting.attendance_set.all %}
-      {% include 'touglates/detail_field.html' with label="Attendee" field=person  %}
+      {% include 'touglates/detail_field.html' with label="Attendee" field=attendance.person  %}
     {% endfor %}
 
   </div>
