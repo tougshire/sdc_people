@@ -1,0 +1,14 @@
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_membershipclass" method="POST">
+    {% csrf_token %}
+
+    {% include 'touglates/form_field.html' with field=form.name %}
+    {% include 'touglates/form_field.html' with field=form.is_member %}
+    {% include 'touglates/form_field.html' with field=form.is_quorum_member %}
+    {% include 'touglates/form_field.html' with field=form.is_participant %}
+    {% include 'touglates/form_field.html' with field=form.ordinal %}
+
+    <button type="Submit">Submit</button>
+    </form>
+  </div>

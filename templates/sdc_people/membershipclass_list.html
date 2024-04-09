@@ -1,0 +1,57 @@
+{% extends './_base.html' %}
+{% load static %}
+{% block content %}
+{% include './membershipclass_menu.html' %}
+<h2>Membership Classes</h2>
+
+<div class="list">
+  <div class="row rowhead">
+    {% include 'touglates/list_head.html' with field="" %}
+    {% if 'is_home' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Name" %}
+    {% endif %}
+    {% if 'slug' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Member`" %}
+    {% endif %}
+    {% if 'title' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Quorum Member" %}
+    {% endif %}
+    {% if 'display' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Participant" %}
+    {% endif %}
+
+  </div>
+
+  {% for object in object_list %}
+    <div class="row">
+      <div class="list-field field column">
+        <div><a href="{% url 'sdc_people:membershipclass-detail' object.pk %}">view</a></div>
+        {% if perms.change_membershipclass %}<div><a href="{% url 'sdc_people:membershipclass-update' object.pk %}">edit</a></div>{% endif %}
+      </div>
+
+
+      {% if 'name' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.name %}
+      {% endif %}
+      {% if 'slug' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.get_is_member_display %}
+      {% endif %}
+      {% if 'title' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.get_is_quorum_member_display %}
+      {% endif %}
+      {% if 'display' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.get_is_participant_display %}
+      {% endif %}
+
+    </div>
+  {% endfor %}
+  <div>Count: {{ count }}</div>
+
+</div>
+
+{% include './membershipclass_menu.html' %}
+{% endblock %}
+{% block bottomscript %}
+  {{ block.super }}
+
+{% endblock %}

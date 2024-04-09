@@ -1,0 +1,59 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_membershipclass %}
+      {% if 'membershipclass-list' == request.resolver_match.url_name %}
+        <div class="menu-membershipclass menu-here">
+            <a href="{% url 'sdc_people:membershipclass-list' %}">List</a>
+        </div>
+      {% else %}
+        <div class="menu-membershipclass">
+          <a href="{% url 'sdc_people:membershipclass-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_membershipclass %}
+      {% if 'membershipclass-detail' == request.resolver_match.url_name %}
+        <div class="menu-membershipclass menu-here">
+            <a href="{% url 'sdc_people:membershipclass-detail' object.pk %}">View</a>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-membershipclass">
+          <a href="{% url 'sdc_people:membershipclass-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_membershipclass %}
+      {% if 'membershipclass-create' == request.resolver_match.url_name %}
+        <div class="menu-membershipclass menu-here">
+            <a href="{% url 'sdc_people:membershipclass-create' %}">Add</a>
+        </div>
+
+      {% else %}
+        <div class="menu-membershipclass">
+          <a href="{% url 'sdc_people:membershipclass-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_membershipclass %}
+      {% if 'membershipclass-update' == request.resolver_match.url_name %}
+        <div class="menu-membershipclass menu-here">
+            <a href="{% url 'sdc_people:membershipclass-update' object.pk %}">Edit</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-membershipclass">
+          <a href="{% url 'sdc_people:membershipclass-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>

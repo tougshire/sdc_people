@@ -15,6 +15,7 @@ from .models import (
     Linkexternal,
     Meeting,
     Meetingtype,
+    Membershipclass,
     Person,
     Personnote,
     Personnotetype,
@@ -245,6 +246,7 @@ class PersonForm(ModelForm):
 
 class MembershipclassForm(ModelForm):
     class Meta:
+        model = Membershipclass
         fields = [
             "name",
             "is_member",
