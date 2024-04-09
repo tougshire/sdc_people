@@ -45,7 +45,8 @@ class AttendanceForm(ModelForm):
                 related_data={
                     "model": "Person",
                     "add_url": reverse_lazy("sdc_people:person-popup"),
-                }
+                },
+                add_filter_input="true",
             ),
         }
 
