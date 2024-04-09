@@ -10,6 +10,9 @@ app_name = "sdc_people"
 urlpatterns = [
     path("", RedirectView.as_view(url=reverse_lazy("sdc_people:person-list"))),
     path("person/", RedirectView.as_view(url=reverse_lazy("sdc_people:person-list"))),
+    path("person/detail/<int:pk>/", views.PersonDetail.as_view(), name="person-detail"),
+    path("person/delete/<int:pk>/", views.PersonDelete.as_view(), name="person-delete"),
+    path("person/update/<int:pk>/", views.PersonUpdate.as_view(), name="person-update"),
     path(
         "person/list/filterstore/<int:from_store>/",
         views.PersonList.as_view(),
@@ -20,12 +23,54 @@ urlpatterns = [
         views.PersonList.as_view(),
         name="person-list",
     ),
-    path("person/detail/<int:pk>/", views.PersonDetail.as_view(), name="person-detail"),
-    path("person/update/<int:pk>/", views.PersonUpdate.as_view(), name="person-update"),
-    path("person/update/", views.PersonCreate.as_view(), name="person-create"),
+    path("person/create/", views.PersonCreate.as_view(), name="person-create"),
     path("person/popup/", views.PersonCreate.as_view(), name="person-popup"),
     path(
-        "borough/update/",
+        "membershipclass/",
+        RedirectView.as_view(url=reverse_lazy("sdc_people:membershipclass-list")),
+    ),
+    path(
+        "membershipclass/detail/<int:pk>/",
+        views.MembershipclassDetail.as_view(),
+        name="membershipclass-detail",
+    ),
+    path(
+        "membershipclass/delete/<int:pk>/",
+        views.MembershipclassDelete.as_view(),
+        name="membershipclass-delete",
+    ),
+    path(
+        "membershipclass/update/<int:pk>/",
+        views.MembershipclassUpdate.as_view(),
+        name="membershipclass-update",
+    ),
+    path(
+        "membershipclass/list/filterstore/<int:from_store>/",
+        views.MembershipclassList.as_view(),
+        name="membershipclass-filterstore",
+    ),
+    path(
+        "membershipclass/list/",
+        views.MembershipclassList.as_view(),
+        name="membershipclass-list",
+    ),
+    path(
+        "membershipclass/create/",
+        views.MembershipclassCreate.as_view(),
+        name="membershipclass-create",
+    ),
+    path(
+        "membershipclass/popup/",
+        views.MembershipclassCreate.as_view(),
+        name="membershipclass-popup",
+    ),
+    path(
+        "borough/detail/<int:pk>/",
+        views.DistrictBoroughDetail.as_view(),
+        name="districtborough-detail",
+    ),
+    path(
+        "borough/create/",
         views.DistrictBoroughCreate.as_view(),
         name="districtborough-create",
     ),
@@ -33,11 +78,6 @@ urlpatterns = [
         "borough/popup/",
         views.DistrictBoroughCreate.as_view(),
         name="districtborough-popup",
-    ),
-    path(
-        "borough/detail/<int:pk>/",
-        views.DistrictBoroughDetail.as_view(),
-        name="districtborough-detail",
     ),
     path(
         "precinct/update/",

@@ -18,6 +18,7 @@ from .models import (
     DistrictStatesenate,
     Meeting,
     Meetingtype,
+    Membershipclass,
     Person,
     Subcommittee,
     Subcommitteetype,
@@ -35,6 +36,7 @@ from .forms import (
     MeetingAttendanceFormset,
     MeetingForm,
     MeetingtypeForm,
+    MembershipclassForm,
     PersonAttendanceFormset,
     PersonForm,
     PersonImageFormset,
@@ -61,76 +63,36 @@ from django.core.exceptions import FieldError
 logger = logging.getLogger(__name__)
 
 
-class PersonCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "sdc_people.add_Person"
+class PersonDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "sdc_people.view_person"
     model = Person
-    form_class = PersonForm
-    template_name = "sdc_people/person_create.html"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
 
-        formsetclasses = {
-            "images": PersonImageFormset,
-            "linkexternals": PersonLinkexternalFormset,
-            "submemberships": PersonsubmembershipFormset,
-            "attendances": PersonAttendanceFormset,
+        context_data["person_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Person._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
         }
-
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                context_data[formsetkey] = formsetclass(self.request.POST)
-            else:
-                context_data[formsetkey] = formsetclass()
 
         return context_data
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
 
-        # update_history(form, "Person", form.instance, self.request.user)
+class PersonDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_person"
+    model = Person
 
-        self.object = form.save(commit=False)
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
 
-        formsetclasses = {
-            "images": PersonImageFormset,
-            "linkexternals": PersonLinkexternalFormset,
-            "submemberships": PersonsubmembershipFormset,
-            "attendances": PersonAttendanceFormset,
+        context_data["person_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Person._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
         }
-        formsetdata = {}
-        formsets_valid = True
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                formsetdata[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                formsetdata[formsetkey] = formsetclass(instance=self.object)
 
-            if (formsetdata[formsetkey]).is_valid():
-                formsetdata[formsetkey].save()
-            else:
-                logger.critical(formsetdata[formsetkey].errors)
-                formsets_valid = False
-
-        if not formsets_valid:
-            return self.form_invalid(form)
-
-        return response
-
-    def get_success_url(self):
-
-        if "popup" in self.request.get_full_path():
-            return reverse(
-                "touglates:popup_closer",
-                kwargs={
-                    "pk": self.object.pk,
-                    "app_name": "sdc_people",
-                    "model_name": "Person",
-                },
-            )
-        return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
+        return context_data
 
 
 class PersonUpdate(PermissionRequiredMixin, UpdateView):
@@ -206,22 +168,6 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
         return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
 
 
-class PersonDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "sdc_people.view_person"
-    model = Person
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-
-        context_data["person_labels"] = {
-            field.name: field.verbose_name.title()
-            for field in Person._meta.get_fields()
-            if type(field).__name__[-3:] != "Rel"
-        }
-
-        return context_data
-
-
 class PersonList(PermissionRequiredMixin, FilterView):
 
     permission_required = "sdc_people.view_person"
@@ -241,9 +187,171 @@ class PersonList(PermissionRequiredMixin, FilterView):
             for field in Person._meta.get_fields()
             if type(field).__name__[-3:] != "Rel"
         }
-        print("tp2448i37", self.object_list)
         context_data["count"] = context_data["filter"].qs.count()
         return context_data
+
+
+class PersonCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_Person"
+    model = Person
+    form_class = PersonForm
+    template_name = "sdc_people/person_create.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        formsetclasses = {
+            "images": PersonImageFormset,
+            "linkexternals": PersonLinkexternalFormset,
+            "submemberships": PersonsubmembershipFormset,
+            "attendances": PersonAttendanceFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(self.request.POST)
+            else:
+                context_data[formsetkey] = formsetclass()
+
+        return context_data
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        # update_history(form, "Person", form.instance, self.request.user)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            "images": PersonImageFormset,
+            "linkexternals": PersonLinkexternalFormset,
+            "submemberships": PersonsubmembershipFormset,
+            "attendances": PersonAttendanceFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
+
+    def get_success_url(self):
+
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Person",
+                },
+            )
+        return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
+
+
+class MembershipclassDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "sdc_people.view_membershipclass"
+    model = Membershipclass
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["membershipclass_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Membershipclass._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        return context_data
+
+
+class MembershipclassDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_membershipclass"
+    model = Membershipclass
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["membershipclass_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Membershipclass._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        return context_data
+
+
+class MembershipclassUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.change_Membershipclass"
+    model = Membershipclass
+    form_class = MembershipclassForm
+    template_name = "sdc_people/membershipclass_update.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Membershipclass",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:membershipclass-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class MembershipclassList(PermissionRequiredMixin, ListView):
+
+    permission_required = "sdc_people.view_membershipclass"
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        context_data["membershipclass_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Membershipclass._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+        return context_data
+
+
+class MembershipclassCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_Membershipclass"
+    model = Membershipclass
+    form_class = MembershipclassForm
+    template_name = "sdc_people/membershipclass_create.html"
+
+    def get_success_url(self):
+
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Membershipclass",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:membershipclass-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class DistrictBoroughCreate(PermissionRequiredMixin, CreateView):

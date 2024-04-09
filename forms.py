@@ -210,6 +210,12 @@ class PersonForm(ModelForm):
                     "add_url": reverse_lazy("sdc_people:districtcongress-popup"),
                 }
             ),
+            "membershipclass": TouglateRelatedSelect(
+                related_data={
+                    "model": "Membershipclass",
+                    "add_url": reverse_lazy("sdc_people:membershipclass-popup"),
+                }
+            ),
             "membership_date": SelectDateWidget(
                 years=[datetime.date.today().year - 1, datetime.date.today().year]
                 + list(
@@ -235,6 +241,17 @@ class PersonForm(ModelForm):
                 ),
             ),
         }
+
+
+class MembershipclassForm(ModelForm):
+    class Meta:
+        fields = [
+            "name",
+            "is_member",
+            "is_quorum_member",
+            "is_participant",
+            "ordinal",
+        ]
 
 
 class PersonnoteForm(ModelForm):
