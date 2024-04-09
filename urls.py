@@ -21,11 +21,11 @@ urlpatterns = [
         name="person-list",
     ),
     path("person/detail/<int:pk>/", views.PersonDetail.as_view(), name="person-detail"),
-    path("person/change/<int:pk>/", views.PersonUpdate.as_view(), name="person-update"),
-    path("person/add/", views.PersonCreate.as_view(), name="person-create"),
+    path("person/update/<int:pk>/", views.PersonUpdate.as_view(), name="person-update"),
+    path("person/update/", views.PersonCreate.as_view(), name="person-create"),
     path("person/popup/", views.PersonCreate.as_view(), name="person-popup"),
     path(
-        "borough/add/",
+        "borough/update/",
         views.DistrictBoroughCreate.as_view(),
         name="districtborough-create",
     ),
@@ -40,7 +40,7 @@ urlpatterns = [
         name="districtborough-detail",
     ),
     path(
-        "precinct/add/",
+        "precinct/update/",
         views.DistrictPrecinctCreate.as_view(),
         name="districtprecinct-create",
     ),
@@ -55,7 +55,7 @@ urlpatterns = [
         name="districtprecinct-detail",
     ),
     path(
-        "magisterial/add/",
+        "magisterial/update/",
         views.DistrictMagisterialCreate.as_view(),
         name="districtmagisterial-create",
     ),
@@ -70,7 +70,7 @@ urlpatterns = [
         name="districtmagisterial-detail",
     ),
     path(
-        "statehouse/add/",
+        "statehouse/update/",
         views.DistrictStatehouseCreate.as_view(),
         name="districtstatehouse-create",
     ),
@@ -85,7 +85,7 @@ urlpatterns = [
         name="districtstatehouse-detail",
     ),
     path(
-        "statesenate/add/",
+        "statesenate/update/",
         views.DistrictStatesenateCreate.as_view(),
         name="districtstatesenate-create",
     ),
@@ -100,7 +100,7 @@ urlpatterns = [
         name="districtstatesenate-detail",
     ),
     path(
-        "congress/add/",
+        "congress/update/",
         views.DistrictCongressCreate.as_view(),
         name="districtcongress-create",
     ),
@@ -115,7 +115,7 @@ urlpatterns = [
         name="districtcongress-detail",
     ),
     path(
-        "position/add/",
+        "position/update/",
         views.SubpositionCreate.as_view(),
         name="subposition-create",
     ),
@@ -130,7 +130,7 @@ urlpatterns = [
         name="subposition-detail",
     ),
     path(
-        "committee/add/",
+        "committee/update/",
         views.SubcommitteeCreate.as_view(),
         name="subcommittee-create",
     ),
@@ -145,7 +145,7 @@ urlpatterns = [
         name="subcommittee-detail",
     ),
     path(
-        "committeetype/add/",
+        "committeetype/update/",
         views.SubcommitteetypeCreate.as_view(),
         name="subcommitteetype-create",
     ),
@@ -160,7 +160,7 @@ urlpatterns = [
         name="subcommitteetype-detail",
     ),
     path(
-        "meeting/add/",
+        "meeting/update/",
         views.MeetingCreate.as_view(),
         name="meeting-create",
     ),
@@ -185,7 +185,7 @@ urlpatterns = [
         name="meeting-list",
     ),
     path(
-        "meetingtype/add/",
+        "meetingtype/update/",
         views.MeetingtypeCreate.as_view(),
         name="meetingtype-create",
     ),
