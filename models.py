@@ -504,10 +504,10 @@ class Person(models.Model):
         attendance_binary = ""
         for meeting in meetings:
             if meeting.attendance_set.filter(person=self).exists():
-                attendance_binary = attendance_binary + "1"
+                attendance_binary = attendance_binary + "Y,"
             else:
-                attendance_binary = attendance_binary + "0"
-        return attendance_binary
+                attendance_binary = attendance_binary + "n,"
+        return attendance_binary[:-1]
 
     class Meta:
         verbose_name = "Person"
