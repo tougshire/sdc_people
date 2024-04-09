@@ -145,6 +145,12 @@ class Membershipclass(models.Model):
         help_text="A number assigned for sorting, with lowest number first",
     )
 
+    def get_is_quorum_member_yesno(self):
+        try:
+            return "yes" if self.is_quorum_member == self.MEMBERSHIP_YES else "no"
+        except:
+            return "no"
+
     def __str__(self):
         return self.name
 
@@ -460,7 +466,6 @@ class Person(models.Model):
         Membershipclass,
         verbose_name="membership class",
         null=True,
-        blank=True,
         on_delete=models.SET_NULL,
         help_text="The person's class of membership",
     )
@@ -507,7 +512,7 @@ class Person(models.Model):
     class Meta:
         verbose_name = "Person"
         verbose_name_plural = "People"
-        ordering = ("name_last", "name_friendly")
+        ordering = ("membershipclass", "name_last", "name_friendly")
 
 
 class Personnotetype(models.Model):
