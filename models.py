@@ -489,16 +489,13 @@ class Person(models.Model):
     def get_attendance(self):
         meetings = Meeting.objects.all()
         if hasattr(settings, "SDC_PEOPLE"):
-            print("tp2449802", settings.SDC_PEOPLE)
             if "meetingtypes_for_attendance" in settings.SDC_PEOPLE:
-                print("tp2449803")
 
                 meetings = meetings.filter(
                     meetingtype__name__in=settings.SDC_PEOPLE[
                         "meetingtypes_for_attendance"
                     ]
                 )
-        print("tp2449801", meetings)
         attendance_binary = ""
         for meeting in meetings:
             if meeting.attendance_set.filter(person=self).exists():
