@@ -335,7 +335,7 @@ class SubpositionForm(ModelForm):
 
 
 MeetingAttendanceFormset = inlineformset_factory(
-    Meeting, Attendance, form=AttendanceForm, extra=10
+    Meeting, Attendance, form=AttendanceForm, extra=50
 )
 
 PersonAttendanceFormset = inlineformset_factory(
