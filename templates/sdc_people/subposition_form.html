@@ -1,8 +1,6 @@
-  <h2>{{ object }}</h2>
-
   <div class="form">
     {{ form.errors }}
-    <form id="form_person" method="POST">
+    <form id="form_subposition" method="POST">
     {% csrf_token %}
     {% include 'touglates/form_field.html' with field=form.subcommittee %}
     {% include 'touglates/form_field.html' with field=form.name %}

@@ -1,12 +1,51 @@
-  <h2>{{ object }}</h2>
-
   <div class="form">
     {{ form.errors }}
     <form id="form_meeting" method="POST">
     {% csrf_token %}
     {% include 'touglates/form_field.html' with field=form.meetingtype %}
     {% include 'touglates/form_field.html' with field=form.when_held %}
+    {% include 'touglates/form_field.html' with field=form.had_quorum %}
+
+    <h3>Attendees</h3>
+
+    {{ attendees.management_form }}
+    {% if attendees.errors %}{{ attendees.errors }}{% endif %}
+    {% for attendanceform in attendees.forms %}
+      {% if attendeesform.errors %}{{ attendanceform.errors }}{% endif %}
+      {% if attendanceform.id.value  %}
+        <div id="div_attendanceform_{{ attendanceform.id.value }}" class="attendanceformsetform formsetform"  >
+          {% for hiddenfield in attendanceform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=attendanceform.person %}
+          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
+        </div>
+      {% else %}
+        <div class="attendanceformsetform attendancenewform formsetform formsetnewform" >
+          {% for hiddenfield in attendanceform.hidden_fields %}
+            {{ hiddenfield }}
+          {% endfor %}
+          {% include 'touglates/form_field.html' with field=attendanceform.person %}
+          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <table>
+      <tr>
+        <td><button type="button" id="button_addattendance" data-newform="attendancenewform">Add</button></td><td span="*"></td>
+      </tr>
+      {% for attendance in object.attendance_set.all %}
+        <tr id="tr_attendance_{{ attendance.id }}">
+          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-displayid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.person }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
 
     <button type="Submit">Submit</button>
     </form>
+    <script>
+      activateFormsetButtons(["attendance"])
+    </script>
+
   </div>

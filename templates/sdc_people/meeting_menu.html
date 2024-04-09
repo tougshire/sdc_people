@@ -1,0 +1,59 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_meeting %}
+      {% if 'meeting-list' == request.resolver_match.url_name %}
+        <div class="menu-meeting menu-here">
+            <a href="{% url 'sdc_people:meeting-list' %}">List</a>
+        </div>
+      {% else %}
+        <div class="menu-meeting">
+          <a href="{% url 'sdc_people:meeting-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_meeting %}
+      {% if 'meeting-detail' == request.resolver_match.url_name %}
+        <div class="menu-meeting menu-here">
+            <a href="{% url 'sdc_people:meeting-detail' object.pk %}">View</a>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-meeting">
+          <a href="{% url 'sdc_people:meeting-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_meeting %}
+      {% if 'meeting-create' == request.resolver_match.url_name %}
+        <div class="menu-meeting menu-here">
+            <a href="{% url 'sdc_people:meeting-create' %}">Add</a>
+        </div>
+
+      {% else %}
+        <div class="menu-meeting">
+          <a href="{% url 'sdc_people:meeting-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_meeting %}
+      {% if 'meeting-update' == request.resolver_match.url_name %}
+        <div class="menu-meeting menu-here">
+            <a href="{% url 'sdc_people:meeting-update' object.pk %}">Edit</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-meeting">
+          <a href="{% url 'sdc_people:meeting-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>

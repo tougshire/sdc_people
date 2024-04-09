@@ -23,6 +23,7 @@ urlpatterns = [
     path("person/detail/<int:pk>/", views.PersonDetail.as_view(), name="person-detail"),
     path("person/change/<int:pk>/", views.PersonUpdate.as_view(), name="person-update"),
     path("person/add/", views.PersonCreate.as_view(), name="person-create"),
+    path("person/popup/", views.PersonCreate.as_view(), name="person-popup"),
     path(
         "borough/add/",
         views.DistrictBoroughCreate.as_view(),
@@ -167,6 +168,11 @@ urlpatterns = [
         "meeting/popup/",
         views.MeetingCreate.as_view(),
         name="meeting-popup",
+    ),
+    path(
+        "meeting/update/<int:pk>/",
+        views.MeetingUpdate.as_view(),
+        name="meeting-update",
     ),
     path(
         "meeting/detail/<int:pk>/",

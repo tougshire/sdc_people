@@ -40,7 +40,13 @@ class AttendanceForm(ModelForm):
                     "model": "Meeting",
                     "add_url": reverse_lazy("sdc_people:meeting-popup"),
                 }
-            )
+            ),
+            "person": TouglateRelatedSelect(
+                related_data={
+                    "model": "Person",
+                    "add_url": reverse_lazy("sdc_people:person-popup"),
+                }
+            ),
         }
 
 
@@ -307,6 +313,10 @@ class SubpositionForm(ModelForm):
             )
         }
 
+
+MeetingAttendanceFormset = inlineformset_factory(
+    Meeting, Attendance, form=AttendanceForm, extra=10
+)
 
 PersonAttendanceFormset = inlineformset_factory(
     Person, Attendance, form=AttendanceForm, extra=10

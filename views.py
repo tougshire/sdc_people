@@ -32,6 +32,7 @@ from .forms import (
     DistrictStatehouseForm,
     DistrictStatesenateForm,
     LinkexternalForm,
+    MeetingAttendanceFormset,
     MeetingForm,
     MeetingtypeForm,
     PersonAttendanceFormset,
@@ -64,7 +65,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_Person"
     model = Person
     form_class = PersonForm
-    template_name = "sdc_people/person_add.html"
+    template_name = "sdc_people/person_create.html"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -111,11 +112,6 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
                 formsetdata[formsetkey].save()
             else:
                 logger.critical(formsetdata[formsetkey].errors)
-                for err in formsetdata[formsetkey].errors:
-                    form.add_error(None, err)
-                    for formsetform in formsetdata[formsetkey].forms:
-                        for err in formsetform.errors:
-                            form.add_error(None, err)
                 formsets_valid = False
 
         if not formsets_valid:
@@ -190,11 +186,6 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
                 formsetdata[formsetkey].save()
             else:
                 logger.critical(formsetdata[formsetkey].errors)
-                for err in formsetdata[formsetkey].errors:
-                    form.add_error(None, err)
-                    for formsetform in formsetdata[formsetkey].forms:
-                        for err in formsetform.errors:
-                            form.add_error(None, err)
                 formsets_valid = False
 
         if not formsets_valid:
@@ -250,8 +241,8 @@ class PersonList(PermissionRequiredMixin, FilterView):
             for field in Person._meta.get_fields()
             if type(field).__name__[-3:] != "Rel"
         }
-
-        context_data["count"] = self.object_list.count()
+        print("tp2448i37", self.object_list)
+        context_data["count"] = context_data["filter"].qs.count()
         return context_data
 
 
@@ -259,7 +250,7 @@ class DistrictBoroughCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtborough"
     model = DistrictBorough
     form_class = DistrictBoroughForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -287,7 +278,7 @@ class DistrictPrecinctCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtprecinct"
     model = DistrictPrecinct
     form_class = DistrictPrecinctForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -314,7 +305,7 @@ class DistrictMagisterialCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtmagisterial"
     model = DistrictMagisterial
     form_class = DistrictMagisterialForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -341,7 +332,7 @@ class DistrictStatehouseCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtstatehouse"
     model = DistrictStatehouse
     form_class = DistrictStatehouseForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -368,7 +359,7 @@ class DistrictStatesenateCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtstatesenate"
     model = DistrictStatesenate
     form_class = DistrictStatesenateForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -395,7 +386,7 @@ class DistrictCongressCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_districtcongress"
     model = DistrictCongress
     form_class = DistrictCongressForm
-    template_name = "sdc_people/district_add.html"
+    template_name = "sdc_people/district_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -422,7 +413,116 @@ class MeetingCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_meeting"
     model = Meeting
     form_class = MeetingForm
-    template_name = "sdc_people/meeting_add.html"
+    template_name = "sdc_people/meeting_create.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        formsetclasses = {
+            "attendees": MeetingAttendanceFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(self.request.POST)
+            else:
+                context_data[formsetkey] = formsetclass()
+
+        return context_data
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            "attendees": MeetingAttendanceFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Meeting",
+                },
+            )
+        return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
+
+
+class MeetingUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.add_meeting"
+    model = Meeting
+    form_class = MeetingForm
+    template_name = "sdc_people/meeting_update.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        formsetclasses = {
+            "attendees": MeetingAttendanceFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                context_data[formsetkey] = formsetclass(instance=self.object)
+
+        return context_data
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            "attendees": MeetingAttendanceFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -440,14 +540,14 @@ class MeetingCreate(PermissionRequiredMixin, CreateView):
 class MeetingDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_meeting"
     model = Meeting
-    template_name = "sdc_people/district_detail.html"
+    template_name = "sdc_people/meeting_detail.html"
 
 
 class MeetingList(PermissionRequiredMixin, FilterView):
 
-    permission_required = "sdc_people.view_person"
+    permission_required = "sdc_people.view_meeting"
     filterset_class = MeetingFilter
-    filterstore_urlname = "sdc_people:person-filterstore"
+    filterstore_urlname = "sdc_people:meeting-filterstore"
 
     def get_context_data(self, *args, **kwargs):
 
@@ -471,7 +571,7 @@ class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_meetingtype"
     model = Meetingtype
     form_class = MeetingtypeForm
-    template_name = "sdc_people/meetingtype_add.html"
+    template_name = "sdc_people/meetingtype_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -491,14 +591,14 @@ class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
 class MeetingtypeDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_meetingtype"
     model = Meetingtype
-    template_name = "sdc_people/district_detail.html"
+    template_name = "sdc_people/meeting_detail.html"
 
 
 class SubcommitteeCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_subcommittee"
     model = Subcommittee
     form_class = SubcommitteeForm
-    template_name = "sdc_people/subcommittee_add.html"
+    template_name = "sdc_people/subcommittee_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -525,7 +625,7 @@ class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_subcommitteetype"
     model = Subcommitteetype
     form_class = SubcommitteetypeForm
-    template_name = "sdc_people/subcommitteetype_add.html"
+    template_name = "sdc_people/subcommitteetype_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
@@ -552,7 +652,7 @@ class SubpositionCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_subposition"
     model = Subposition
     form_class = SubpositionForm
-    template_name = "sdc_people/subposition_add.html"
+    template_name = "sdc_people/subposition_create.html"
 
     def get_success_url(self):
         if "popup" in self.request.get_full_path():

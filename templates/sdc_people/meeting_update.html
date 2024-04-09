@@ -2,9 +2,9 @@
 
 
 {% block content %}
-  {% include './_object_menu.html' %}
-  <h2>Meeting</h2>
+  {% include './meeting_menu.html' %}
+  <h2>{{ object }}</h2>
   {% include './meeting_form.html' %}
-  {% include './_object_menu.html' %}
+  {% include './meeting_menu.html' %}
 {% endblock %}
 

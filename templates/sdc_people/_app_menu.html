@@ -11,6 +11,17 @@
       </div>
     {% endif %}
   {% endif %}
+  {% if perms.sdc_people.view_meeting %}
+    {% if 'meeting-' in request.resolver_match.url_name %}
+      <div class="menu-meeting menu-here">
+        <a href="{% url 'sdc_people:meeting-list' %}">Meetings</a>
+      </div>
+    {% else %}
+      <div class="menu-meeting">
+        <a href="{% url 'sdc_people:meeting-list' %}">Meetings</a>
+      </div>
+    {% endif %}
+  {% endif %}
   {% if user.is_authenticated %}
     <div class="menu-person">
       <form class="menu-item" method="POST" action="{% url 'logout' %}">{% csrf_token %}<button class="menu-item" type="submit" style="background:none; border:none; padding:0;">Log Out</button></form>
