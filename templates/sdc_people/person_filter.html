@@ -60,6 +60,9 @@
         {% if 'primary_email' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="email" %}
         {% endif %}
+        {% if 'attendance' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="Attendance" %}
+        {% endif %}
 
       </div>
 
@@ -86,6 +89,9 @@
           {% endif %}
           {% if 'primary_email' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.primary_email %}
+          {% endif %}
+          {% if 'attendance' in show_columns or not show_columns %}
+            {% include 'touglates/list_field.html' with field=person.get_attendance %}
           {% endif %}
 
         </div>

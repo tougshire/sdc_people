@@ -314,6 +314,46 @@ class DistrictCongress(models.Model):
         )
 
 
+class Meetingtype(models.Model):
+    name = models.CharField("name", max_length=100, help_text="The name of the type")
+    ordinal = models.IntegerField(
+        "ordinal",
+        choices=ORDINAL_CHOICES,
+        default=ORDINAL_MEDIUM,
+        help_text="A number assigned for sorting, with lowest number first",
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = (
+            "ordinal",
+            "name",
+        )
+
+
+class Meeting(models.Model):
+    meetingtype = models.ForeignKey(
+        Meetingtype,
+        on_delete=models.SET_NULL,
+        null=True,
+        help_text="The type of meeting",
+    )
+    when_held = models.DateField(
+        "date", default=date.today, help_text="The date of the meeting"
+    )
+    had_quorum = models.BooleanField(
+        "quorum", default=True, help_text="If the meeting had a quorum"
+    )
+
+    def __str__(self):
+        return "{}: {}".format(self.when_held, self.meetingtype.name)
+
+    class Meta:
+        ordering = ("-when_held", "meetingtype")
+
+
 class Person(models.Model):
     name_first = models.CharField(
         "first name",
@@ -446,6 +486,27 @@ class Person(models.Model):
     def __str__(self):
         return "{} ({})".format(self.name_formal, self.name_friendly)
 
+    def get_attendance(self):
+        meetings = Meeting.objects.all()
+        if hasattr(settings, "SDC_PEOPLE"):
+            print("tp2449802", settings.SDC_PEOPLE)
+            if "meetingtypes_for_attendance" in settings.SDC_PEOPLE:
+                print("tp2449803")
+
+                meetings = meetings.filter(
+                    meetingtype__name__in=settings.SDC_PEOPLE[
+                        "meetingtypes_for_attendance"
+                    ]
+                )
+        print("tp2449801", meetings)
+        attendance_binary = ""
+        for meeting in meetings:
+            if meeting.attendance_set.filter(person=self).exists():
+                attendance_binary = attendance_binary + "1"
+            else:
+                attendance_binary = attendance_binary + "0"
+        return attendance_binary
+
     class Meta:
         verbose_name = "Person"
         verbose_name_plural = "People"
@@ -571,46 +632,6 @@ class Submembership(models.Model):
     class Meta:
         verbose_name = "Subcommittee Membership"
         ordering = ("subposition", "person")
-
-
-class Meetingtype(models.Model):
-    name = models.CharField("name", max_length=100, help_text="The name of the type")
-    ordinal = models.IntegerField(
-        "ordinal",
-        choices=ORDINAL_CHOICES,
-        default=ORDINAL_MEDIUM,
-        help_text="A number assigned for sorting, with lowest number first",
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = (
-            "ordinal",
-            "name",
-        )
-
-
-class Meeting(models.Model):
-    meetingtype = models.ForeignKey(
-        Meetingtype,
-        on_delete=models.SET_NULL,
-        null=True,
-        help_text="The type of meeting",
-    )
-    when_held = models.DateField(
-        "date", default=date.today, help_text="The date of the meeting"
-    )
-    had_quorum = models.BooleanField(
-        "quorum", default=True, help_text="If the meeting had a quorum"
-    )
-
-    def __str__(self):
-        return "{}: {}".format(self.when_held, self.meetingtype.name)
-
-    class Meta:
-        ordering = ("-when_held", "meetingtype")
 
 
 class Attendance(models.Model):
