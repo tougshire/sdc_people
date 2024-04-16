@@ -637,6 +637,9 @@ class Submembership(models.Model):
         help_text="The committee and position in which the person is a member",
     )
 
+    def __str__(self):
+        return "{}->{}".format(self.person, self.subposition)
+
     class Meta:
         verbose_name = "Subcommittee Membership"
         ordering = ("subposition", "person")

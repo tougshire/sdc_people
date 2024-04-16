@@ -20,6 +20,10 @@
     {% for image in person.image_set.all %}
       {% include 'touglates/detail_field.html' with label=image.type field=image.file  %}
     {% endfor %}
+    <h3>Membership</h3>
+    {% for submembership in person.submembership_set.all %}
+      {% include 'touglates/detail_fields.html' with label="Position" field_1=submembership.subposition  %}
+    {% endfor %}
     <h3>Links</h3>
     {% for linkexternal in person.linkexternal_set.all %}
       {% include 'touglates/detail_field.html' with label=linkexternal.type field='<a href="'|add:linkexternal.url|add:'">'|add:linkexternal.url|add:'</a>'|safe  %}
