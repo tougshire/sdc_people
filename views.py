@@ -20,6 +20,7 @@ from .models import (
     Meetingtype,
     Membershipclass,
     Person,
+    Personnote,
     Subcommittee,
     Subcommitteetype,
     Subposition,
@@ -41,6 +42,7 @@ from .forms import (
     PersonForm,
     PersonImageFormset,
     PersonLinkexternalFormset,
+    PersonnoteForm,
     PersonsubmembershipFormset,
     SubcommitteeForm,
     SubcommitteetypeForm,
@@ -123,8 +125,6 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-
-        # update_history(form, "Person", form.instance, self.request.user)
 
         self.object = form.save(commit=False)
 
@@ -351,6 +351,97 @@ class MembershipclassCreate(PermissionRequiredMixin, CreateView):
             )
         return reverse_lazy(
             "sdc_people:membershipclass-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class PersonnoteDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "sdc_people.view_personnote"
+    model = Personnote
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["personnote_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Personnote._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        return context_data
+
+
+class PersonnoteDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_personnote"
+    model = Personnote
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["personnote_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Personnote._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        return context_data
+
+
+class PersonnoteUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.change_Personnote"
+    model = Personnote
+    form_class = PersonnoteForm
+    template_name = "sdc_people/personnote_update.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Personnote",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:personnote-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class PersonnoteList(PermissionRequiredMixin, ListView):
+    model = Personnote
+    permission_required = "sdc_people.view_personnote"
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        context_data["personnote_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Personnote._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+        return context_data
+
+
+class PersonnoteCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_Personnote"
+    model = Personnote
+    form_class = PersonnoteForm
+    template_name = "sdc_people/personnote_create.html"
+
+    def get_success_url(self):
+
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Personnote",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:personnote-detail", kwargs={"pk": self.object.pk}
         )
 
 

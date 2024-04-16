@@ -153,14 +153,12 @@
     color:white;
 }
 
-form.menuitem button {
+button.menuitem  {
+    background:transparent;
     font:inherit;
 }
 
 
-/* div.field {
-    width:80%;
-} */
 input.widthshort {
     width:15%;
 }

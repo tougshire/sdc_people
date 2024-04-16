@@ -1,0 +1,15 @@
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_personnote" method="POST">
+    {% csrf_token %}
+
+    {% include 'touglates/form_field.html' with field=form.person %}
+    {% include 'touglates/form_field.html' with field=form.personnotetype %}
+    {% include 'touglates/form_field.html' with field=form.content %}
+    {% include 'touglates/form_field.html' with field=form.when %}
+    {% include 'touglates/form_field.html' with field=form.is_flagged %}
+    {% include 'touglates/form_field.html' with field=form.expiration %}
+
+    <button type="Submit">Submit</button>
+    </form>
+  </div>

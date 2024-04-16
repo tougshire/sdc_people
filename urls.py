@@ -35,6 +35,45 @@ urlpatterns = [
         name="membershipclass-detail",
     ),
     path(
+        "personnote/",
+        RedirectView.as_view(url=reverse_lazy("sdc_people:personnote-list")),
+    ),
+    path(
+        "personnote/detail/<int:pk>/",
+        views.PersonnoteDetail.as_view(),
+        name="personnote-detail",
+    ),
+    path(
+        "personnote/delete/<int:pk>/",
+        views.PersonnoteDelete.as_view(),
+        name="personnote-delete",
+    ),
+    path(
+        "personnote/update/<int:pk>/",
+        views.PersonnoteUpdate.as_view(),
+        name="personnote-update",
+    ),
+    path(
+        "personnote/list/filterstore/<int:from_store>/",
+        views.PersonnoteList.as_view(),
+        name="personnote-filterstore",
+    ),
+    path(
+        "personnote/list/",
+        views.PersonnoteList.as_view(),
+        name="personnote-list",
+    ),
+    path(
+        "personnote/create/",
+        views.PersonnoteCreate.as_view(),
+        name="personnote-create",
+    ),
+    path(
+        "personnote/popup/",
+        views.PersonnoteCreate.as_view(),
+        name="personnote-popup",
+    ),
+    path(
         "membershipclass/delete/<int:pk>/",
         views.MembershipclassDelete.as_view(),
         name="membershipclass-delete",

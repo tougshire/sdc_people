@@ -1,0 +1,59 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_personnote %}
+      {% if 'personnote-list' == request.resolver_match.url_name %}
+        <div class="menu-personnote menu-here">
+            <a href="{% url 'sdc_people:personnote-list' %}">List</a>
+        </div>
+      {% else %}
+        <div class="menu-personnote">
+          <a href="{% url 'sdc_people:personnote-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_personnote %}
+      {% if 'personnote-detail' == request.resolver_match.url_name %}
+        <div class="menu-personnote menu-here">
+            <a href="{% url 'sdc_people:personnote-detail' object.pk %}">View</a>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-personnote">
+          <a href="{% url 'sdc_people:personnote-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_personnote %}
+      {% if 'personnote-create' == request.resolver_match.url_name %}
+        <div class="menu-personnote menu-here">
+            <a href="{% url 'sdc_people:personnote-create' %}">Add</a>
+        </div>
+
+      {% else %}
+        <div class="menu-personnote">
+          <a href="{% url 'sdc_people:personnote-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_personnote %}
+      {% if 'personnote-update' == request.resolver_match.url_name %}
+        <div class="menu-personnote menu-here">
+            <a href="{% url 'sdc_people:personnote-update' object.pk %}">Edit</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-personnote">
+          <a href="{% url 'sdc_people:personnote-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>

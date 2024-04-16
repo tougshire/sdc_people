@@ -1,0 +1,69 @@
+{% extends './_base.html' %}
+{% load static %}
+{% block content %}
+{% include './membershipclass_menu.html' %}
+<h2>Membership Classes</h2>
+
+<div class="list">
+  <div class="row rowhead">
+    {% include 'touglates/list_head.html' with field="" %}
+    {% if 'person' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Person" %}
+    {% endif %}
+    {% if 'personnotetype' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Type" %}
+    {% endif %}
+    {% if 'content' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Content" %}
+    {% endif %}
+    {% if 'date' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Date" %}
+    {% endif %}
+    {% if 'is_flagged' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="is_flagged" %}
+    {% endif %}
+    {% if 'expiration' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="expiration" %}
+    {% endif %}
+
+  </div>
+
+  {% for object in object_list %}
+    <div class="row">
+      <div class="list-field field column">
+        <div><a href="{% url 'sdc_people:membershipclass-detail' object.pk %}">view</a></div>
+        {% if perms.change_membershipclass %}<div><a href="{% url 'sdc_people:membershipclass-update' object.pk %}">edit</a></div>{% endif %}
+      </div>
+
+
+      {% if 'person' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.person %}
+      {% endif %}
+      {% if 'personnotetype' in show_columns or not show_columns %}
+      {% include 'touglates/list_field.html' with field="object.personnotetype" %}
+    {% endif %}
+    {% if 'content' in show_columns or not show_columns %}
+      {% include 'touglates/list_field.html' with field="object.content" %}
+    {% endif %}
+    {% if 'date' in show_columns or not show_columns %}
+      {% include 'touglates/list_field.html' with field="object.when" %}
+    {% endif %}
+    {% if 'is_flagged' in show_columns or not show_columns %}
+      {% include 'touglates/list_field.html' with field="object.is_flagged" %}
+    {% endif %}
+    {% if 'expiration' in show_columns or not show_columns %}
+      {% include 'touglates/list_field.html' with field="object.expiration" %}
+    {% endif %}
+
+    </div>
+  {% endfor %}
+  <div>Count: {{ count }}</div>
+
+</div>
+
+{% include './membershipclass_menu.html' %}
+{% endblock %}
+{% block bottomscript %}
+  {{ block.super }}
+
+{% endblock %}

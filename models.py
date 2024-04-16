@@ -550,6 +550,12 @@ class Personnote(models.Model):
         default=True,
         help_text="Flagged notes display an icon in the list view and appear by default in the detail view",
     )
+    expiration = models.BooleanField(
+        "expiration date",
+        null=True,
+        blank=True,
+        help_text="The expected or actual date when the note is no longer true",
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,

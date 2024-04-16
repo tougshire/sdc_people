@@ -166,6 +166,51 @@
       {% endfor %}
     </table>
 
+<h3>Attendance</h3>
+
+{{ personnotes.management_form }}
+{% if personnotes.errors %}{{ personnotes.errors }}{% endif %}
+{% for personnoteform in personnotes.forms %}
+  {% if personnotesform.errors %}{{ personnoteform.errors }}{% endif %}
+  {% if personnoteform.id.value  %}
+    <div id="div_personnoteform_{{ personnoteform.id.value }}" class="personnoteformsetform formsetform"  >
+      {% for hiddenfield in personnoteform.hidden_fields %}
+        {{ hiddenfield }}
+      {% endfor %}
+      {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
+      {% include 'touglates/form_field.html' with field=personnoteform.when %}
+      {% include 'touglates/form_field.html' with field=personnoteform.content %}
+      {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
+      {% include 'touglates/form_field.html' with field=personnoteform.expiration %}
+      {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
+    </div>
+  {% else %}
+    <div class="personnoteformsetform personnotenewform formsetform formsetnewform" >
+      {% for hiddenfield in personnoteform.hidden_fields %}
+        {{ hiddenfield }}
+      {% endfor %}
+      {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
+      {% include 'touglates/form_field.html' with field=personnoteform.when %}
+      {% include 'touglates/form_field.html' with field=personnoteform.content %}
+      {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
+      {% include 'touglates/form_field.html' with field=personnoteform.expiration %}
+      {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
+    </div>
+  {% endif %}
+{% endfor %}
+<table>
+  <tr>
+    <td><button type="button" id="button_addpersonnote" data-newform="personnotenewform">Add</button></td><td span="*"></td>
+  </tr>
+  {% for personnote in object.personnote_set.all %}
+    <tr id="tr_personnote_{{ personnote.id }}">
+      <td><button type="button" id="button_editpersonnote_{{ personnote.id }}" data-formid="div_personnoteform_{{ personnote.id }}" data-displayid="tr_personnote_{{ personnote.id }}" class="personnote_edit_button">edit</button></td><td>{{ personnote.when }}</td><td>{{ personnote.is_flagged }}</td><td>{{ personnote.content }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+
     <button type="Submit">Submit</button>
     </form>
   </div>
