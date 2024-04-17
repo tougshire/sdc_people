@@ -1,5 +1,5 @@
 import django_filters
-from .models import Person, Meeting, Membershipclass
+from .models import Person, Meeting, Membershipclass, Subcommittee
 from django.db import models
 from django import forms
 from django_filters_stoex.filters import CrossFieldSearchFilter
@@ -11,6 +11,11 @@ class PersonFilter(django_filters.FilterSet):
         label="text search",
         field_name="name_last,name_first,name_middles,name_friendly",
         lookup_expr="icontains",
+    )
+    subcommittee__in = django_filters.ModelMultipleChoiceFilter(
+        label="Sub-committee",
+        field_name="submembership__subposition__subcommittee",
+        queryset=Subcommittee.objects.all(),
     )
 
     membershipclass = django_filters.ModelMultipleChoiceFilter(
