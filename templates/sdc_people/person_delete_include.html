@@ -1,0 +1,28 @@
+  <div class="detail">
+    {% include 'touglates/detail_field.html' with label=person_labels.name_first field=object.name_first %}
+    {% include 'touglates/detail_field.html' with label=person_labels.name_last field=object.name_last %}
+    {% include 'touglates/detail_field.html' with label=person_labels.name_friendly field=object.name_friendly %}
+    {% include 'touglates/detail_field.html' with label=person_labels.name_formal field=object.name_formal %}
+    {% include 'touglates/detail_field.html' with label=person_labels.membershipclass field=object.membershipclass %}
+    {% include 'touglates/detail_field.html' with label=person_labels.districtprecinct field=object.districtprecinct %}
+    {% include 'touglates/detail_field.html' with label=person_labels.districtborough field=object.districtborough %}
+    {% include 'touglates/detail_field.html' with label=person_labels.districtstatehouse field=object.districtstatehouse %}
+    {% include 'touglates/detail_field.html' with label=person_labels.districtstatesenate field=object.districtstatesenate %}
+    {% include 'touglates/detail_field.html' with label=person_labels.districtcongress field=object.districtcongress %}
+    {% include 'touglates/detail_field.html' with label=person_labels.primary_voice field=object.primary_voice %}
+    {% include 'touglates/detail_field.html' with label=person_labels.primary_text field=object.primary_text %}
+    {% include 'touglates/detail_field.html' with label=person_labels.primary_email field=object.primary_email %}
+    {% include 'touglates/detail_field.html' with label=person_labels.voting_address field=object.voting_address %}
+    {% include 'touglates/detail_field.html' with label=person_labels.mailing_address field=object.mailing_address %}
+  </div>
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_person_delete" method="POST">
+      {% csrf_token %}
+      {% include 'touglates/form_field.html' with label_tag="confirm" field="<button type='submit'>Delete</button>" %}
+
+    </form>
+
+  <script>
+
+  </script>

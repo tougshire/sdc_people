@@ -80,6 +80,9 @@ class PersonDelete(PermissionRequiredMixin, DeleteView):
 
         return context_data
 
+    def get_success_url(self):
+        return reverse_lazy("sdc_people:person-list")
+
 
 class PersonDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_person"
