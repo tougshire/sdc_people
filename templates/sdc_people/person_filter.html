@@ -48,6 +48,9 @@
         {% if 'membershipclass' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="membership class" %}
         {% endif %}
+        {% if 'address' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="Address (voting / mailing)" %}
+        {% endif %}
         {% if 'localdistricts' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="local districts<br>(prec,boro)" %}
         {% endif %}
@@ -77,6 +80,9 @@
           {% endif %}
           {% if 'membershipclass' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.membershipclass %}
+          {% endif %}
+          {% if 'address' in show_columns or not show_columns %}
+            {% include 'touglates/list_fields.html' with field_1=person.voting_address field_2=person.mailing_address  before_fields="<div>" between_fields="</div><div>"  after_fields="</div>" %}
           {% endif %}
           {% if 'localdistricts' in show_columns or not show_columns %}
             {% include 'touglates/list_fields.html' with field_1=person.districtprecinct field_2=person.districtborough field_3=person.districtmagisterial before_fields="<div>" between_fields="</div><div>"  after_fields="</div>"            %}
