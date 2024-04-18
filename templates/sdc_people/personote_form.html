@@ -10,6 +10,7 @@
     {% include 'touglates/form_field.html' with field=form.is_flagged %}
     {% include 'touglates/form_field.html' with field=form.expiration %}
 
-    <button type="Submit">Submit</button>
+    {% include 'touglates/form_field.html' with label_tag="Submit Changes" field="<button type='submit'>Submit</button>" %}
+
     </form>
   </div>
