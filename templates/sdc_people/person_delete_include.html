@@ -19,7 +19,7 @@
     {{ form.errors }}
     <form id="form_person_delete" method="POST">
       {% csrf_token %}
-      {% include 'touglates/form_field.html' with label_tag="confirm" field="<button type='submit'>Delete</button>" %}
+      {% include 'touglates/form_field.html' with label_tag="Confirm" field="<button type='submit'>Delete</button>" %}
 
     </form>
 
