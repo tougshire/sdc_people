@@ -27,6 +27,10 @@
     width: 100%;
     padding: 1px 1px;
 }
+.menu-cluster {
+    display:flex;
+    justify-content: space-between;
+}
 
 .menu-bottom {
     display: flex;
