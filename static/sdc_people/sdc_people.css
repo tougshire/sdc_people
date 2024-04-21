@@ -27,9 +27,14 @@
     width: 100%;
     padding: 1px 1px;
 }
+
 .menu-cluster {
     display:flex;
-    justify-content: space-between;
+}
+
+.menu-cluster *::after {
+    content:" ";
+    white-space: pre;
 }
 
 .menu-bottom {
