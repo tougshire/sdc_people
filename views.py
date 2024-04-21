@@ -186,6 +186,12 @@ class PersonList(PermissionRequiredMixin, FilterView):
             for field in Person._meta.get_fields()
             if type(field).__name__[-3:] != "Rel"
         }
+        context_data["filterstore_retrieve"] = FilterstoreRetrieveForm(
+            request=self.request, app_name="sdc_people", model_name="person"
+        )
+        context_data["filterstore_save"] = FilterstoreSaveForm()
+        context_data["as_csv"] = CSVOptionForm()
+
         context_data["count"] = context_data["filter"].qs.count()
         return context_data
 
