@@ -257,9 +257,6 @@ class MembershipclassForm(ModelForm):
 
 
 class PersonnoteForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["author"].initial = self.request.user
 
     class Meta:
         model = Personnote
@@ -270,7 +267,6 @@ class PersonnoteForm(ModelForm):
             "when",
             "expiration",
             "is_flagged",
-            "author",
         ]
 
 
