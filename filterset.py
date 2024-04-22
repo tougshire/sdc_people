@@ -22,18 +22,23 @@ class PersonFilter(django_filters.FilterSet):
         help_text="Any of the subcomittees of which the person is a member",
         widget=DropdownSelectMultiple(),
     )
-    # try:
-    #     subcommittee__in.widget = DropdownSelectMultiple()
-    #     print("tp244j755")
-    # except NameError:
-    #     try:
-    #         subcommittee__in.widget = touglates.DropdownSelectMultiple()
-    #     except NameError:
-    #         pass
 
     membershipclass = django_filters.ModelMultipleChoiceFilter(
-        queryset=Membershipclass.objects.all(), widget=forms.CheckboxSelectMultiple()
+        queryset=Membershipclass.objects.all(), widget=DropdownSelectMultiple()
     )
+    membershipclass__is_quorum_member = django_filters.MultipleChoiceFilter(
+        field_name="membershipclass__is_quorum_member",
+        label="Is Quorum Member",
+        choices=Membershipclass._meta.get_field("is_quorum_member").choices,
+        widget=DropdownSelectMultiple(),
+    )
+
+    def optional_boolian(self, queryset, name, value=None):
+        if value is None:
+            return queryset
+        else:
+            return queryset.filter(**{name: value})
+
     orderbyfields = django_filters.OrderingFilter(
         fields=(
             "name_friendly",
