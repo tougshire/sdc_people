@@ -166,7 +166,7 @@
       {% endfor %}
     </table>
 
-<h3>Attendance</h3>
+<h3>Notes</h3>
 
 {{ personnotes.management_form }}
 {% if personnotes.errors %}{{ personnotes.errors }}{% endif %}
@@ -204,7 +204,7 @@
   </tr>
   {% for personnote in object.personnote_set.all %}
     <tr id="tr_personnote_{{ personnote.id }}">
-      <td><button type="button" id="button_editpersonnote_{{ personnote.id }}" data-formid="div_personnoteform_{{ personnote.id }}" data-displayid="tr_personnote_{{ personnote.id }}" class="personnote_edit_button">edit</button></td><td>{{ personnote.when }}</td><td>{{ personnote.is_flagged }}</td><td>{{ personnote.content }}</td>
+      <td><button type="button" id="button_editpersonnote_{{ personnote.id }}" data-formid="div_personnoteform_{{ personnote.id }}" data-displayid="tr_personnote_{{ personnote.id }}" class="personnote_edit_button">edit</button></td><td>{{ personnote.when }}</td><td>{{ personnote.author }}</td><td>{{ personnote.is_flagged|yesno:"flagged," }}</td><td>{{ personnote.content }}</td>
     </tr>
   {% endfor %}
 </table>
@@ -323,5 +323,5 @@
       </script>
 
     <script>
-      activateFormsetButtons(["attendance", "image","linkexternal", "submembership"])
+      activateFormsetButtons(["attendance", "image","linkexternal", "submembership","personnote"])
     </script>

@@ -43,6 +43,7 @@ from .forms import (
     PersonImageFormset,
     PersonLinkexternalFormset,
     PersonnoteForm,
+    PersonpersonnoteFormset,
     PersonsubmembershipFormset,
     SubcommitteeForm,
     SubcommitteetypeForm,
@@ -114,6 +115,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
+            "personnotes": PersonpersonnoteFormset,
         }
 
         for formsetkey, formsetclass in formsetclasses.items():
@@ -136,6 +138,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
+            "personnotes": PersonpersonnoteFormset,
         }
         formsetdata = {}
         formsets_valid = True
@@ -144,10 +147,19 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
                 formsetdata[formsetkey] = formsetclass(
                     self.request.POST, instance=self.object
                 )
+
             else:
                 formsetdata[formsetkey] = formsetclass(instance=self.object)
 
             if (formsetdata[formsetkey]).is_valid():
+                # special processing for individual formset classes
+                if formsetkey == "personnotes":
+                    for form in formsetdata[formsetkey].forms:
+                        if form.has_changed():
+                            form_uncommitted = form.save(commit=False)
+                            if form_uncommitted.author is None:
+                                form_uncommitted.author = self.request.user
+                                # form_uncommitted.save()
                 formsetdata[formsetkey].save()
             else:
                 logger.critical(formsetdata[formsetkey].errors)
@@ -210,7 +222,10 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
+            "personnotes": PersonpersonnoteFormset,
         }
+
+        initials = {"personnotes": {"author": self.request.user}}
 
         for formsetkey, formsetclass in formsetclasses.items():
             if self.request.POST:
@@ -232,6 +247,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
             "linkexternals": PersonLinkexternalFormset,
             "submemberships": PersonsubmembershipFormset,
             "attendances": PersonAttendanceFormset,
+            "personnotes": PersonpersonnoteFormset,
         }
         formsetdata = {}
         formsets_valid = True

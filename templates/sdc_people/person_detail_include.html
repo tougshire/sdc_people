@@ -32,6 +32,10 @@
     {% for attendance in person.attendance_set.all %}
       {% include 'touglates/detail_field.html' with label="meeting" field=attendance.meeting  %}
     {% endfor %}
+    <h3>Notes</h3>
+    {% for personnote in person.personnote_set.all %}
+      {% include 'touglates/detail_fields.html' with label="note" field_1=personnote.when field_2=personnote.author field_3=personnote.content %}
+    {% endfor %}
 
   </div>
 
