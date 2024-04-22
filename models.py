@@ -550,7 +550,7 @@ class Personnote(models.Model):
         default=True,
         help_text="Flagged notes display an icon in the list view and appear by default in the detail view",
     )
-    expiration = models.BooleanField(
+    expiration = models.DateField(
         "expiration date",
         null=True,
         blank=True,
