@@ -1,5 +1,15 @@
 import django_filters
-from .models import Person, Meeting, Membershipclass, Subcommittee
+from .models import (
+    DistrictBorough,
+    DistrictCongress,
+    DistrictPrecinct,
+    DistrictStatehouse,
+    DistrictStatesenate,
+    Person,
+    Meeting,
+    Membershipclass,
+    Subcommittee,
+)
 from django.db import models
 from django import forms
 from django_filters_stoex.filters import CrossFieldSearchFilter
@@ -30,6 +40,37 @@ class PersonFilter(django_filters.FilterSet):
         field_name="membershipclass__is_quorum_member",
         label="Is Quorum Member",
         choices=Membershipclass._meta.get_field("is_quorum_member").choices,
+        widget=DropdownSelectMultiple(),
+    )
+    membershipclass__is_member = django_filters.MultipleChoiceFilter(
+        field_name="membershipclass__is_member",
+        label="Is Member",
+        choices=Membershipclass._meta.get_field("is_member").choices,
+        widget=DropdownSelectMultiple(),
+    )
+    precinct = django_filters.ModelMultipleChoiceFilter(
+        field_name="districtprecinct",
+        queryset=DistrictPrecinct.objects.all(),
+        widget=DropdownSelectMultiple(),
+    )
+    borough = django_filters.ModelMultipleChoiceFilter(
+        field_name="districtborough",
+        queryset=DistrictBorough.objects.all(),
+        widget=DropdownSelectMultiple(),
+    )
+    statehouse = django_filters.ModelMultipleChoiceFilter(
+        field_name="districtstatehouse",
+        queryset=DistrictStatehouse.objects.all(),
+        widget=DropdownSelectMultiple(),
+    )
+    statesenate = django_filters.ModelMultipleChoiceFilter(
+        field_name="districtstatesenate",
+        queryset=DistrictStatesenate.objects.all(),
+        widget=DropdownSelectMultiple(),
+    )
+    congress = django_filters.ModelMultipleChoiceFilter(
+        field_name="districtcongress",
+        queryset=DistrictCongress.objects.all(),
         widget=DropdownSelectMultiple(),
     )
 
