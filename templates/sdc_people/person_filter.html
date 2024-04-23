@@ -74,6 +74,9 @@
         {% if 'primary_email' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="email" %}
         {% endif %}
+        {% if 'memberships' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="Memberships" %}
+        {% endif %}
         {% if 'attendance' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="Attendance" %}
         {% endif %}
@@ -106,6 +109,9 @@
           {% endif %}
           {% if 'primary_email' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.primary_email %}
+          {% endif %}
+          {% if 'memberships' in show_columns or not show_columns %}
+            {% include 'touglates/list_field.html' with field=person.get_memberships_as_divs|safe %}
           {% endif %}
           {% if 'attendance' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.get_attendance %}

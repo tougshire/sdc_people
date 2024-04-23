@@ -50,7 +50,7 @@
       </tr>
       {% for submembership in object.submembership_set.all %}
         <tr id="tr_submembership_{{ submembership.id }}">
-          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-displayid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.name }}</td><td><a href="{{ submembership.url }}">{{ submembership.url }}</td>
+          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-displayid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.subposition }}</td>
         </tr>
       {% endfor %}
     </table>

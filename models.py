@@ -90,9 +90,19 @@ class Subposition(models.Model):
         default=ORDINAL_MEDIUM,
         help_text="A number assigned for sorting",
     )
+    display_format = models.CharField(
+        max_length=60,
+        default="{position} {committee}",
+        help_text='The format to display the subposition name and commmittee name in a list. Should include "\{position\}", "\{committee\}", or both',
+    )
 
     def __str__(self):
-        return "{}, {}".format(self.name, self.subcommittee)
+        try:
+            return self.display_format.format(
+                position=self.name, committee=self.subcommittee.name
+            )
+        except:
+            return "{} {}".format(self.name, self.subcommittee)
 
     class Meta:
         verbose_name = "Position"
@@ -508,6 +518,17 @@ class Person(models.Model):
             else:
                 attendance_binary = attendance_binary + "n,"
         return attendance_binary[:-1]
+
+    def get_memberships(self):
+        submemberships = []
+        for submembership in self.submembership_set.all():
+
+            submemberships.append(submembership.subposition.__str__())
+
+        return submemberships
+
+    def get_memberships_as_divs(self):
+        return "<div>" + ("</div><div>".join(self.get_memberships())) + "</div>"
 
     class Meta:
         verbose_name = "Person"
