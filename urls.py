@@ -23,6 +23,11 @@ urlpatterns = [
         views.PersonList.as_view(),
         name="person-list",
     ),
+    path(
+        "person/csv/",
+        views.PersonCSV.as_view(),
+        name="person-csv",
+    ),
     path("person/create/", views.PersonCreate.as_view(), name="person-create"),
     path("person/popup/", views.PersonCreate.as_view(), name="person-popup"),
     path(

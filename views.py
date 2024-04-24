@@ -1,3 +1,4 @@
+import csv
 import logging
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy, resolve
@@ -5,7 +6,6 @@ from django.urls import reverse, reverse_lazy, resolve
 from django_filters_stoex.forms import (
     FilterstoreRetrieveForm,
     FilterstoreSaveForm,
-    CSVOptionForm,
 )
 from django_filters_stoex.views import FilterView
 from sdc_people.filterset import MeetingFilter, PersonFilter
@@ -48,6 +48,7 @@ from .forms import (
     SubcommitteeForm,
     SubcommitteetypeForm,
     SubpositionForm,
+    CSVOptionForm,
 )
 from django.views.generic.edit import (
     CreateView,
@@ -59,7 +60,7 @@ from django.views.generic.edit import (
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from urllib.parse import urlencode
 from django.core.exceptions import FieldError
 
@@ -202,8 +203,8 @@ class PersonList(PermissionRequiredMixin, FilterView):
             request=self.request, app_name="sdc_people", model_name="person"
         )
         context_data["filterstore_save"] = FilterstoreSaveForm()
-        context_data["as_csv"] = CSVOptionForm()
-
+        context_data["csv_form"] = CSVOptionForm()
+        context_data["make_csv"] = self.request.POST.get("make_csv", None)
         context_data["count"] = context_data["filter"].qs.count()
         return context_data
 
@@ -282,6 +283,38 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
                 },
             )
         return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
+
+
+class PersonCSV(PermissionRequiredMixin, FilterView):
+
+    permission_required = "sdc_people.view_person"
+    filterset_class = PersonFilter
+    # filterstore_urlname = "sdc_people:person-filterstore"
+    template_name = "sdc_people/csv.txt"
+    content_type = "text/csv"
+    headers = {"Content-Disposition": 'attachment; filename="sdc_people.csv"'}
+
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        response.headers = {
+            "Content-Disposition": 'attachment; filename="sdc_people.csv"'
+        }
+        return response
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        data = []
+        for person in context_data["filter"].qs:
+            data.append(
+                [
+                    person.name_formal,
+                    person.primary_email,
+                ]
+            )
+        context_data["data"] = data
+        return context_data
 
 
 class MembershipclassDelete(PermissionRequiredMixin, DeleteView):
@@ -775,7 +808,6 @@ class MeetingList(PermissionRequiredMixin, FilterView):
 
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
         context_data["filterstore_save"] = FilterstoreSaveForm()
-        context_data["as_csv"] = CSVOptionForm()
 
         context_data["meeting_labels"] = {
             field.name: field.verbose_name.title()

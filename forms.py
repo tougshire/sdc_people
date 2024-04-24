@@ -331,6 +331,16 @@ class SubpositionForm(ModelForm):
         }
 
 
+class CSVOptionForm(forms.Form):
+
+    make_csv = forms.BooleanField(
+        label="CSV",
+        initial=False,
+        required=False,
+        help_text="Download the result as a CSV file",
+    )
+
+
 MeetingAttendanceFormset = inlineformset_factory(
     Meeting, Attendance, form=AttendanceForm, extra=50
 )
