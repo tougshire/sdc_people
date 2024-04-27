@@ -305,12 +305,51 @@ class PersonCSV(PermissionRequiredMixin, FilterView):
 
         context_data = super().get_context_data(*args, **kwargs)
 
-        data = []
+        data = [
+            [
+                "Formal Name",
+                "Email",
+                "Text",
+                "Voice",
+                "Mailing Address",
+                "Membership Class",
+                "Precinct",
+                "Borough",
+                "Congress",
+                "House of Delegates",
+                "State Senate",
+                "Voting Address",
+                "First Name",
+                "Last Name",
+                "Middle Name(s)",
+                "Friendly Name",
+                "Membership Date",
+                "Dues Effective Date",
+                "Application Date",
+            ]
+        ]
         for person in context_data["filter"].qs:
             data.append(
                 [
                     person.name_formal,
                     person.primary_email,
+                    person.primary_text,
+                    person.primary_voice,
+                    person.mailing_address,
+                    person.membershipclass,
+                    person.districtprecinct,
+                    person.districtborough,
+                    person.districtcongress,
+                    person.districtstatehouse,
+                    person.districtstatesenate,
+                    person.voting_address,
+                    person.name_first,
+                    person.name_last,
+                    person.name_middles,
+                    person.name_friendly,
+                    person.membership_date,
+                    person.dues_effective_date,
+                    person.application_date,
                 ]
             )
         context_data["data"] = data
