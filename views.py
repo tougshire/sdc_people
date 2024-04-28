@@ -208,6 +208,9 @@ class PersonList(PermissionRequiredMixin, FilterView):
         context_data["count_all_members"] = Person.objects.filter(
             membershipclass__is_member=Membershipclass.MEMBERSHIP_YES
         ).count()
+        context_data["count_all_pending_members"] = Person.objects.filter(
+            membershipclass__is_member=Membershipclass.MEMBERSHIP_PENDING
+        ).count()
         context_data["count_all_quorum_members"] = Person.objects.filter(
             membershipclass__is_quorum_member=Membershipclass.MEMBERSHIP_YES
         ).count()
