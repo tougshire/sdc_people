@@ -168,8 +168,8 @@ class Membershipclass(models.Model):
         verbose_name = "membership class"
         ordering = (
             "ordinal",
-            "is_quorum_member",
             "is_member",
+            "is_quorum_member",
             "name",
         )
 
