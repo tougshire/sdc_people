@@ -111,8 +111,8 @@ class Subposition(models.Model):
 
 class Membershipclass(models.Model):
     MEMBERSHIP_NO = 0
-    MEMBERSHIP_PARTICIPANT = 1
-    MEMBERSHIP_PENDING = 11
+    MEMBERSHIP_PROSPECTIVE = 11
+    MEMBERSHIP_PENDING = 12
     MEMBERSHIP_YES = 111
 
     name = models.CharField(
@@ -122,6 +122,7 @@ class Membershipclass(models.Model):
         "is member",
         choices=(
             (MEMBERSHIP_NO, "no"),
+            (MEMBERSHIP_PENDING, "prospective"),
             (MEMBERSHIP_PENDING, "pending"),
             (MEMBERSHIP_YES, "yes"),
         ),
