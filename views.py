@@ -191,7 +191,6 @@ class PersonList(PermissionRequiredMixin, FilterView):
     filterstore_urlname = "sdc_people:person-filterstore"
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         context_data["person_labels"] = {

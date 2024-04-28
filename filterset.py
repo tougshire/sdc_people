@@ -12,11 +12,14 @@ from .models import (
 )
 from django.db import models
 from django import forms
-from django_filters_stoex.filters import CrossFieldSearchFilter
+from django_filters_stoex.filters import ChainableOrderingFilter, CrossFieldSearchFilter
 from touglates.widgets import DropdownSelectMultiple
 
 
 class PersonFilter(django_filters.FilterSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     filterset_name = forms.CharField()
     combined_text_search = CrossFieldSearchFilter(
         label="Name",
@@ -80,42 +83,27 @@ class PersonFilter(django_filters.FilterSet):
         else:
             return queryset.filter(**{name: value})
 
-    orderbyfields = django_filters.OrderingFilter(
-        fields=(
-            "name_friendly",
-            "name_first",
-            "name_last",
-            "membershipclass",
-            "membership_date",
-            "districtprecinct",
-            "districtborough",
-            "districtstatehouse",
-            "districtstatesenate",
-            "districtcongress",
-        ),
-    )
+    orderbyfields_available = [
+        ("name_friendly", "Friendly Name"),
+        ("name_first", "First Name"),
+        ("name_last", "Last Name"),
+        ("membershipclass", "Membership Class"),
+        ("membershipclass__is_member", "Is Member"),
+        ("membershipclass__is_quorum_member", "Is Quorum Member"),
+        ("membership_date", "Membership Date"),
+        ("districtprecinct", "Precinct"),
+        ("districtborough", "Borough"),
+        ("districtstatehouse", "State House"),
+        ("districtstatesenate", "State Senate"),
+        ("districtcongress", "Congress"),
+    ]
+    orderbyfields = ChainableOrderingFilter(fields=orderbyfields_available)
+    orderbyfields1 = ChainableOrderingFilter(fields=orderbyfields_available)
+    orderbyfields2 = ChainableOrderingFilter(fields=orderbyfields_available)
 
     class Meta:
         model = Person
         fields = []
-        # [
-        #     "name_friendly",
-        #     "name_first",
-        #     "name_last",
-        #     "membershipclass",
-        #     "membershipclass__is_quorum_member",
-        #     "membership_date",
-        #     "districtprecinct",
-        #     "districtborough",
-        #     "districtstatehouse",
-        #     "districtstatesenate",
-        #     "districtcongress",
-        #     "primary_voice",
-        #     "primary_text",
-        #     "primary_email",
-        #     "voting_address",
-        #     "mailing_address",
-        # ]
 
 
 class MeetingFilter(django_filters.FilterSet):
