@@ -288,7 +288,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Person",
+                    "model": "Person",
                 },
             )
         return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
@@ -410,7 +410,7 @@ class MembershipclassUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Membershipclass",
+                    "model": "Membershipclass",
                 },
             )
         return reverse_lazy(
@@ -448,7 +448,7 @@ class MembershipclassCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Membershipclass",
+                    "model": "Membershipclass",
                 },
             )
         return reverse_lazy(
@@ -501,7 +501,7 @@ class PersonnoteUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Personnote",
+                    "model": "Personnote",
                 },
             )
         return reverse_lazy(
@@ -539,7 +539,7 @@ class PersonnoteCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Personnote",
+                    "model": "Personnote",
                 },
             )
         return reverse_lazy(
@@ -560,7 +560,7 @@ class DistrictBoroughCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictBorough",
+                    "model": "DistrictBorough",
                 },
             )
 
@@ -588,7 +588,7 @@ class DistrictPrecinctCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictPrecinct",
+                    "model": "DistrictPrecinct",
                 },
             )
         return reverse_lazy(
@@ -615,7 +615,7 @@ class DistrictMagisterialCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictMagisterial",
+                    "model": "DistrictMagisterial",
                 },
             )
         return reverse_lazy(
@@ -642,7 +642,7 @@ class DistrictStatehouseCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictStatehouse",
+                    "model": "DistrictStatehouse",
                 },
             )
         return reverse_lazy(
@@ -669,7 +669,7 @@ class DistrictStatesenateCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictStatesenate",
+                    "model": "DistrictStatesenate",
                 },
             )
         return reverse_lazy(
@@ -696,7 +696,7 @@ class DistrictCongressCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "DistrictCongress",
+                    "model": "DistrictCongress",
                 },
             )
         return reverse_lazy(
@@ -767,7 +767,7 @@ class MeetingCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Meeting",
+                    "model": "Meeting",
                 },
             )
         return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
@@ -832,7 +832,7 @@ class MeetingUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Meeting",
+                    "model": "Meeting",
                 },
             )
         return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
@@ -880,7 +880,7 @@ class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Meetingtype",
+                    "model": "Meetingtype",
                 },
             )
         return reverse_lazy(
@@ -907,7 +907,7 @@ class SubcommitteeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Subcommittee",
+                    "model": "Subcommittee",
                 },
             )
         return reverse_lazy(
@@ -934,7 +934,7 @@ class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Subcommitteetype",
+                    "model": "Subcommitteetype",
                 },
             )
         return reverse_lazy(
@@ -961,7 +961,7 @@ class SubpositionCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model_name": "Subposition",
+                    "model": "Subposition",
                 },
             )
         return reverse_lazy(

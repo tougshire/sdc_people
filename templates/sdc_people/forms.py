@@ -25,7 +25,7 @@ from .models import (
     Subposition,
 )
 from django import forms
-from touglates.widgets import TouglateRelatedSelect
+from touglates.widgets import TouglatesRelatedSelect
 
 
 class AttendanceForm(ModelForm):
@@ -36,15 +36,17 @@ class AttendanceForm(ModelForm):
             "meeting",
         ]
         widgets = {
-            "meeting": TouglateRelatedSelect(
+            "meeting": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Meeting",
+                    "model_name": "Meeting",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:meeting-popup"),
                 }
             ),
-            "person": TouglateRelatedSelect(
+            "person": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Person",
+                    "model_name": "Person",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:person-popup"),
                 },
                 add_filter_input="true",
@@ -124,9 +126,10 @@ class MeetingForm(ModelForm):
             "meetingtype",
         ]
         widgets = {
-            "meetingtype": TouglateRelatedSelect(
+            "meetingtype": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Meetingtype",
+                    "model_name": "Meetingtype",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:meetingtype-popup"),
                 }
             ),
@@ -175,45 +178,52 @@ class PersonForm(ModelForm):
             "voting_address",
         ]
         widgets = {
-            "districtborough": TouglateRelatedSelect(
+            "districtborough": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictBorough",
+                    "model_name": "DistrictBorough",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtborough-popup"),
                 }
             ),
-            "districtprecinct": TouglateRelatedSelect(
+            "districtprecinct": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictPrecinct",
+                    "model_name": "DistrictPrecinct",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtprecinct-popup"),
                 }
             ),
-            "districtmagisterial": TouglateRelatedSelect(
+            "districtmagisterial": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictMagisterial",
+                    "model_name": "DistrictMagisterial",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtmagisterial-popup"),
                 }
             ),
-            "districtstatehouse": TouglateRelatedSelect(
+            "districtstatehouse": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictStatehouse",
+                    "model_name": "DistrictStatehouse",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtstatehouse-popup"),
                 }
             ),
-            "districtstatesenate": TouglateRelatedSelect(
+            "districtstatesenate": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictStatesenate",
+                    "model_name": "DistrictStatesenate",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtstatesenate-popup"),
                 }
             ),
-            "districtcongress": TouglateRelatedSelect(
+            "districtcongress": TouglatesRelatedSelect(
                 related_data={
-                    "model": "DistrictCongress",
+                    "model_name": "DistrictCongress",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:districtcongress-popup"),
                 }
             ),
-            "membershipclass": TouglateRelatedSelect(
+            "membershipclass": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Membershipclass",
+                    "model_name": "Membershipclass",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:membershipclass-popup"),
                 }
             ),
@@ -282,9 +292,10 @@ class SubmembershipForm(ModelForm):
             "subposition",
         ]
         widgets = {
-            "subposition": TouglateRelatedSelect(
+            "subposition": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Subposition",
+                    "model_name": "Subposition",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:subposition-popup"),
                 }
             )
@@ -299,9 +310,10 @@ class SubcommitteeForm(ModelForm):
             "name",
         ]
         widgets = {
-            "subcommitteetype": TouglateRelatedSelect(
+            "subcommitteetype": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Subcommitteetype",
+                    "model_name": "Subcommitteetype",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:subcommitteetype-popup"),
                 }
             )
@@ -326,9 +338,10 @@ class SubpositionForm(ModelForm):
             "ordinal",
         ]
         widgets = {
-            "subcommittee": TouglateRelatedSelect(
+            "subcommittee": TouglatesRelatedSelect(
                 related_data={
-                    "model": "Subcommittee",
+                    "model_name": "Subcommittee",
+                    "app_name": "sdc_people",
                     "add_url": reverse_lazy("sdc_people:subcommittee-popup"),
                 }
             )
