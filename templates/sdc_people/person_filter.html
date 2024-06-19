@@ -124,6 +124,60 @@
   </div>
   <div>Listed: {{ list_count }}; All Members: {{ count_all_members }}; All Quorum Members: {{ count_all_quorum_members }}; All Pending Members: {{ count_all_pending_members }}</div>
 
+<!-- csv -->
+ <script>
+  const listRows=[
+    {% for person in filter.qs %}
+      ["{{ person.primary_email }}","{{ person.name_formal }}"],
+    {% endfor %}
+  ]
+  let emailList="{% for person in filter.qs %}{% if person.primary_email %}{{ person.name_formal }} <{{ person.primary_email }}>, {% endif %}{% endfor %}"
+  let noemails="{% for person in filter.qs %}{% if not person.primary_email %}{{ person.name_formal }} , {% endif %}{% endfor %}"
+
+  function exportCSV () {
+    let csvContent = "";
+    listRows.forEach(function(eachRow) {
+      let csvRow = eachRow.join(", ")
+      csvContent += csvRow + "\r\n"
+    })
+    const blob = new Blob([csvContent], {type: 'text/csv'})
+    const url = URL.createObjectURL(blob);
+
+    window.open(url, '_blank')
+  }
+
+  function exportEmailList() {
+    let emailtemplate = window.open("{% url 'sdc_people:email-js-popup' %}", '_blank')
+
+    emailtemplate.window.addEventListener('load', function() {
+      emailtemplate.document.getElementById("ctl_emails").innerText=emailList
+      if ( noemails > "" ) {
+        emailtemplate.document.getElementById("div_noemails").innerText="no emails for: " + noemails
+      }
+    })
+  }
+
+
+  document.querySelectorAll('[data-function="csv"]').forEach(function(item) {
+    item.addEventListener('click',function(e) {
+      e.preventDefault
+      exportCSV()
+  })})
+  document.querySelectorAll('[data-function="emaillist"]').forEach(function(item) {
+    item.addEventListener('click',function(e) {
+      e.preventDefault
+      exportEmailList()
+  })})
+
+
+
+</script>
+
+</div>
+
+<!-- /csv -->
+
+
 {% include './person_menu.html' %}
 {% endblock %}
 {% block bottomscript %}

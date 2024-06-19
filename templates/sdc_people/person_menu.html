@@ -26,6 +26,19 @@
       {% endif %}
     {% endif %}
 
+
+      {% if 'person-list' == request.resolver_match.url_name %}
+        <div class="menu-person">
+          <a data-function="csv" href="#">CSV</a>
+        </div>
+        <div class="menu-person">
+          <a data-function="emaillist" href="#">Emails</a>
+        </div>
+
+        {% endif %}
+
+
+
     {% if perms.add_person %}
       {% if 'person-create' == request.resolver_match.url_name %}
         <div class="menu-person menu-here">
@@ -64,6 +77,7 @@
       </div>
     {% endif %}
   {% endif %}
+
 
 
   </div>

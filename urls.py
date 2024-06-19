@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
 from django.urls import path, reverse_lazy
 from . import filterset, views
@@ -30,6 +31,7 @@ urlpatterns = [
     ),
     path("person/create/", views.PersonCreate.as_view(), name="person-create"),
     path("person/popup/", views.PersonCreate.as_view(), name="person-popup"),
+    path("person/emails/", views.popup_email_list, name="email-js-popup"),
     path(
         "membershipclass/",
         RedirectView.as_view(url=reverse_lazy("sdc_people:membershipclass-list")),

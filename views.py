@@ -63,9 +63,15 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from urllib.parse import urlencode
 from django.core.exceptions import FieldError
+from django.template import loader
 
 logger = logging.getLogger(__name__)
 
+
+def popup_email_list(request):
+    template = loader.get_template("sdc_people/person_email_js_popup.html")
+
+    return HttpResponse(template.render({}, request))
 
 class PersonDelete(PermissionRequiredMixin, DeleteView):
     permission_required = "sdc_people.view_person"
