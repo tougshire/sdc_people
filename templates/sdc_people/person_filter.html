@@ -126,51 +126,102 @@
 
 <!-- csv -->
  <script>
+  function csvEscape(field) {
+    field=field
+      .replaceAll(/"/g,"\"\"")
+      .replaceAll(/'/g,"\'")
+    field='"' + field + '"'
+    return(field)
+  }
   const listRows=[
+    [
+        {% if 'name' in show_columns or not show_columns %}
+          "formal name",
+          "friendly name",
+        {% endif %}
+        {% if 'membershipclass' in show_columns or not show_columns %}
+          "membership class",
+        {% endif %}
+        {% if 'address' in show_columns or not show_columns %}
+          "voting address",
+          "mailing address",
+        {% endif %}
+        {% if 'localdistricts' in show_columns or not show_columns %}
+          "precinct",
+          "borough",
+          "magesterial",
+        {% endif %}
+        {% if 'statedistricts' in show_columns or not show_columns %}
+          "state house",
+          "state senate",
+          "congress",
+        {% endif %}
+        {% if 'phones' in show_columns or not show_columns %}
+          "viice",
+          "text",
+        {% endif %}
+        {% if 'primary_email' in show_columns or not show_columns %}
+          "email",
+        {% endif %}
+        {% if 'memberships' in show_columns or not show_columns %}
+          "memberships",
+        {% endif %}
+        {% if 'attendance' in show_columns or not show_columns %}
+          "recent attendance",
+        {% endif %}
+      ],
+
     {% for person in filter.qs %}
       [
         {% if 'name' in show_columns or not show_columns %}
-          "{{ person.name_formal|escape }}",
-          "{{ person.name_friendly|escape }}",
+          csvEscape("{{ person.name_formal|escape }}"),
+          csvEscape("{{ person.name_friendly|escape }}"),
         {% endif %}
         {% if 'membershipclass' in show_columns or not show_columns %}
-          "{{ person.membershipclass|escape }}",
+          csvEscape("{{ person.membershipclass|escape }}"),
         {% endif %}
         {% if 'address' in show_columns or not show_columns %}
-          "{{ person.voting_address|linebreaksbr|escape }}".replace("<br>"," "), "{{ person.mailing_address|linebreaksbr|escape }}".replace("<br>"," "),
+          csvEscape("{{ person.voting_address|linebreaksbr|striptags|escape }}"),
+          csvEscape("{{ person.mailing_address|linebreaksbr|striptags|escape }}"),
         {% endif %}
         {% if 'localdistricts' in show_columns or not show_columns %}
-          "{{ person.districtprecinct|escape }}", "{{ person.districtborough|escape }}", "{{ person.districtmagisterial|escape }}",
+          csvEscape("{{ person.districtprecinct|escape }}"),
+          csvEscape("{{ person.districtborough|escape }}"),
+          csvEscape("{{ person.districtmagisterial|escape }}"),
         {% endif %}
         {% if 'statedistricts' in show_columns or not show_columns %}
-          "{{ person.districtstatehouse|escape }}",  "{{ person.districtstatesenate|escape }}", "{{ person.districtcongress|escape }}",
+          csvEscape("{{ person.districtstatehouse|escape }}"),
+          csvEscape("{{ person.districtstatesenate|escape }}"),
+          csvEscape("{{ person.districtcongress|escape }}"),
         {% endif %}
         {% if 'phones' in show_columns or not show_columns %}
-          "{{ person.primary_voice|escape }}", "{{ person.primary_text|escape }}",
+          csvEscape("{{ person.primary_voice|escape }}"),
+          csvEscape("{{ person.primary_text|escape }}"),
         {% endif %}
         {% if 'primary_email' in show_columns or not show_columns %}
-          "{{ person.primary_email|escape }}",
+          csvEscape("{{ person.primary_email|escape }}"),
         {% endif %}
         {% if 'memberships' in show_columns or not show_columns %}
-          "{{ person.get_memberships_as_divs|safe|escape }}",
+          csvEscape("{{ person.get_memberships_as_divs|safe|striptags|escape }}"),
         {% endif %}
         {% if 'attendance' in show_columns or not show_columns %}
-          "{{ person.get_attendance|escape }}",
+          csvEscape("{{ person.get_attendance|escape }}"),
         {% endif %}
       ],
       {% endfor %}
 
     ]
-
   let emailList="{% for person in filter.qs %}{% if person.primary_email %}{{ person.name_formal }} <{{ person.primary_email }}>, {% endif %}{% endfor %}"
   let noemails="{% for person in filter.qs %}{% if not person.primary_email %}{{ person.name_formal }} , {% endif %}{% endfor %}"
 
   function exportCSV () {
     let csvContent = "";
     listRows.forEach(function(eachRow) {
-      let csvRow = eachRow.join(", ")
-      csvContent += csvRow + "\r\n"
+      let csvRow = eachRow.join(",")
+      csvContent += csvRow + "\n"
+
     })
+    console.log(csvContent)
     const blob = new Blob([csvContent], {type: 'text/csv'})
     const url = URL.createObjectURL(blob);
 
