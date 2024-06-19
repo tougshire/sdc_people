@@ -128,9 +128,40 @@
  <script>
   const listRows=[
     {% for person in filter.qs %}
-      ["{{ person.primary_email }}","{{ person.name_formal }}"],
-    {% endfor %}
-  ]
+      [
+        {% if 'name' in show_columns or not show_columns %}
+          "{{ person.name_formal|escape }}",
+          "{{ person.name_friendly|escape }}",
+        {% endif %}
+        {% if 'membershipclass' in show_columns or not show_columns %}
+          "{{ person.membershipclass|escape }}",
+        {% endif %}
+        {% if 'address' in show_columns or not show_columns %}
+          "{{ person.voting_address|linebreaksbr|escape }}".replace("<br>"," "), "{{ person.mailing_address|linebreaksbr|escape }}".replace("<br>"," "),
+        {% endif %}
+        {% if 'localdistricts' in show_columns or not show_columns %}
+          "{{ person.districtprecinct|escape }}", "{{ person.districtborough|escape }}", "{{ person.districtmagisterial|escape }}",
+        {% endif %}
+        {% if 'statedistricts' in show_columns or not show_columns %}
+          "{{ person.districtstatehouse|escape }}",  "{{ person.districtstatesenate|escape }}", "{{ person.districtcongress|escape }}",
+        {% endif %}
+        {% if 'phones' in show_columns or not show_columns %}
+          "{{ person.primary_voice|escape }}", "{{ person.primary_text|escape }}",
+        {% endif %}
+        {% if 'primary_email' in show_columns or not show_columns %}
+          "{{ person.primary_email|escape }}",
+        {% endif %}
+        {% if 'memberships' in show_columns or not show_columns %}
+          "{{ person.get_memberships_as_divs|safe|escape }}",
+        {% endif %}
+        {% if 'attendance' in show_columns or not show_columns %}
+          "{{ person.get_attendance|escape }}",
+        {% endif %}
+      ],
+      {% endfor %}
+
+    ]
+
   let emailList="{% for person in filter.qs %}{% if person.primary_email %}{{ person.name_formal }} <{{ person.primary_email }}>, {% endif %}{% endfor %}"
   let noemails="{% for person in filter.qs %}{% if not person.primary_email %}{{ person.name_formal }} , {% endif %}{% endfor %}"
 
