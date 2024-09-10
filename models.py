@@ -683,4 +683,4 @@ class Attendance(models.Model):
         return "{} at {}".format(self.person, self.meeting)
 
     class Meta:
-        ordering = ("meeting", "person")
+        ordering = ("meeting", "person__name_last")

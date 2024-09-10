@@ -9,6 +9,7 @@ from .models import (
     Meeting,
     Membershipclass,
     Subcommittee,
+    Attendance,
 )
 from django.db import models
 from django import forms
@@ -76,6 +77,13 @@ class PersonFilter(django_filters.FilterSet):
         queryset=DistrictCongress.objects.all(),
         widget=DropdownSelectMultiple(),
     )
+    attendance = django_filters.ModelMultipleChoiceFilter(
+        field_name="attendance__meeting",
+        label="Attendance",
+        queryset=Meeting.objects.all(),
+        widget=DropdownSelectMultiple(),
+    )
+
 
     def optional_boolian(self, queryset, name, value=None):
         if value is None:
