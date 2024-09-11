@@ -534,7 +534,7 @@ class Person(models.Model):
     class Meta:
         verbose_name = "Person"
         verbose_name_plural = "People"
-        ordering = ("membershipclass", "name_last", "name_friendly")
+        ordering = ("name_last", "name_friendly", "membershipclass", )
 
 
 class Personnotetype(models.Model):
@@ -683,4 +683,4 @@ class Attendance(models.Model):
         return "{} at {}".format(self.person, self.meeting)
 
     class Meta:
-        ordering = ("meeting", "person__name_last")
+        ordering = ("person__name_last", "meeting")
