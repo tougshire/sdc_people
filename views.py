@@ -921,11 +921,53 @@ class SubcommitteeCreate(PermissionRequiredMixin, CreateView):
         )
 
 
+class SubcommitteeUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.change_Subcommittee"
+    model = Subcommittee
+    form_class = SubcommitteeForm
+    template_name = "sdc_people/subcommittee_update.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model": "Subcommittee",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:subcommittee-detail", kwargs={"pk": self.object.pk}
+        )
+
+
 class SubcommitteeDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_subcommittee"
     model = Subcommittee
     template_name = "sdc_people/district_detail.html"
 
+
+class SubcommitteeList(PermissionRequiredMixin, ListView):
+
+    permission_required = "sdc_people.view_subcommittee"
+    model=Subcommittee
+
+    def get_context_data(self, *args, **kwargs):
+
+        context_data = super().get_context_data(*args, **kwargs)
+
+        context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
+        context_data["filterstore_save"] = FilterstoreSaveForm()
+
+        context_data["subcommittee_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Subcommittee._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        context_data["count"] = self.object_list.count()
+        return context_data
 
 class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_subcommitteetype"

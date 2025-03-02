@@ -216,9 +216,20 @@ urlpatterns = [
         name="subposition-detail",
     ),
     path(
-        "committee/update/",
+        "committee/list/",
+        views.SubcommitteeList.as_view(),
+        name="subcommittee-list",
+    ),
+    path(
+        "committee/create/",
         views.SubcommitteeCreate.as_view(),
         name="subcommittee-create",
+    ),
+
+    path(
+        "committee/update/<int:pk>/",
+        views.SubcommitteeUpdate.as_view(),
+        name="subcommittee-update",
     ),
     path(
         "committee/popup/",

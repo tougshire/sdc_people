@@ -1,0 +1,44 @@
+{% extends './_base.html' %}
+{% load static %}
+{% block content %}
+{% include './subcommittee_menu.html' %}
+<h2>Committees</h2>
+
+<div class="list">
+  <div class="row rowhead">
+    {% include 'touglates/list_head.html' with field="" %}
+    {% if 'is_home' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Name" %}
+    {% endif %}
+    {% if 'subcommitteetype' in show_columns or not show_columns %}
+      {% include 'touglates/list_head.html' with field="Type" %}
+    {% endif %}
+
+  </div>
+
+  {% for object in object_list %}
+    <div class="row">
+      <div class="list-field field column">
+        <div><a href="{% url 'sdc_people:subcommittee-detail' object.pk %}">view</a></div>
+        {% if perms.change_subcommittee %}<div><a href="{% url 'sdc_people:subcommittee-update' object.pk %}">edit</a></div>{% endif %}
+      </div>
+
+      {% if 'name' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.name %}
+      {% endif %}
+      {% if 'subcommitteetype' in show_columns or not show_columns %}
+        {% include 'touglates/list_field.html' with field=object.subcommitteetype %}
+      {% endif %}
+
+    </div>
+  {% endfor %}
+  <div>Count: {{ count }}</div>
+
+</div>
+
+{% include './subcommittee_menu.html' %}
+{% endblock %}
+{% block bottomscript %}
+  {{ block.super }}
+
+{% endblock %}
