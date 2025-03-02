@@ -37,7 +37,7 @@
 
   {% if user.is_authenticated %}
     <div class="menu menu-cluster">
-      <a href="{% url 'profile' %}">{{ user }}</a>
+      {% comment %}<a href="{% url 'profile' %}">{{ user }}</a> {% endcomment %}
       <form class="menu-item" method="POST" action="{% url 'logout' %}">{% csrf_token %}<button class="menu-item" type="submit" style="background:none; border:none; padding:0;">Log Out</button></form>
     </div>
   {% else %}
