@@ -201,7 +201,7 @@ urlpatterns = [
         name="districtcongress-detail",
     ),
     path(
-        "position/update/",
+        "position/create/",
         views.SubpositionCreate.as_view(),
         name="subposition-create",
     ),
