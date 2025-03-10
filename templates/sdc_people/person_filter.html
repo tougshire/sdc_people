@@ -117,7 +117,7 @@
             {% include 'touglates/list_field.html' with field=person.get_memberships_as_divs|safe %}
           {% endif %}
           {% if 'demog_is_veteran' in show_columns or not show_columns %}
-            {% with is_veteran=object.demog_is_veteran|yesno:"yes," %}
+            {% with is_veteran=person.demog_is_veteran|yesno:"yes," %}
             {% include 'touglates/list_field.html' with field=is_veteran %}
             {% endwith %}
           {% endif %}
