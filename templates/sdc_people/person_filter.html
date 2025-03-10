@@ -77,6 +77,9 @@
         {% if 'memberships' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="Memberships" %}
         {% endif %}
+        {% if 'demog_is_veteran' in show_columns or not show_columns %}
+          {% include 'touglates/list_head.html' with field="Veteran" %}
+        {% endif %}
         {% if 'attendance' in show_columns or not show_columns %}
           {% include 'touglates/list_head.html' with field="Attendance" %}
         {% endif %}
@@ -112,6 +115,11 @@
           {% endif %}
           {% if 'memberships' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.get_memberships_as_divs|safe %}
+          {% endif %}
+          {% if 'demog_is_veteran' in show_columns or not show_columns %}
+            {% with is_veteran=object.demog_is_veteran|yesno:"yes," %}
+            {% include 'touglates/list_field.html' with field=is_veteran %}
+            {% endwith %}
           {% endif %}
           {% if 'attendance' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.get_attendance %}
@@ -203,6 +211,9 @@
         {% endif %}
         {% if 'memberships' in show_columns or not show_columns %}
           csvEscape("{{ person.get_memberships_as_divs|safe|striptags|escape }}"),
+        {% endif %}
+        {% if 'demog_is_veteran' in show_columns or not show_columns %}
+          csvEscape("{{ demog_is_veteran|escape }}"),
         {% endif %}
         {% if 'attendance' in show_columns or not show_columns %}
           csvEscape("{{ person.get_attendance|escape }}"),

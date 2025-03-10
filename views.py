@@ -365,6 +365,7 @@ class PersonCSV(PermissionRequiredMixin, FilterView):
                     person.membership_date,
                     person.dues_effective_date,
                     person.application_date,
+                    person.demog_is_veteran,
                 ]
             )
         context_data["data"] = data

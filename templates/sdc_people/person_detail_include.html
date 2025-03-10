@@ -16,6 +16,7 @@
     {% include 'touglates/detail_field.html' with label=person_labels.primary_email field=object.primary_email %}
     {% include 'touglates/detail_field.html' with label=person_labels.voting_address field=object.voting_address %}
     {% include 'touglates/detail_field.html' with label=person_labels.mailing_address field=object.mailing_address %}
+    {% include 'touglates/detail_field.html' with label=person_labels.demog_is_veteran field=object.demog_is_veteran %}
     <h3>Images</h3>
     {% for image in person.image_set.all %}
       {% include 'touglates/detail_field.html' with label=image.type field=image.file  %}

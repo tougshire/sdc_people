@@ -102,6 +102,7 @@ class PersonModelForm(forms.ModelForm):
             "mailing_address",
             "application_date",
             "dues_effective_date",
+            "demog_is_veteran",
         ]
 
 

@@ -176,6 +176,7 @@ class PersonForm(ModelForm):
             "primary_text",
             "primary_voice",
             "voting_address",
+            "demog_is_veteran",
         ]
         widgets = {
             "districtborough": TouglatesRelatedSelect(

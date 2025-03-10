@@ -93,7 +93,6 @@ class Subposition(models.Model):
     display_format = models.CharField(
         max_length=60,
         default="{position} {committee}",
-        help_text='The format to display the subposition name and commmittee name in a list. Should include "\{position\}", "\{committee\}", or both',
     )
 
     def __str__(self):
@@ -497,6 +496,11 @@ class Person(models.Model):
         null=True,
         blank=True,
         help_text="The effective date of the most recent dues (often the date of the caucus or meeting in which the person was admitted)",
+    )
+    demog_is_veteran = models.BooleanField(
+        "veteran",
+        default=False,
+        help_text="Is this person a military veteran"
     )
 
     def __str__(self):
