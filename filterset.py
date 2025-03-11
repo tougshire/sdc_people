@@ -77,6 +77,13 @@ class PersonFilter(django_filters.FilterSet):
         queryset=DistrictCongress.objects.all(),
         widget=DropdownSelectMultiple(),
     )
+    demog_is_veteran = django_filters.MultipleChoiceFilter(
+        field_name="demog_is_veteran",
+        label="Is Veteran",
+        choices=[("True",True),("False",False)],
+        widget=DropdownSelectMultiple(),
+    )
+
     attendance = django_filters.ModelMultipleChoiceFilter(
         field_name="attendance__meeting",
         label="Attendance",
