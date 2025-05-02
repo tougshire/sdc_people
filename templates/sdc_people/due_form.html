@@ -1,0 +1,90 @@
+  {% load touglates_tags %}
+  <div class="form">
+    {{ form.errors }}
+    <form id="form_due" method="POST">
+    {% csrf_token %}
+    {% include 'touglates/form_field.html' with field=form.due_date %}
+
+    <div class="formset_div"
+   </form>
+    <h3>People</h3>
+    <div>
+      <button type="button" id="button_editduestats" data-formsetdiv="div_duestat">Edit People</button>
+    </div>
+    <div id="div_duestat" class="formsetdiv">
+      {{ duestats.management_form }}
+      {% include 'touglates/form_field.html' with label_tag="Add Members of Type" field_1=membershipclass_select|safe field_2="<button id='button_add_selected_membership_type'>Add Members of Type</button>" %}
+      {% if duestats.errors %}{{ duestats.errors }}{% endif %}
+      {% for duestatform in duestats.forms %}
+        {% if duestatsform.errors %}{{ duestatform.errors }}{% endif %}
+        {% if duestatform.id.value  %}
+          <div id="div_duestatform_{{ duestatform.id.value }}" class="duestatformsetform formsetform"  >
+            {% for hiddenfield in duestatform.hidden_fields %}
+              {{ hiddenfield|attrs:'{"form":"form_due"}' }}
+            {% endfor %}
+            {{ duestatform.person|attrs:'{"form":"form_due"}' }}
+            {% include 'touglates/form_field.html' with field=duestatform.person|attrs:"form=form_due" %}
+            {% include 'touglates/form_field.html' with field=duestatform.effective_date|attrs:'{"form":"form_due"}' %}
+            {% include 'touglates/form_field.html' with field=duestatform.status|attrs:'{"form":"form_due"}' %}
+            {% include 'touglates/form_field.html' with field=duestatform.DELETE|attrs:'{"form":"form_due"}' %}
+          </div>
+        {% else %}
+          <div class="duestatformsetform formsetform" >
+            {% for hiddenfield in duestatform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=duestatform.person|attrs:'form=form_due' %}
+            {% include 'touglates/form_field.html' with field=duestatform.effective_date|attrs:'{"form":"form_due"}' %}
+            {% include 'touglates/form_field.html' with field=duestatform.status|attrs:'{"form":"form_due"}' %}
+            {% include 'touglates/form_field.html' with field=duestatform.DELETE|attrs:'{"form":"form_due"}' %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div id="div_duestatnewform" class="duestatformsetform formsetform" >
+        {% for hiddenfield in duestats.empty_form.hidden_fields %}
+          {{ hiddenfield }}
+        {% endfor %}
+        {% include 'touglates/form_field.html' with field=duestats.empty_form.person %}
+        {% include 'touglates/form_field.html' with field=duestats.empty_form.effective_date %}
+        {% include 'touglates/form_field.html' with field=duestats.empty_form.status %}
+        {% include 'touglates/form_field.html' with field=duestats.empty_form.DELETE %}
+      </div>
+      <div>
+        <button type="button" id="button_addduestat" data-newform="duestatnewform">Add</button>
+      </div>
+      <table>
+        {% for duestat in object.duestat_set.all %}
+          <tr id="tr_duestat_{{ duestat.id }}">
+            <td><td>{{ duestat.person }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <button type="Submit" form="form_due">Submit</button>
+    <script>
+      z_activateFormsetButtons(["duestat"])
+    </script>
+  <script>
+
+  document.getElementById('button_add_selected_membership_type').addEventListener('click', function(e) {
+    e.preventDefault()
+    let people_available = [
+    {% for person in people_available %}
+      { "pk":"{{ person.pk }}","membershipclass":"{{ person.membershipclass }}" },
+    {% endfor %}
+    ]
+    let control_selmemtype = document.getElementById('control_selmemtype')
+    if( control_selmemtype.value ) {
+      for ( let p = 0; p < people_available.length; p++ ) {
+        if( people_available[p].membershipclass == control_selmemtype.value) {
+          let fm_newform = createAddFormsetForm('duestat', 'div_duestatnewform', 'form_due')
+          let el_person = fm_newform.querySelector("[name$='person']")
+          let op_person = el_person.querySelector("option[value='" + people_available[p].pk + "']")
+          op_person.selected=true
+        }
+      }
+    }
+  });
+  </script>
+
+  </div>

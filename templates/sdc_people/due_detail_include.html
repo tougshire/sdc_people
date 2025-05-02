@@ -1,0 +1,13 @@
+  <h2>{{ object }}</h2>
+
+  <div class="detail">
+    {% include 'touglates/detail_field.html' with label=person_labels.due_date field=object.due_date %}
+    <h3>People/Status</h3>
+
+    {% for duestat in object.duestat_set.all %} 
+          {% include 'touglates/detail_fields.html' with label="Person/Status" field_1=duestat.person field_2=duestat.effective_date|default_if_none:"-" field_3=duestat.get_status_display  %}
+    {% endfor %}
+
+  </div>
+
+
