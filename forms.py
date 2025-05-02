@@ -1,7 +1,10 @@
 import datetime
-from django.conf import settings
-from django.forms import ModelForm, SelectDateWidget, inlineformset_factory, Select
+
+from django import forms
+from django.forms import ModelForm, SelectDateWidget, inlineformset_factory
 from django.urls import reverse_lazy
+from touglates.widgets import TouglatesRelatedSelect
+
 from .models import (
     Attendance,
     DistrictBorough,
@@ -10,22 +13,20 @@ from .models import (
     DistrictPrecinct,
     DistrictStatehouse,
     DistrictStatesenate,
+    Due,
+    Duestat,
     Image,
-    Imagetype,
     Linkexternal,
     Meeting,
     Meetingtype,
     Membershipclass,
     Person,
     Personnote,
-    Personnotetype,
     Subcommittee,
     Subcommitteetype,
     Submembership,
     Subposition,
 )
-from django import forms
-from touglates.widgets import TouglatesRelatedSelect
 
 
 class AttendanceForm(ModelForm):
@@ -96,6 +97,25 @@ class DistrictCongressForm(ModelForm):
         fields = ["number", "name"]
 
 
+class DueForm(ModelForm):
+    class Meta:
+        model = Due
+        fields = [
+            "due_date",
+        ]
+
+
+class DuestatForm(ModelForm):
+    class Meta:
+        model = Duestat
+        fields = [
+            "due",
+            "person",
+            "effective_date",
+            "status",
+        ]
+
+
 class ImageForm(ModelForm):
     class Meta:
         model = Image
@@ -154,7 +174,6 @@ class MeetingtypeForm(ModelForm):
 
 
 class PersonForm(ModelForm):
-
     class Meta:
         model = Person
         fields = [
@@ -268,7 +287,6 @@ class MembershipclassForm(ModelForm):
 
 
 class PersonnoteForm(ModelForm):
-
     class Meta:
         model = Personnote
         fields = [
@@ -346,7 +364,6 @@ class SubpositionForm(ModelForm):
 
 
 class CSVOptionForm(forms.Form):
-
     make_csv = forms.BooleanField(
         label="CSV",
         initial=False,
@@ -354,6 +371,8 @@ class CSVOptionForm(forms.Form):
         help_text="Download the result as a CSV file",
     )
 
+
+DueDuestatFormset = inlineformset_factory(Due, Duestat, form=DuestatForm, extra=1)
 
 MeetingAttendanceFormset = inlineformset_factory(
     Meeting, Attendance, form=AttendanceForm, extra=50

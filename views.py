@@ -1,39 +1,34 @@
-import csv
 import logging
-from django.shortcuts import render
-from django.urls import reverse, reverse_lazy, resolve
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponse
+from django.template import loader
+from django.urls import reverse, reverse_lazy
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import (
+    CreateView,
+    DeleteView,
+    UpdateView,
+)
+from django.views.generic.list import ListView
 from django_filters_stoex.forms import (
     FilterstoreRetrieveForm,
     FilterstoreSaveForm,
 )
 from django_filters_stoex.views import FilterView
+
 from sdc_people.filterset import MeetingFilter, PersonFilter
-from .models import (
-    DistrictBorough,
-    DistrictCongress,
-    DistrictMagisterial,
-    DistrictPrecinct,
-    DistrictStatehouse,
-    DistrictStatesenate,
-    Meeting,
-    Meetingtype,
-    Membershipclass,
-    Person,
-    Personnote,
-    Subcommittee,
-    Subcommitteetype,
-    Subposition,
-)
+
 from .forms import (
+    CSVOptionForm,
     DistrictBoroughForm,
     DistrictCongressForm,
     DistrictMagisterialForm,
-    DistrictBoroughForm,
     DistrictPrecinctForm,
     DistrictStatehouseForm,
     DistrictStatesenateForm,
-    LinkexternalForm,
+    DueDuestatFormset,
+    DueForm,
     MeetingAttendanceFormset,
     MeetingForm,
     MeetingtypeForm,
@@ -48,22 +43,24 @@ from .forms import (
     SubcommitteeForm,
     SubcommitteetypeForm,
     SubpositionForm,
-    CSVOptionForm,
 )
-from django.views.generic.edit import (
-    CreateView,
-    DeleteView,
-    FormView,
-    UpdateView,
-    FormMixin,
+from .models import (
+    DistrictBorough,
+    DistrictCongress,
+    DistrictMagisterial,
+    DistrictPrecinct,
+    DistrictStatehouse,
+    DistrictStatesenate,
+    Due,
+    Meeting,
+    Meetingtype,
+    Membershipclass,
+    Person,
+    Personnote,
+    Subcommittee,
+    Subcommitteetype,
+    Subposition,
 )
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect, QueryDict
-from urllib.parse import urlencode
-from django.core.exceptions import FieldError
-from django.template import loader
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +69,7 @@ def popup_email_list(request):
     template = loader.get_template("sdc_people/person_email_js_popup.html")
 
     return HttpResponse(template.render({}, request))
+
 
 class PersonDelete(PermissionRequiredMixin, DeleteView):
     permission_required = "sdc_people.view_person"
@@ -191,7 +189,6 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class PersonList(PermissionRequiredMixin, FilterView):
-
     permission_required = "sdc_people.view_person"
     filterset_class = PersonFilter
     filterstore_urlname = "sdc_people:person-filterstore"
@@ -287,7 +284,6 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
         return response
 
     def get_success_url(self):
-
         if "popup" in self.request.get_full_path():
             return reverse(
                 "touglates:popup_closer",
@@ -301,7 +297,6 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
 
 
 class PersonCSV(PermissionRequiredMixin, FilterView):
-
     permission_required = "sdc_people.view_person"
     filterset_class = PersonFilter
     # filterstore_urlname = "sdc_people:person-filterstore"
@@ -317,7 +312,6 @@ class PersonCSV(PermissionRequiredMixin, FilterView):
         return response
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         data = [
@@ -430,7 +424,6 @@ class MembershipclassList(PermissionRequiredMixin, ListView):
     permission_required = "sdc_people.view_membershipclass"
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         context_data["membershipclass_labels"] = {
@@ -448,7 +441,6 @@ class MembershipclassCreate(PermissionRequiredMixin, CreateView):
     template_name = "sdc_people/membershipclass_create.html"
 
     def get_success_url(self):
-
         if "popup" in self.request.get_full_path():
             return reverse(
                 "touglates:popup_closer",
@@ -521,7 +513,6 @@ class PersonnoteList(PermissionRequiredMixin, ListView):
     permission_required = "sdc_people.view_personnote"
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         context_data["personnote_labels"] = {
@@ -539,7 +530,6 @@ class PersonnoteCreate(PermissionRequiredMixin, CreateView):
     template_name = "sdc_people/personnote_create.html"
 
     def get_success_url(self):
-
         if "popup" in self.request.get_full_path():
             return reverse(
                 "touglates:popup_closer",
@@ -852,13 +842,11 @@ class MeetingDetail(PermissionRequiredMixin, DetailView):
 
 
 class MeetingList(PermissionRequiredMixin, FilterView):
-
     permission_required = "sdc_people.view_meeting"
     filterset_class = MeetingFilter
     filterstore_urlname = "sdc_people:meeting-filterstore"
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
@@ -950,12 +938,10 @@ class SubcommitteeDetail(PermissionRequiredMixin, DetailView):
 
 
 class SubcommitteeList(PermissionRequiredMixin, ListView):
-
     permission_required = "sdc_people.view_subcommittee"
-    model=Subcommittee
+    model = Subcommittee
 
     def get_context_data(self, *args, **kwargs):
-
         context_data = super().get_context_data(*args, **kwargs)
 
         context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
@@ -969,6 +955,7 @@ class SubcommitteeList(PermissionRequiredMixin, ListView):
 
         context_data["count"] = self.object_list.count()
         return context_data
+
 
 class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_subcommitteetype"
@@ -1022,3 +1009,150 @@ class SubpositionDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_subposition"
     model = Subposition
     template_name = "sdc_people/district_detail.html"
+
+
+class DueCreate(PermissionRequiredMixin, CreateView):
+    permission_required = "sdc_people.add_due"
+    model = Due
+    form_class = DueForm
+    template_name = "sdc_people/due_create.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        formsetclasses = {
+            "duestats": DueDuestatFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                context_data[formsetkey] = formsetclass(instance=self.object)
+
+        return context_data
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            "duestats": DueDuestatFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model": "Due",
+                },
+            )
+        return reverse_lazy("sdc_people:due-detail", kwargs={"pk": self.object.pk})
+
+
+class DueUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.add_due"
+    model = Due
+    form_class = DueForm
+    template_name = "sdc_people/due_update.html"
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["people_available"] = Person.objects.exclude(
+            duestat__due=self.object.id
+        )
+        context_data["membership_classes"] = Membershipclass.objects.all()
+
+        formsetclasses = {
+            "duestats": DueDuestatFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                context_data[formsetkey] = formsetclass(instance=self.object)
+
+        membershipclass_select = '<select id="sel_memtype">'
+        for membershipclass in Membershipclass.objects.all():
+            membershipclass_select = membershipclass_select + '<option value="' + membershipclass.name + '">' + membershipclass.name + '</option>'
+        membershipclass_select = membershipclass_select + '</select>'
+        context_data['membershipclass_select'] = membershipclass_select
+
+        return context_data
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            "duestats": DueDuestatFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model": "Due",
+                },
+            )
+        return reverse_lazy("sdc_people:due-detail", kwargs={"pk": self.object.pk})
+
+
+class DueDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_due"
+    model = Due
+    template_name = "sdc_people/due_detail.html"

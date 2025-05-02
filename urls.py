@@ -1,10 +1,7 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.http import HttpResponse
-from django.views.generic import TemplateView
-from django.views.generic.base import RedirectView
 from django.urls import path, reverse_lazy
-from . import filterset, views
+from django.views.generic.base import RedirectView
+
+from . import views
 
 app_name = "sdc_people"
 
@@ -225,7 +222,6 @@ urlpatterns = [
         views.SubcommitteeCreate.as_view(),
         name="subcommittee-create",
     ),
-
     path(
         "committee/update/<int:pk>/",
         views.SubcommitteeUpdate.as_view(),
@@ -295,5 +291,16 @@ urlpatterns = [
         "meetingtype/detail/<int:pk>/",
         views.MeetingtypeDetail.as_view(),
         name="meetingtype-detail",
+    ),
+    path("due/create/", views.DueCreate.as_view(), name="due-create"),
+    path(
+        "due/update/<int:pk>/",
+        views.DueUpdate.as_view(),
+        name="due-update",
+    ),
+    path(
+        "due/detail/<int:pk>/",
+        views.DueDetail.as_view(),
+        name="due-detail",
     ),
 ]

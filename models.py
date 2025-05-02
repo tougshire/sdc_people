@@ -1,7 +1,8 @@
 from datetime import date
-from django.utils import timezone
+
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 ORDINAL_FIRST = 1
 ORDINAL_MEDIUM = 5
@@ -498,9 +499,7 @@ class Person(models.Model):
         help_text="The effective date of the most recent dues (often the date of the caucus or meeting in which the person was admitted)",
     )
     demog_is_veteran = models.BooleanField(
-        "veteran",
-        default=False,
-        help_text="Is this person a military veteran"
+        "veteran", default=False, help_text="Is this person a military veteran"
     )
 
     def __str__(self):
@@ -510,7 +509,6 @@ class Person(models.Model):
         meetings = Meeting.objects.all()
         if hasattr(settings, "SDC_PEOPLE"):
             if "meetingtypes_for_attendance" in settings.SDC_PEOPLE:
-
                 meetings = meetings.filter(
                     meetingtype__name__in=settings.SDC_PEOPLE[
                         "meetingtypes_for_attendance"
@@ -527,7 +525,6 @@ class Person(models.Model):
     def get_memberships(self):
         submemberships = []
         for submembership in self.submembership_set.all():
-
             submemberships.append(submembership.subposition.__str__())
 
         return submemberships
@@ -538,7 +535,11 @@ class Person(models.Model):
     class Meta:
         verbose_name = "Person"
         verbose_name_plural = "People"
-        ordering = ("name_last", "name_friendly", "membershipclass", )
+        ordering = (
+            "name_last",
+            "name_friendly",
+            "membershipclass",
+        )
 
 
 class Personnotetype(models.Model):
@@ -669,6 +670,35 @@ class Submembership(models.Model):
     class Meta:
         verbose_name = "Subcommittee Membership"
         ordering = ("subposition", "person")
+
+
+class Due(models.Model):
+    due_date = models.DateField(
+        "due date", null=True, blank=True, help_text="The date this payment is/was due"
+    )
+
+
+class Duestat(models.Model):
+    due = models.ForeignKey(
+        Due, on_delete=models.CASCADE, help_text="The due which applies to this person"
+    )
+    person = models.ForeignKey(
+        Person,
+        on_delete=models.CASCADE,
+        help_text="The person to whom this dues action applies",
+    )
+    effective_date = models.DateField(
+        "effective date",
+        null=True,
+        blank=True,
+        help_text="The effective date of the payment or waiver (the date the action counts as - which may be different from the actual date of transaction)",
+    )
+    status = models.IntegerField(
+        "status",
+        default=0,
+        choices=[(0, "Incomplete"), (1, "Complete")],
+        help_text="The status of this status assignment",
+    )
 
 
 class Attendance(models.Model):
