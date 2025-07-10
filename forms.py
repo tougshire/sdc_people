@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.forms import ModelForm, SelectDateWidget, inlineformset_factory
 from django.urls import reverse_lazy
+
 from touglates.widgets import TouglatesRelatedSelect
 
 from .models import (
@@ -371,8 +372,9 @@ class CSVOptionForm(forms.Form):
         help_text="Download the result as a CSV file",
     )
 
-
-DueDuestatFormset = inlineformset_factory(Due, Duestat, form=DuestatForm, extra=1)
+DueDuestatFormset = inlineformset_factory (
+    Due, Duestat, form=DuestatForm, extra=1
+)
 
 MeetingAttendanceFormset = inlineformset_factory(
     Meeting, Attendance, form=AttendanceForm, extra=50

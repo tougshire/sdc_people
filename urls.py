@@ -303,4 +303,5 @@ urlpatterns = [
         views.DueDetail.as_view(),
         name="due-detail",
     ),
+
 ]

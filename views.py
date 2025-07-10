@@ -11,12 +11,12 @@ from django.views.generic.edit import (
     UpdateView,
 )
 from django.views.generic.list import ListView
+
 from django_filters_stoex.forms import (
     FilterstoreRetrieveForm,
     FilterstoreSaveForm,
 )
 from django_filters_stoex.views import FilterView
-
 from sdc_people.filterset import MeetingFilter, PersonFilter
 
 from .forms import (
@@ -1156,3 +1156,4 @@ class DueDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_due"
     model = Due
     template_name = "sdc_people/due_detail.html"
+

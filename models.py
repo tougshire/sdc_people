@@ -1,4 +1,5 @@
 from datetime import date
+import uuid
 
 from django.conf import settings
 from django.db import models
@@ -718,3 +719,5 @@ class Attendance(models.Model):
 
     class Meta:
         ordering = ("person__name_last", "meeting")
+
+
