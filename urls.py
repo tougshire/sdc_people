@@ -273,6 +273,11 @@ urlpatterns = [
         name="meeting-detail",
     ),
     path(
+        "meeting/delete/<int:pk>/",
+        views.MeetingDelete.as_view(),
+        name="meeting-delete",
+    ),
+    path(
         "meeting/list/",
         views.MeetingList.as_view(),
         name="meeting-list",

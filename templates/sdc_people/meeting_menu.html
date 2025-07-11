@@ -52,6 +52,19 @@
       {% endif %}
     {% endif %}
 
+    {% if perms.delete_meeting %}
+      {% if 'meeting-delete' == request.resolver_match.url_name %}
+        <div class="menu-meeting menu-here">
+            <a href="{% url 'sdc_people:meeting-delete' object.pk %}">Delete</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-meeting">
+          <a href="{% url 'sdc_people:meeting-delete' object.pk %}">Delete</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
 
   </div>
 

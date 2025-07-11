@@ -1,0 +1,22 @@
+{% extends './_base.html' %}
+
+{% block content %}
+  {% include './meeting_menu.html' %}
+  <h2>Delete {{ object }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirm Delete</button>
+  </form>
+  <div class="detail">
+    {% include 'touglates/detail_field.html' with label=meeting_labels.meetingtype field=object.meetingtype %}
+    {% include 'touglates/detail_field.html' with label=meeting_labels.when_held field=object.when_held %}
+    {% include 'touglates/detail_field.html' with label=meeting_labels.had_quorum field=object.had_quorum %}
+    <h3>Attendees</h3>
+    {% for attendance in meeting.attendance_set.all %}
+          {% include 'touglates/detail_fields.html' with label="Attendee" field_1=attendance.meeting field_2="quorum:"|add:attendance.meeting.membershipclass.get_is_quorum_member_yesno %}
+    {% endfor %}
+  </div>
+
+  {% include './meeting_menu.html' %}
+
+{% endblock %}
