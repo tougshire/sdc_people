@@ -14,7 +14,7 @@ from .models import (
 from django.db import models
 from django import forms
 from django_filters_stoex.filters import ChainableOrderingFilter, CrossFieldSearchFilter
-from touglates.widgets import DropdownSelectMultiple
+from touglates.widgets import ClearableTextInput, DropdownSelectMultiple
 
 
 class PersonFilter(django_filters.FilterSet):
@@ -27,6 +27,7 @@ class PersonFilter(django_filters.FilterSet):
         field_name="name_last,name_first,name_middles,name_friendly",
         lookup_expr="icontains",
         help_text="Any part of the person's name",
+        widget=ClearableTextInput()
     )
 
     subcommittee__in = django_filters.ModelMultipleChoiceFilter(

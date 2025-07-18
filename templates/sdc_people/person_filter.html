@@ -4,30 +4,45 @@
 {% include './person_menu.html' %}
 
 <div id = "div_search_form">
-  <table>
-    <form id="frm_filter" method="POST">
-      {% csrf_token %}
+  <form id="frm_filter" method="POST">
+    {% csrf_token %}
+    <table>
       {{ filter.form.as_table }}
       {{ csv_form.as_table }}
       {{ filterstore_save.as_table }}
       <tr>
         <td>Search </td>
         <td>
-          <button type="submit" >Search</button>
+          <button type="submit" tabindex="0" >Search</button>
         </td>
       </tr>
-    </form>
-    <form method="POST" action="{% url 'sdc_people:person-list' %}">
-      {% csrf_token %}
+    </table>
+  </form>
+  <form method="POST" action="{% url 'sdc_people:person-list' %}">
+    {% csrf_token %}
+    <table>
       {{ filterstore_retrieve.as_table }}
       <tr>
         <td>Retrieve Saved Filter </td>
         <td>
-          <button type="submit" >Retrieve</button>
+          <button type="submit" id="btn_retrieve">Retrieve</button>
+          <script>
+            function toggleRetrieve() {
+              var button = document.getElementById("btn_retrieve")
+              var select = document.getElementById("{{ filterstore_retrieve.from_store.id_for_label }}")
+              button.disabled = !(select.value > "")
+              button.style.display = button.disabled ? "none" : ""
+              console.log("tp257h823", button.enabled)
+            }
+            document.getElementById("{{ filterstore_retrieve.from_store.id_for_label }}").addEventListener("change", function() {
+              toggleRetrieve()
+            })
+            toggleRetrieve()
+          </script>
         </td>
       </tr>
-    </form>
-  </table>
+    </table>
+  </form>
 </div>
 <div>
   <a id="a_showhideSearchForm" href="#"></a>
