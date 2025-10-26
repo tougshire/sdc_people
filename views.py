@@ -27,8 +27,6 @@ from sdc_people.forms import (
     DistrictPrecinctForm,
     DistrictStatehouseForm,
     DistrictStatesenateForm,
-    DueDuestatFormset,
-    DueForm,
     MeetingAttendanceFormset,
     MeetingForm,
     MeetingtypeForm,
@@ -51,7 +49,6 @@ from sdc_people.models import (
     DistrictPrecinct,
     DistrictStatehouse,
     DistrictStatesenate,
-    Due,
     Meeting,
     Meetingtype,
     Membershipclass,
@@ -64,10 +61,12 @@ from sdc_people.models import (
 
 logger = logging.getLogger(__name__)
 
+
 def popup_email_list(request):
     template = loader.get_template("sdc_people/person_email_js_popup.html")
 
     return HttpResponse(template.render({}, request))
+
 
 class PersonCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_Person"
@@ -142,6 +141,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
                 },
             )
         return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
+
 
 class PersonUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = "sdc_people.change_Person"
@@ -292,6 +292,7 @@ class PersonList(PermissionRequiredMixin, FilterView):
 
         return context_data
 
+
 class PersonCSV(PermissionRequiredMixin, FilterView):
     permission_required = "sdc_people.view_person"
     filterset_class = PersonFilter
@@ -329,7 +330,6 @@ class PersonCSV(PermissionRequiredMixin, FilterView):
                 "Middle Name(s)",
                 "Friendly Name",
                 "Membership Date",
-                "Dues Effective Date",
                 "Application Date",
             ]
         ]
@@ -353,13 +353,14 @@ class PersonCSV(PermissionRequiredMixin, FilterView):
                     person.name_middles,
                     person.name_friendly,
                     person.membership_date,
-                    person.dues_effective_date,
+                    person.dues_next,
                     person.application_date,
                     person.demog_is_veteran,
                 ]
             )
         context_data["data"] = data
         return context_data
+
 
 class MembershipclassCreate(PermissionRequiredMixin, CreateView):
     permission_required = "sdc_people.add_Membershipclass"
@@ -381,6 +382,7 @@ class MembershipclassCreate(PermissionRequiredMixin, CreateView):
             "sdc_people:membershipclass-detail", kwargs={"pk": self.object.pk}
         )
 
+
 class MembershipclassUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = "sdc_people.change_Membershipclass"
     model = Membershipclass
@@ -400,6 +402,7 @@ class MembershipclassUpdate(PermissionRequiredMixin, UpdateView):
         return reverse_lazy(
             "sdc_people:membershipclass-detail", kwargs={"pk": self.object.pk}
         )
+
 
 class MembershipclassDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_membershipclass"
@@ -833,6 +836,7 @@ class MeetingDetail(PermissionRequiredMixin, DetailView):
     model = Meeting
     template_name = "sdc_people/meeting_detail.html"
 
+
 class MeetingDelete(PermissionRequiredMixin, DeleteView):
     permission_required = "sdc_people.delete_meeting"
     model = Meeting
@@ -849,7 +853,6 @@ class MeetingDelete(PermissionRequiredMixin, DeleteView):
         return context_data
 
     def get_success_url(self):
-
         return reverse_lazy("sdc_people:meeting-list")
 
 
@@ -1021,151 +1024,3 @@ class SubpositionDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_subposition"
     model = Subposition
     template_name = "sdc_people/district_detail.html"
-
-
-class DueCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "sdc_people.add_due"
-    model = Due
-    form_class = DueForm
-    template_name = "sdc_people/due_create.html"
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-
-        formsetclasses = {
-            "duestats": DueDuestatFormset,
-        }
-
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                context_data[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                context_data[formsetkey] = formsetclass(instance=self.object)
-
-        return context_data
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-
-        self.object = form.save(commit=False)
-
-        formsetclasses = {
-            "duestats": DueDuestatFormset,
-        }
-        formsetdata = {}
-        formsets_valid = True
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                formsetdata[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                formsetdata[formsetkey] = formsetclass(instance=self.object)
-
-            if (formsetdata[formsetkey]).is_valid():
-                formsetdata[formsetkey].save()
-            else:
-                logger.critical(formsetdata[formsetkey].errors)
-                formsets_valid = False
-
-        if not formsets_valid:
-            return self.form_invalid(form)
-
-        return response
-
-    def get_success_url(self):
-        if "popup" in self.request.get_full_path():
-            return reverse(
-                "touglates:popup_closer",
-                kwargs={
-                    "pk": self.object.pk,
-                    "app_name": "sdc_people",
-                    "model": "Due",
-                },
-            )
-        return reverse_lazy("sdc_people:due-detail", kwargs={"pk": self.object.pk})
-
-
-class DueUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = "sdc_people.add_due"
-    model = Due
-    form_class = DueForm
-    template_name = "sdc_people/due_update.html"
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-
-        context_data["people_available"] = Person.objects.exclude(
-            duestat__due=self.object.id
-        )
-        context_data["membership_classes"] = Membershipclass.objects.all()
-
-        formsetclasses = {
-            "duestats": DueDuestatFormset,
-        }
-
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                context_data[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                context_data[formsetkey] = formsetclass(instance=self.object)
-
-        membershipclass_select = '<select id="sel_memtype">'
-        for membershipclass in Membershipclass.objects.all():
-            membershipclass_select = membershipclass_select + '<option value="' + membershipclass.name + '">' + membershipclass.name + '</option>'
-        membershipclass_select = membershipclass_select + '</select>'
-        context_data['membershipclass_select'] = membershipclass_select
-
-        return context_data
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-
-        self.object = form.save(commit=False)
-
-        formsetclasses = {
-            "duestats": DueDuestatFormset,
-        }
-        formsetdata = {}
-        formsets_valid = True
-        for formsetkey, formsetclass in formsetclasses.items():
-            if self.request.POST:
-                formsetdata[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
-                )
-            else:
-                formsetdata[formsetkey] = formsetclass(instance=self.object)
-
-            if (formsetdata[formsetkey]).is_valid():
-                formsetdata[formsetkey].save()
-            else:
-                logger.critical(formsetdata[formsetkey].errors)
-                formsets_valid = False
-
-        if not formsets_valid:
-            return self.form_invalid(form)
-
-        return response
-
-    def get_success_url(self):
-        if "popup" in self.request.get_full_path():
-            return reverse(
-                "touglates:popup_closer",
-                kwargs={
-                    "pk": self.object.pk,
-                    "app_name": "sdc_people",
-                    "model": "Due",
-                },
-            )
-        return reverse_lazy("sdc_people:due-detail", kwargs={"pk": self.object.pk})
-
-
-class DueDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "sdc_people.view_due"
-    model = Due
-    template_name = "sdc_people/due_detail.html"
-

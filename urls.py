@@ -297,16 +297,4 @@ urlpatterns = [
         views.MeetingtypeDetail.as_view(),
         name="meetingtype-detail",
     ),
-    path("due/create/", views.DueCreate.as_view(), name="due-create"),
-    path(
-        "due/update/<int:pk>/",
-        views.DueUpdate.as_view(),
-        name="due-update",
-    ),
-    path(
-        "due/detail/<int:pk>/",
-        views.DueDetail.as_view(),
-        name="due-detail",
-    ),
-
 ]

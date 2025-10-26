@@ -32,7 +32,6 @@ PRIORITY_CHOICES = [
     (9, "Lowest"),
 ]
 
-
 class Subcommitteetype(models.Model):
     name = models.CharField("name", max_length=50, help_text="The name of the type,")
     ordinal = models.IntegerField(
@@ -493,12 +492,13 @@ class Person(models.Model):
         blank=True,
         help_text="The date of this person's most recent membership application",
     )
-    dues_effective_date = models.DateField(
-        "Dues Effective Date",
+    dues_next = models.DateField(
+        "Next Dues Date",
         null=True,
         blank=True,
-        help_text="The effective date of the most recent dues (often the date of the caucus or meeting in which the person was admitted)",
+        help_text="The next dues payment date for this individual",
     )
+
     demog_is_veteran = models.BooleanField(
         "veteran", default=False, help_text="Is this person a military veteran"
     )
@@ -673,35 +673,6 @@ class Submembership(models.Model):
         ordering = ("subposition", "person")
 
 
-class Due(models.Model):
-    due_date = models.DateField(
-        "due date", null=True, blank=True, help_text="The date this payment is/was due"
-    )
-
-
-class Duestat(models.Model):
-    due = models.ForeignKey(
-        Due, on_delete=models.CASCADE, help_text="The due which applies to this person"
-    )
-    person = models.ForeignKey(
-        Person,
-        on_delete=models.CASCADE,
-        help_text="The person to whom this dues action applies",
-    )
-    effective_date = models.DateField(
-        "effective date",
-        null=True,
-        blank=True,
-        help_text="The effective date of the payment or waiver (the date the action counts as - which may be different from the actual date of transaction)",
-    )
-    status = models.IntegerField(
-        "status",
-        default=0,
-        choices=[(0, "Incomplete"), (1, "Complete")],
-        help_text="The status of this status assignment",
-    )
-
-
 class Attendance(models.Model):
     person = models.ForeignKey(
         Person,
@@ -719,5 +690,3 @@ class Attendance(models.Model):
 
     class Meta:
         ordering = ("person__name_last", "meeting")
-
-

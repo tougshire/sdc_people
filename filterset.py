@@ -78,6 +78,9 @@ class PersonFilter(django_filters.FilterSet):
         queryset=DistrictCongress.objects.all(),
         widget=DropdownSelectMultiple(),
     )
+    dues_next = django_filters.DateFromToRangeFilter(
+        field_name="dues_next"
+    )
     demog_is_veteran = django_filters.MultipleChoiceFilter(
         field_name="demog_is_veteran",
         label="Is Veteran",

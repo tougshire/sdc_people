@@ -62,7 +62,6 @@ class PersonnoteInlineForm(forms.ModelForm):
 
 
 class PersonModelForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in [
@@ -101,19 +100,17 @@ class PersonModelForm(forms.ModelForm):
             "voting_address",
             "mailing_address",
             "application_date",
-            "dues_effective_date",
+            "dues_next",
             "demog_is_veteran",
         ]
 
 
 class AttendanceInline(admin.TabularInline):
-
     model = Attendance
     extra = 0
 
 
 class ImageInline(admin.TabularInline):
-
     model = Image
     form = ImageInlineForm
 
@@ -121,7 +118,6 @@ class ImageInline(admin.TabularInline):
 
 
 class LinkexternalInline(admin.TabularInline):
-
     model = Linkexternal
     form = LinkexternalInlineForm
     template = "sdc_people/admin/linkexternal_inline_form.html"
@@ -136,7 +132,6 @@ class MembershipclassInline(admin.TabularInline):
 
 
 class PersonnoteInline(admin.TabularInline):
-
     model = Personnote
     form = PersonnoteInlineForm
 
@@ -144,7 +139,6 @@ class PersonnoteInline(admin.TabularInline):
 
 
 class SubmembershipInline(admin.TabularInline):
-
     model = Submembership
     extra = 0
 
@@ -202,7 +196,6 @@ class MeetingtypeAdmin(admin.ModelAdmin):
 
 
 class MembershipclassAdmin(admin.ModelAdmin):
-
     list_display = ["name", "is_member", "is_quorum_member", "is_participant"]
 
 
