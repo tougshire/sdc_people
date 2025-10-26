@@ -115,6 +115,7 @@ class PersonFilter(django_filters.FilterSet):
         ("districtstatehouse", "State House"),
         ("districtstatesenate", "State Senate"),
         ("districtcongress", "Congress"),
+        ("dues_next", "Next Dues"),
     ]
     orderbyfields = ChainableOrderingFilter(fields=orderbyfields_available)
     orderbyfields1 = ChainableOrderingFilter(fields=orderbyfields_available)
