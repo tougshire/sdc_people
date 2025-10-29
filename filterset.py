@@ -78,8 +78,20 @@ class PersonFilter(django_filters.FilterSet):
         queryset=DistrictCongress.objects.all(),
         widget=DropdownSelectMultiple(),
     )
-    dues_next = django_filters.DateFromToRangeFilter(
-        field_name="dues_next"
+    dues_next = django_filters.DateRangeFilter(
+
+        choices = [
+            ("aftertoday", "After Today"),
+            ("beforetoday", "Before Today"),
+            ("todayorafter", "Today or After"),
+            ("todayorbefore", "Today or Before"),
+            ("today", "Today"),
+            ("yesterday", "Yesterday"),
+            ("week", "Week"),
+            ("month", "Month"),
+            ("year", "Year")
+        ],
+        field_name="dues_next",
     )
     demog_is_veteran = django_filters.MultipleChoiceFilter(
         field_name="demog_is_veteran",
