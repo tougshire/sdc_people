@@ -24,7 +24,7 @@ class PersonFilter(django_filters.FilterSet):
     filterset_name = forms.CharField()
     combined_text_search = CrossFieldSearchFilter(
         label="Name",
-        field_name="name_last,name_first,name_middles,name_friendly",
+        field_name="name_last,name_first,name_middles,name_friendly,primary_email",
         lookup_expr="icontains",
         help_text="Any part of the person's name",
         widget=ClearableTextInput()
