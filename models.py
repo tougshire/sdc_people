@@ -507,7 +507,7 @@ class Person(models.Model):
         return "{} ({})".format(self.name_formal, self.name_friendly)
 
     def get_attendance(self):
-        meetings = Meeting.objects.all()
+        meetings = Meeting.objects.all().order_by('when_held')
         if hasattr(settings, "SDC_PEOPLE"):
             if "meetingtypes_for_attendance" in settings.SDC_PEOPLE:
                 meetings = meetings.filter(
@@ -518,10 +518,10 @@ class Person(models.Model):
         attendance_binary = ""
         if hasattr(settings, "SDC_PEOPLE"):
             if 'attendance_list_length' in settings.SDC_PEOPLE:
-                meetings = meetings[:settings.SDC_PEOPLE['attendance_list_length']]
+                meetings = meetings[settings.SDC_PEOPLE['attendance_list_length']:]
         for meeting in meetings:
             if meeting.attendance_set.filter(person=self).exists():
-                attendance_binary = attendance_binary + "Y,"
+                attendance_binary = attendance_binary + 'Y,' 
             else:
                 attendance_binary = attendance_binary + "-,"
         return attendance_binary[:-1]
