@@ -64,12 +64,6 @@ class Subcommittee(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        saved = super().save(*args, **kwargs)
-        memberposition, created = Subposition.objects.get_or_create(
-            subcommittee=self, name="Member"
-        )
-
     class Meta:
         verbose_name = "subcommittee"
         ordering = ("subcommitteetype", "name")
