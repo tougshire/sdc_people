@@ -1,0 +1,72 @@
+<div class="menu app-menu">
+
+  <div class="menu object-menu">
+
+    {% if perms.view_subposition %}
+      {% if 'subposition-list' == request.resolver_match.url_name %}
+        <div class="menu-subposition menu-here">
+            <a href="{% url 'sdc_people:subposition-list' %}">List</a>
+        </div>
+      {% else %}
+        <div class="menu-subposition">
+          <a href="{% url 'sdc_people:subposition-list' %}">List</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.view_subposition %}
+      {% if 'subposition-detail' == request.resolver_match.url_name %}
+        <div class="menu-subposition menu-here">
+            <a href="{% url 'sdc_people:subposition-detail' object.pk %}">View</a>
+        </div>
+      {% elif object.pk %}
+        <div class="menu-subposition">
+          <a href="{% url 'sdc_people:subposition-detail' object.pk %}">View</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.add_subposition %}
+      {% if 'subposition-create' == request.resolver_match.url_name %}
+        <div class="menu-subposition menu-here">
+            <a href="{% url 'sdc_people:subposition-create' %}">Add</a>
+        </div>
+
+      {% else %}
+        <div class="menu-subposition">
+          <a href="{% url 'sdc_people:subposition-create' %}">Add</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.change_subposition %}
+      {% if 'subposition-update' == request.resolver_match.url_name %}
+        <div class="menu-subposition menu-here">
+            <a href="{% url 'sdc_people:subposition-update' object.pk %}">Edit</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-subposition">
+          <a href="{% url 'sdc_people:subposition-update' object.pk %}">Edit</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if perms.delete_subposition %}
+      {% if 'subposition-delete' == request.resolver_match.url_name %}
+        <div class="menu-subposition menu-here">
+            <a href="{% url 'sdc_people:subposition-delete' object.pk %}">Delete</a>
+        </div>
+
+      {% elif object.pk %}
+        <div class="menu-subposition">
+          <a href="{% url 'sdc_people:subposition-delete' object.pk %}">Delete</a>
+        </div>
+      {% endif %}
+    {% endif %}
+
+
+  </div>
+
+
+</div>
