@@ -1,3 +1,4 @@
+{% load touglates_tags %}
   <div class="form">
     {{ form.errors }}
     <form id="form_meeting" method="POST">
@@ -8,6 +9,42 @@
 
     <h3>Attendees</h3>
 
+    {{ attendees.management_form }}
+    {% if attendees.errors %}{{ attendees.errors }}{% endif %}
+    {% for attendeeform in attendees.forms %}
+      {% if attendeesform.errors %}{{ attendeeform.errors }}{% endif %}
+        {% if attendeeform.id.value  %}
+          <div id="div_attendee_value_{{ forloop.counter }}" class="attendee_value formset_value"  >
+            {% comment %}{% with button_html='<button id="button_showform_attendee_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_attendeeform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_attendee_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_attendeeform_'|concate:forloop.counter|concate:'">'|concate:attendeeform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="Attendee: " field_1=attendeeform.instance.person after_fields=delete_html %}
+            {% endwith %}
+          </div>
+          <div id="div_attendeeform_{{ forloop.counter }}" class="attendee_formsetform formsetform"  >
+            {% for hiddenfield in attendeeform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=attendeeform.person %}
+            {% include 'touglates/form_field.html' with field=attendeeform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_attendeeform_{{ forloop.counter }}" class="attendee_formsetform attendee_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in attendeeform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=attendeeform.person %}
+            {% include 'touglates/form_field.html' with field=attendeeform.DELETE %}
+          </div>
+        {% endif %}
+        
+    {% endfor %}
+
+        {% with button_html='<button id="button_showform_attendee_new" class="show_newformsetform" data-formsetform="attendee_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New attendee: " field_1=button_html %}
+        {% endwith %}
+
+
+    {% comment %}
     {{ attendees.management_form }}
     {% if attendees.errors %}{{ attendees.errors }}{% endif %}
     {% for attendanceform in attendees.forms %}
@@ -40,12 +77,12 @@
         </tr>
       {% endfor %}
     </table>
-
+    {% endcomment %}
 
     <button type="Submit">Submit</button>
     </form>
     <script>
-      activateFormsetButtons(["attendance"])
+      activateFormsetControls()
     </script>
 
   </div>

@@ -1,6 +1,7 @@
+{% load touglates_tags %}
   <div class="form">
     {{ form.errors }}
-    <form id="form_person" method="POST">
+    <form id="form_person" method="POST" ENCTYPE="multipart/form-data">
     {% csrf_token %}
     {% include 'touglates/form_field.html' with field=form.name_formal %}
     {% include 'touglates/form_field.html' with field=form.name_first %}
@@ -28,35 +29,35 @@
     {% if submemberships.errors %}{{ submemberships.errors }}{% endif %}
     {% for submembershipform in submemberships.forms %}
       {% if submembershipsform.errors %}{{ submembershipform.errors }}{% endif %}
-      {% if submembershipform.id.value  %}
-        <div id="div_submembershipform_{{ submembershipform.id.value }}" class="submembershipformsetform formsetform"  >
-          {% for hiddenfield in submembershipform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
-          {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
-        </div>
-      {% else %}
-        <div class="submembershipformsetform submembershipnewform formsetform formsetnewform" >
-          {% for hiddenfield in submembershipform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
-          {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
-        </div>
-      {% endif %}
+        {% if submembershipform.id.value  %}
+          <div id="div_submembership_value_{{ forloop.counter }}" class="submembership_value formset_value"  >
+            {% comment %}{% with button_html='<button id="button_showform_submembership_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_submembership_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">'|concate:submembershipform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Membership: </label>"|safe field_1=submembershipform.instance.subposition after_fields=delete_html %}
+            {% endwith %}
+          </div>
+          <div id="div_submembershipform_{{ forloop.counter }}" class="submembership_formsetform formsetform"  >
+            {% for hiddenfield in submembershipform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_submembershipform_{{ forloop.counter }}" class="submembership_formsetform submembership_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in submembershipform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+          </div>
+        {% endif %}
+        
     {% endfor %}
-    <table>
-      <tr>
-        <td><button type="button" id="button_addsubmembership" data-newform="submembershipnewform">Add</button></td><td span="*"></td>
-      </tr>
-      {% for submembership in object.submembership_set.all %}
-        <tr id="tr_submembership_{{ submembership.id }}">
-          <td><button type="button" id="button_editsubmembership_{{ submembership.id }}" data-formid="div_submembershipform_{{ submembership.id }}" data-displayid="tr_submembership_{{ submembership.id }}" class="submembership_edit_button">edit</button></td><td>{{ submembership.subposition }}</td>
-        </tr>
-      {% endfor %}
-    </table>
 
+        {% with button_html='<button id="button_showform_submembership_new" class="show_newformsetform" data-formsetform="submembership_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New Membership: " field_1=button_html %}
+        {% endwith %}
 
     <h3>Links</h3>
 
@@ -64,36 +65,40 @@
     {% if linkexternals.errors %}{{ linkexternals.errors }}{% endif %}
     {% for linkexternalform in linkexternals.forms %}
       {% if linkexternalsform.errors %}{{ linkexternalform.errors }}{% endif %}
-      {% if linkexternalform.id.value  %}
-        <div id="div_linkexternalform_{{ linkexternalform.id.value }}" class="linkexternalformsetform formsetform"  >
-          {% for hiddenfield in linkexternalform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.url %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
-        </div>
-      {% else %}
-        <div class="linkexternalformsetform linkexternalnewform formsetform formsetnewform" >
-          {% for hiddenfield in linkexternalform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.url %}
-          {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
-        </div>
-      {% endif %}
+        {% if linkexternalform.id.value  %}
+          <div id="div_linkexternal_value_{{ forloop.counter }}" class="linkexternal_value formset_value"  >
+            {% with url_tag='<a href="'|concate:linkexternalform.instance.url|concate:'">'|concate:linkexternalform.instance.url|concate:'</a>'|safe %}
+            {% comment %}{% with button_html='<button id="button_showform_linkexternal_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_linkexternalform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_linkexternal_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_linkexternalform_'|concate:forloop.counter|concate:'">'|concate:linkexternalform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Link: </label>"|safe field_1_label="type" field_1=linkexternalform.instance.linkexternaltype field_2=url_tag after_fields=delete_html %}
+            {% endwith %}
+            {% endwith %}
+          </div>
+          <div id="div_linkexternalform_{{ forloop.counter }}" class="linkexternal_formsetform formsetform"  >
+            {% for hiddenfield in linkexternalform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.url %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_linkexternalform_{{ forloop.counter }}" class="linkexternal_formsetform linkexternal_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in linkexternalform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.linkexternaltype %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.url %}
+            {% include 'touglates/form_field.html' with field=linkexternalform.DELETE %}
+          </div>
+        {% endif %}
+        
     {% endfor %}
-    <table>
-      <tr>
-        <td><button type="button" id="button_addlinkexternal" data-newform="linkexternalnewform">Add</button></td><td span="*"></td>
-      </tr>
-      {% for linkexternal in object.linkexternal_set.all %}
-        <tr id="tr_linkexternal_{{ linkexternal.id }}">
-          <td><button type="button" id="button_editlinkexternal_{{ linkexternal.id }}" data-formid="div_linkexternalform_{{ linkexternal.id }}" data-displayid="tr_linkexternal_{{ linkexternal.id }}" class="linkexternal_edit_button">edit</button></td><td>{{ linkexternal.name }}</td><td><a href="{{ linkexternal.url }}">{{ linkexternal.url }}</td>
-        </tr>
-      {% endfor %}
-    </table>
+
+        {% with button_html='<button id="button_showform_linkexternal_new" class="show_newformsetform" data-formsetform="linkexternal_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New Link: " field_1=button_html %}
+        {% endwith %}
+
 
     <h3>Images</h3>
 
@@ -101,37 +106,39 @@
     {% if images.errors %}{{ images.errors }}{% endif %}
     {% for imageform in images.forms %}
       {% if imagesform.errors %}{{ imageform.errors }}{% endif %}
-      {% if imageform.id.value  %}
-        <div id="div_imageform_{{ imageform.id.value }}" class="imageformsetform formsetform"  >
-          {% for hiddenfield in imageform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=imageform.imagetype %}
-          {% include 'touglates/form_field.html' with field=imageform.imagefile %}
-          {% include 'touglates/form_field.html' with field=imageform.DELETE %}
-        </div>
-      {% else %}
-        <div class="imageformsetform imagenewform formsetform formsetnewform" >
-          {% for hiddenfield in imageform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=imageform.imagetype %}
-          {% include 'touglates/form_field.html' with field=imageform.imagefile %}
-          {% include 'touglates/form_field.html' with field=imageform.DELETE %}
-        </div>
-      {% endif %}
+        {% if imageform.id.value  %}
+          <div id="div_image_value_{{ forloop.counter }}" class="image_value formset_value"  >
+            {% with image_tag='<a href="'|concate:imageform.instance.imagefile.url|concate:'">'|concate:imageform.instance.imagefile.url|concate:'</a>'|safe %}
+            {% comment %}{% with button_html='<button id="button_showform_image_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_imageform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_image_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_imageform_'|concate:forloop.counter|concate:'">'|concate:imageform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Link: </label>"|safe field_1=imageform.instance.imagetype field_2=image_tag after_fields=delete_html %}
+            {% endwith %}
+            {% endwith %}
+          </div>
+          <div id="div_imageform_{{ forloop.counter }}" class="image_formsetform formsetform"  >
+            {% for hiddenfield in imageform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=imageform.imagetype %}
+            {% include 'touglates/form_field.html' with field=imageform.imagefile %}
+            {% include 'touglates/form_field.html' with field=imageform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_imageform_{{ forloop.counter }}" class="image_formsetform image_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in imageform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=imageform.imagetype %}
+            {% include 'touglates/form_field.html' with field=imageform.imagefile %}
+            {% include 'touglates/form_field.html' with field=imageform.DELETE %}
+          </div>
+        {% endif %}
+        
     {% endfor %}
-    <table>
-      <tr>
-        <td><button type="button" id="button_addimage" data-newform="imagenewform">Add</button></td><td span="*"></td>
-      </tr>
-      {% for image in object.image_set.all %}
-        <tr id="tr_image_{{ image.id }}">
-          <td><button type="button" id="button_editimage_{{ image.id }}" data-formid="div_imageform_{{ image.id }}" data-displayid="tr_image_{{ image.id }}" class="image_edit_button">edit</button></td><td>{{ image.name }}</td><td><a href="{{ image.url }}">{{ image.url }}</td>
-        </tr>
-      {% endfor %}
-    </table>
 
+        {% with button_html='<button id="button_showform_image_new" class="show_newformsetform" data-formsetform="image_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New Image: " field_1=button_html %}
+        {% endwith %}
 
     <h3>Attendance</h3>
 
@@ -139,78 +146,80 @@
     {% if attendances.errors %}{{ attendances.errors }}{% endif %}
     {% for attendanceform in attendances.forms %}
       {% if attendancesform.errors %}{{ attendanceform.errors }}{% endif %}
-      {% if attendanceform.id.value  %}
-        <div id="div_attendanceform_{{ attendanceform.id.value }}" class="attendanceformsetform formsetform"  >
-          {% for hiddenfield in attendanceform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
-          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
-        </div>
-      {% else %}
-        <div class="attendanceformsetform attendancenewform formsetform formsetnewform" >
-          {% for hiddenfield in attendanceform.hidden_fields %}
-            {{ hiddenfield }}
-          {% endfor %}
-          {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
-          {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
-        </div>
-      {% endif %}
+        {% if attendanceform.id.value  %}
+          <div id="div_attendance_value_{{ forloop.counter }}" class="attendance_value formset_value"  >
+         {% comment %}{% with button_html='<button id="button_showform_attendance_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_attendanceform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+         {% with delete_html='<span class="formset_delete" id="ctl_delete_attendance_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_attendanceform_'|concate:forloop.counter|concate:'">'|concate:attendanceform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Attended: </label>"|safe field_1=attendanceform.instance.meeting after_fields=delete_html %}
+         {% endwith %}
+         {% comment %}{% endwith %}{% endcomment %}
+          </div>
+          <div id="div_attendanceform_{{ forloop.counter }}" class="attendance_formsetform formsetform"  >
+            {% for hiddenfield in attendanceform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
+{% comment %}            {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}{% endcomment %}
+          </div>
+        {% else %}
+          <div id="div_attendanceform_{{ forloop.counter }}" class="attendance_formsetform attendance_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in attendanceform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=attendanceform.meeting %}
+            {% include 'touglates/form_field.html' with field=attendanceform.DELETE %}
+          </div>
+        {% endif %}
+        
     {% endfor %}
-    <table>
-      <tr>
-        <td><button type="button" id="button_addattendance" data-newform="attendancenewform">Add</button></td><td span="*"></td>
-      </tr>
-      {% for attendance in object.attendance_set.all %}
-        <tr id="tr_attendance_{{ attendance.id }}">
-          <td><button type="button" id="button_editattendance_{{ attendance.id }}" data-formid="div_attendanceform_{{ attendance.id }}" data-displayid="tr_attendance_{{ attendance.id }}" class="attendance_edit_button">edit</button></td><td>{{ attendance.meeting }}</td>
-        </tr>
-      {% endfor %}
-    </table>
+
+        {% with button_html='<button id="button_showform_attendance_new" class="show_newformsetform" data-formsetform="attendance_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New attendance: " field_1=button_html %}
+        {% endwith %}
+
 
 <h3>Notes</h3>
 
-{{ personnotes.management_form }}
-{% if personnotes.errors %}{{ personnotes.errors }}{% endif %}
-{% for personnoteform in personnotes.forms %}
-  {% if personnotesform.errors %}{{ personnoteform.errors }}{% endif %}
-  {% if personnoteform.id.value  %}
-    <div id="div_personnoteform_{{ personnoteform.id.value }}" class="personnoteformsetform formsetform"  >
-      {% for hiddenfield in personnoteform.hidden_fields %}
-        {{ hiddenfield }}
-      {% endfor %}
-      {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
-      {% include 'touglates/form_field.html' with field=personnoteform.when %}
-      {% include 'touglates/form_field.html' with field=personnoteform.content %}
-      {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
-      {% include 'touglates/form_field.html' with field=personnoteform.expiration %}
-      {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
-    </div>
-  {% else %}
-    <div class="personnoteformsetform personnotenewform formsetform formsetnewform" >
-      {% for hiddenfield in personnoteform.hidden_fields %}
-        {{ hiddenfield }}
-      {% endfor %}
-      {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
-      {% include 'touglates/form_field.html' with field=personnoteform.when %}
-      {% include 'touglates/form_field.html' with field=personnoteform.content %}
-      {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
-      {% include 'touglates/form_field.html' with field=personnoteform.expiration %}
-      {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
-    </div>
-  {% endif %}
-{% endfor %}
-<table>
-  <tr>
-    <td><button type="button" id="button_addpersonnote" data-newform="personnotenewform">Add</button></td><td span="*"></td>
-  </tr>
-  {% for personnote in object.personnote_set.all %}
-    <tr id="tr_personnote_{{ personnote.id }}">
-      <td><button type="button" id="button_editpersonnote_{{ personnote.id }}" data-formid="div_personnoteform_{{ personnote.id }}" data-displayid="tr_personnote_{{ personnote.id }}" class="personnote_edit_button">edit</button></td><td>{{ personnote.when }}</td><td>{{ personnote.author }}</td><td>{{ personnote.is_flagged|yesno:"flagged," }}</td><td>{{ personnote.content }}</td>
-    </tr>
-  {% endfor %}
-</table>
+    {{ personnotes.management_form }}
+    {% if personnotes.errors %}{{ personnotes.errors }}{% endif %}
+    {% for personnoteform in personnotes.forms %}
+      {% if personnotesform.errors %}{{ personnoteform.errors }}{% endif %}
+        {% if personnoteform.id.value  %}
+          <div id="div_personnote_value_{{ forloop.counter }}" class="personnote_value formset_value"  >
+            {% comment %}{% with button_html='<button id="button_showform_personnote_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_personnoteform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_personnote_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_personnoteform_'|concate:forloop.counter|concate:'">'|concate:personnoteform.DELETE|concate:'</span>'|safe %}
+            {% include 'touglates/list_fields.html' with before_fields='<label>Note: </label>'|safe field_1_label="type of note" field_1=personnoteform.instance.personnotetype field_2=personnoteform.instance.when field_4=personnoteform.instance.content after_fields=delete_html %}
+            {% endwith %}
+          </div>
+          <div id="div_personnoteform_{{ forloop.counter }}" class="personnote_formsetform formsetform"  >
+            {% for hiddenfield in personnoteform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
+            {% include 'touglates/form_field.html' with field=personnoteform.when %}
+            {% include 'touglates/form_field.html' with field=personnoteform.content %}
+            {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
+            {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_personnoteform_{{ forloop.counter }}" class="personnote_formsetform personnote_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in personnoteform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=personnoteform.personnotetype %}
+            {% include 'touglates/form_field.html' with field=personnoteform.when %}
+            {% include 'touglates/form_field.html' with field=personnoteform.content %}
+            {% include 'touglates/form_field.html' with field=personnoteform.is_flagged %}
+            {% include 'touglates/form_field.html' with field=personnoteform.DELETE %}
+          </div>
+        {% endif %}
+        
+    {% endfor %}
 
+        {% with button_html='<button id="button_showform_personnote_new" class="show_newformsetform" data-formsetform="personnote_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New note: " field_1=button_html %}
+        {% endwith %}
+  
 
   {% include 'touglates/form_field.html' with label_tag="Submit Changes" field="<button type='submit'>Submit</button>" %}
 
@@ -325,5 +334,5 @@
       </script>
 
     <script>
-      activateFormsetButtons(["attendance", "image","linkexternal", "submembership","personnote"])
+      activateFormsetControls()
     </script>

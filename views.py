@@ -114,7 +114,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
         for formsetkey, formsetclass in formsetclasses.items():
             if self.request.POST:
                 formsetdata[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
+                    self.request.POST, self.request.FILES, instance=self.object
                 )
             else:
                 formsetdata[formsetkey] = formsetclass(instance=self.object)
@@ -137,7 +137,7 @@ class PersonCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Person",
+                    "model_name": "Person",
                 },
             )
         return reverse_lazy("sdc_people:person-detail", kwargs={"pk": self.object.pk})
@@ -187,7 +187,7 @@ class PersonUpdate(PermissionRequiredMixin, UpdateView):
         for formsetkey, formsetclass in formsetclasses.items():
             if self.request.POST:
                 formsetdata[formsetkey] = formsetclass(
-                    self.request.POST, instance=self.object
+                    self.request.POST, self.request.FILES, instance=self.object
                 )
 
             else:
@@ -375,7 +375,7 @@ class MembershipclassCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Membershipclass",
+                    "model_name": "Membershipclass",
                 },
             )
         return reverse_lazy(
@@ -396,7 +396,7 @@ class MembershipclassUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Membershipclass",
+                    "model_name": "Membershipclass",
                 },
             )
         return reverse_lazy(
@@ -496,7 +496,7 @@ class PersonnoteUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Personnote",
+                    "model_name": "Personnote",
                 },
             )
         return reverse_lazy(
@@ -532,7 +532,7 @@ class PersonnoteCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Personnote",
+                    "model_name": "Personnote",
                 },
             )
         return reverse_lazy(
@@ -553,7 +553,7 @@ class DistrictBoroughCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictBorough",
+                    "model_name": "DistrictBorough",
                 },
             )
 
@@ -581,7 +581,7 @@ class DistrictPrecinctCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictPrecinct",
+                    "model_name": "DistrictPrecinct",
                 },
             )
         return reverse_lazy(
@@ -608,7 +608,7 @@ class DistrictMagisterialCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictMagisterial",
+                    "model_name": "DistrictMagisterial",
                 },
             )
         return reverse_lazy(
@@ -635,7 +635,7 @@ class DistrictStatehouseCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictStatehouse",
+                    "model_name": "DistrictStatehouse",
                 },
             )
         return reverse_lazy(
@@ -662,7 +662,7 @@ class DistrictStatesenateCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictStatesenate",
+                    "model_name": "DistrictStatesenate",
                 },
             )
         return reverse_lazy(
@@ -689,7 +689,7 @@ class DistrictCongressCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "DistrictCongress",
+                    "model_name": "DistrictCongress",
                 },
             )
         return reverse_lazy(
@@ -700,7 +700,7 @@ class DistrictCongressCreate(PermissionRequiredMixin, CreateView):
 class DistrictCongressDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_districtcongress"
     model = DistrictCongress
-    template_name = "sdc_people/subposition_detail.html"
+    template_name = "sdc_people/districtcongress_detail.html"
 
 
 class MeetingCreate(PermissionRequiredMixin, CreateView):
@@ -760,7 +760,7 @@ class MeetingCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Meeting",
+                    "model_name": "Meeting",
                 },
             )
         return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
@@ -825,7 +825,7 @@ class MeetingUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Meeting",
+                    "model_name": "Meeting",
                 },
             )
         return reverse_lazy("sdc_people:meeting-detail", kwargs={"pk": self.object.pk})
@@ -890,7 +890,7 @@ class MeetingtypeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Meetingtype",
+                    "model_name": "Meetingtype",
                 },
             )
         return reverse_lazy(
@@ -917,7 +917,7 @@ class SubcommitteeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Subcommittee",
+                    "model_name": "Subcommittee",
                 },
             )
         return reverse_lazy(
@@ -938,7 +938,7 @@ class SubcommitteeUpdate(PermissionRequiredMixin, UpdateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Subcommittee",
+                    "model_name": "Subcommittee",
                 },
             )
         return reverse_lazy(
@@ -985,7 +985,7 @@ class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Subcommitteetype",
+                    "model_name": "Subcommitteetype",
                 },
             )
         return reverse_lazy(
@@ -996,6 +996,12 @@ class SubcommitteetypeCreate(PermissionRequiredMixin, CreateView):
 class SubcommitteetypeDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_subcommitteetype"
     model = Subcommitteetype
+    template_name = "sdc_people/district_detail.html"
+
+
+class SubpositionDetail(PermissionRequiredMixin, DetailView):
+    permission_required = "sdc_people.view_subposition"
+    model = Subposition
     template_name = "sdc_people/district_detail.html"
 
 
@@ -1012,7 +1018,7 @@ class SubpositionCreate(PermissionRequiredMixin, CreateView):
                 kwargs={
                     "pk": self.object.pk,
                     "app_name": "sdc_people",
-                    "model": "Subposition",
+                    "model_name": "Subposition",
                 },
             )
         return reverse_lazy(
@@ -1020,7 +1026,61 @@ class SubpositionCreate(PermissionRequiredMixin, CreateView):
         )
 
 
-class SubpositionDetail(PermissionRequiredMixin, DetailView):
+class SubpositionUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = "sdc_people.change_Subposition"
+    model = Subposition
+    form_class = SubpositionForm
+    template_name = "sdc_people/subposition_update.html"
+
+    def get_success_url(self):
+        if "popup" in self.request.get_full_path():
+            return reverse(
+                "touglates:popup_closer",
+                kwargs={
+                    "pk": self.object.pk,
+                    "app_name": "sdc_people",
+                    "model_name": "Subposition",
+                },
+            )
+        return reverse_lazy(
+            "sdc_people:subposition-detail", kwargs={"pk": self.object.pk}
+        )
+
+
+class SubpositionList(PermissionRequiredMixin, ListView):
     permission_required = "sdc_people.view_subposition"
     model = Subposition
-    template_name = "sdc_people/district_detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+
+        context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
+        context_data["filterstore_save"] = FilterstoreSaveForm()
+
+        context_data["subposition_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Subposition._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        context_data["count"] = self.object_list.count()
+        return context_data
+
+
+class SubpositionDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = "sdc_people.delete_subposition"
+    model = Subposition
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        context_data["subposition_labels"] = {
+            field.name: field.verbose_name.title()
+            for field in Meeting._meta.get_fields()
+            if type(field).__name__[-3:] != "Rel"
+        }
+
+        return context_data
+
+    def get_success_url(self):
+        return reverse_lazy("sdc_people:meeting-list")
