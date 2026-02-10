@@ -482,9 +482,9 @@ class Person(models.Model):
                 meetings = meetings[settings.SDC_PEOPLE['attendance_list_length']:]
         for meeting in meetings:
             if meeting.attendance_set.filter(person=self).exists():
-                attendance_binary = attendance_binary + 'Y,' 
+                attendance_binary = 'Y,' + attendance_binary 
             else:
-                attendance_binary = attendance_binary + "-,"
+                attendance_binary = '-,' + attendance_binary
         return attendance_binary[:-1]
 
     def get_memberships(self):
