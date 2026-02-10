@@ -26,7 +26,6 @@ from .models import (
     Subcommittee,
     Subcommitteetype,
     Submembership,
-    Subposition,
 )
 
 
@@ -204,7 +203,7 @@ class PersonAdmin(admin.ModelAdmin):
     def submembershiplist(self, obj):
         return ",".join(
             [
-                submembership.subposition.__str__()
+                " ".join(submembership.position, submembership.subcommittee)
                 for submembership in obj.submembership_set.all()
             ]
         )
@@ -229,10 +228,6 @@ class SubcommitteetypeAdmin(admin.ModelAdmin):
 
 
 class SubcommitteeAdmin(admin.ModelAdmin):
-    pass
-
-
-class SubpositionAdmin(admin.ModelAdmin):
     pass
 
 
@@ -277,7 +272,5 @@ admin.site.register(Personnotetype, PersonnotetypeAdmin)
 admin.site.register(Subcommitteetype, SubcommitteetypeAdmin)
 
 admin.site.register(Subcommittee, SubcommitteeAdmin)
-
-admin.site.register(Subposition, SubpositionAdmin)
 
 admin.site.register(Submembership, SubmembershipAdmin)

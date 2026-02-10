@@ -33,14 +33,16 @@
           <div id="div_submembership_value_{{ forloop.counter }}" class="submembership_value formset_value"  >
             {% comment %}{% with button_html='<button id="button_showform_submembership_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
             {% with delete_html='<span class="formset_delete" id="ctl_delete_submembership_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">'|concate:submembershipform.DELETE|concate:'</span>'|safe %}
-             {% include 'touglates/list_fields.html' with before_fields="<label>Membership: </label>"|safe field_1=submembershipform.instance.subposition after_fields=delete_html %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Membership: </label>"|safe field_1=submembershipform.instance.position|concate:" "|concate:submembershipform.subcommittee after_fields=delete_html %}
             {% endwith %}
           </div>
           <div id="div_submembershipform_{{ forloop.counter }}" class="submembership_formsetform formsetform"  >
             {% for hiddenfield in submembershipform.hidden_fields %}
               {{ hiddenfield }}
             {% endfor %}
-            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.committee %}
+            {% include 'touglates/form_field.html' with field=submembershipform.position %}
+            {% include 'touglates/form_field.html' with field=submembershipform.ordinal %}
             {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
           </div>
         {% else %}
@@ -48,7 +50,9 @@
             {% for hiddenfield in submembershipform.hidden_fields %}
               {{ hiddenfield }}
             {% endfor %}
-            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.committee %}
+            {% include 'touglates/form_field.html' with field=submembershipform.position %}
+            {% include 'touglates/form_field.html' with field=submembershipform.ordinal %}
             {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
           </div>
         {% endif %}

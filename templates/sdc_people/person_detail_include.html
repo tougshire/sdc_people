@@ -1,3 +1,4 @@
+{% load touglates_tags %}
   <h2>{{ object }}</h2>
 
   <div class="detail">
@@ -24,7 +25,7 @@
     {% endfor %}
     <h3>Membership</h3>
     {% for submembership in person.submembership_set.all %}
-      {% include 'touglates/detail_fields.html' with label="Position" field_1=submembership.subposition  %}
+      {% include 'touglates/detail_fields.html' with label="Position" field_1=submembership.position|concate:" "|concate:submembership  %}
     {% endfor %}
     <h3>Links</h3>
     {% for linkexternal in person.linkexternal_set.all %}

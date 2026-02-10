@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db import models
-from sdc_people.models import Person, Subcommittee, Subcommitteetype, Subposition
+from sdc_people.models import Person, Subcommittee, Subcommitteetype 
 from .setup_mixins import TestModelSetupMixin
 from django.test import Client
 

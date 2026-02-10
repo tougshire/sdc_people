@@ -4,7 +4,6 @@ from sdc_people.models import (
     Subcommittee,
     Subcommitteetype,
     Submembership,
-    Subposition,
 )
 
 
@@ -37,10 +36,6 @@ class TestModelSetupMixin:
             subcommitteetype=cls.text_objects["subcommitteetype_adhoc"],
         )
 
-        cls.text_objects["subposition_technology_chair"] = Subposition.objects.create(
-            name="Chair",
-            subcommittee=cls.text_objects["subcommittee_technology"],
-        )
 
         cls.text_objects["person_ben"] = Person.objects.create(
             name_formal="Mr. Benjamin Goldberg II",
@@ -57,6 +52,7 @@ class TestModelSetupMixin:
         cls.text_objects["submembership_ben_technology_chair"] = (
             Submembership.objects.create(
                 person=cls.text_objects["person_ben"],
-                subposition=cls.text_objects["subposition_technology_chair"],
+                position="Chair",
+                ordinal=0,
             )
         )

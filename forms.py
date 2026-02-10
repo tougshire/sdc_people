@@ -24,7 +24,6 @@ from .models import (
     Subcommittee,
     Subcommitteetype,
     Submembership,
-    Subposition,
 )
 
 
@@ -287,14 +286,16 @@ class SubmembershipForm(ModelForm):
         model = Submembership
         fields = [
             "person",
-            "subposition",
+            "subcommittee",
+            "position",
+            "ordinal"
         ]
         widgets = {
-            "subposition": TouglatesRelatedSelect(
+            "subcommittee": TouglatesRelatedSelect(
                 related_data={
-                    "model_name": "Subposition",
+                    "model_name": "Subcommittee",
                     "app_name": "sdc_people",
-                    "add_url": reverse_lazy("sdc_people:subposition-popup"),
+                    "add_url": reverse_lazy("sdc_people:subcommittee-popup"),
                 }
             )
         }
@@ -326,26 +327,6 @@ class SubcommitteetypeForm(ModelForm):
             "ordinal",
         ]
 
-
-class SubpositionForm(ModelForm):
-    class Meta:
-        model = Subposition
-        fields = [
-            "subcommittee",
-            "name",
-            "ordinal",
-        ]
-        widgets = {
-            "subcommittee": TouglatesRelatedSelect(
-                related_data={
-                    "model_name": "Subcommittee",
-                    "app_name": "sdc_people",
-                    "add_url": reverse_lazy("sdc_people:subcommittee-popup"),
-                }
-            )
-        }
-
-
 class CSVOptionForm(forms.Form):
     make_csv = forms.BooleanField(
         label="CSV",
@@ -354,6 +335,10 @@ class CSVOptionForm(forms.Form):
         help_text="Download the result as a CSV file",
     )
 
+
+SubcommitteesubmembershipFormset = inlineformset_factory(
+    Subcommittee, Submembership, form=SubmembershipForm, extra=10
+)
 
 MeetingAttendanceFormset = inlineformset_factory(
     Meeting, Attendance, form=AttendanceForm, extra=50

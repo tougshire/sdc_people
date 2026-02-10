@@ -17,6 +17,7 @@ from django_filters_stoex.forms import (
     FilterstoreSaveForm,
 )
 from django_filters_stoex.views import FilterView
+
 from sdc_people.filterset import MeetingFilter, PersonFilter
 
 from sdc_people.forms import (
@@ -40,7 +41,6 @@ from sdc_people.forms import (
     PersonsubmembershipFormset,
     SubcommitteeForm,
     SubcommitteetypeForm,
-    SubpositionForm,
 )
 from sdc_people.models import (
     DistrictBorough,
@@ -56,7 +56,6 @@ from sdc_people.models import (
     Personnote,
     Subcommittee,
     Subcommitteetype,
-    Subposition,
 )
 
 logger = logging.getLogger(__name__)
@@ -931,6 +930,54 @@ class SubcommitteeUpdate(PermissionRequiredMixin, UpdateView):
     form_class = SubcommitteeForm
     template_name = "sdc_people/subcommittee_update.html"
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+
+        formsetclasses = {
+            'submemberships': SubcommitteesubmembershipFormset,
+        }
+
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                context_data[formsetkey] = formsetclass(
+                    self.request.POST, instance=self.object
+                )
+            else:
+                context_data[formsetkey] = formsetclass(instance=self.object)
+
+        return context_data
+
+    def form_valid(self, form):
+
+        response = super().form_valid(form)
+
+        self.object = form.save(commit=False)
+
+        formsetclasses = {
+            'submemberships': SubcommitteesubmembershipFormset,
+        }
+        formsetdata = {}
+        formsets_valid = True
+        for formsetkey, formsetclass in formsetclasses.items():
+            if self.request.POST:
+                formsetdata[formsetkey] = formsetclass(
+                    self.request.POST, self.request.FILES, instance=self.object
+                )
+
+            else:
+                formsetdata[formsetkey] = formsetclass(instance=self.object)
+
+            if (formsetdata[formsetkey]).is_valid():
+                formsetdata[formsetkey].save()
+            else:
+                logger.critical(formsetdata[formsetkey].errors)
+                formsets_valid = False
+
+        if not formsets_valid:
+            return self.form_invalid(form)
+
+        return response
+
     def get_success_url(self):
         if "popup" in self.request.get_full_path():
             return reverse(
@@ -999,88 +1046,3 @@ class SubcommitteetypeDetail(PermissionRequiredMixin, DetailView):
     template_name = "sdc_people/district_detail.html"
 
 
-class SubpositionDetail(PermissionRequiredMixin, DetailView):
-    permission_required = "sdc_people.view_subposition"
-    model = Subposition
-    template_name = "sdc_people/district_detail.html"
-
-
-class SubpositionCreate(PermissionRequiredMixin, CreateView):
-    permission_required = "sdc_people.add_subposition"
-    model = Subposition
-    form_class = SubpositionForm
-    template_name = "sdc_people/subposition_create.html"
-
-    def get_success_url(self):
-        if "popup" in self.request.get_full_path():
-            return reverse(
-                "touglates:popup_closer",
-                kwargs={
-                    "pk": self.object.pk,
-                    "app_name": "sdc_people",
-                    "model_name": "Subposition",
-                },
-            )
-        return reverse_lazy(
-            "sdc_people:subposition-detail", kwargs={"pk": self.object.pk}
-        )
-
-
-class SubpositionUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = "sdc_people.change_Subposition"
-    model = Subposition
-    form_class = SubpositionForm
-    template_name = "sdc_people/subposition_update.html"
-
-    def get_success_url(self):
-        if "popup" in self.request.get_full_path():
-            return reverse(
-                "touglates:popup_closer",
-                kwargs={
-                    "pk": self.object.pk,
-                    "app_name": "sdc_people",
-                    "model_name": "Subposition",
-                },
-            )
-        return reverse_lazy(
-            "sdc_people:subposition-detail", kwargs={"pk": self.object.pk}
-        )
-
-
-class SubpositionList(PermissionRequiredMixin, ListView):
-    permission_required = "sdc_people.view_subposition"
-    model = Subposition
-
-    def get_context_data(self, *args, **kwargs):
-        context_data = super().get_context_data(*args, **kwargs)
-
-        context_data["filterstore_retrieve"] = FilterstoreRetrieveForm()
-        context_data["filterstore_save"] = FilterstoreSaveForm()
-
-        context_data["subposition_labels"] = {
-            field.name: field.verbose_name.title()
-            for field in Subposition._meta.get_fields()
-            if type(field).__name__[-3:] != "Rel"
-        }
-
-        context_data["count"] = self.object_list.count()
-        return context_data
-
-
-class SubpositionDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = "sdc_people.delete_subposition"
-    model = Subposition
-
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-
-        context_data["subposition_labels"] = {
-            field.name: field.verbose_name.title()
-            for field in Meeting._meta.get_fields()
-            if type(field).__name__[-3:] != "Rel"
-        }
-
-        return context_data
-
-    def get_success_url(self):
-        return reverse_lazy("sdc_people:meeting-list")

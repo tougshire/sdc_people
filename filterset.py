@@ -32,7 +32,7 @@ class PersonFilter(django_filters.FilterSet):
 
     subcommittee__in = django_filters.ModelMultipleChoiceFilter(
         label="Sub-committee",
-        field_name="submembership__subposition__subcommittee",
+        field_name="submembership__subcommittee",
         queryset=Subcommittee.objects.all(),
         help_text="Any of the subcomittees of which the person is a member",
         widget=DropdownSelectMultiple(),

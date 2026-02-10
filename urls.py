@@ -198,21 +198,6 @@ urlpatterns = [
         name="districtcongress-detail",
     ),
     path(
-        "position/create/",
-        views.SubpositionCreate.as_view(),
-        name="subposition-create",
-    ),
-    path(
-        "position/popup/",
-        views.SubpositionCreate.as_view(),
-        name="subposition-popup",
-    ),
-    path(
-        "position/detail/<int:pk>/",
-        views.SubpositionDetail.as_view(),
-        name="subposition-detail",
-    ),
-    path(
         "committee/list/",
         views.SubcommitteeList.as_view(),
         name="subcommittee-list",
@@ -296,35 +281,5 @@ urlpatterns = [
         "meetingtype/detail/<int:pk>/",
         views.MeetingtypeDetail.as_view(),
         name="meetingtype-detail",
-    ),
-    path(
-        "subposition/update/",
-        views.SubpositionCreate.as_view(),
-        name="subposition-create",
-    ),
-    path(
-        "subposition/popup/",
-        views.SubpositionCreate.as_view(),
-        name="subposition-popup",
-    ),
-    path(
-        "subposition/update/<int:pk>/",
-        views.SubpositionUpdate.as_view(),
-        name="subposition-update",
-    ),
-    path(
-        "subposition/detail/<int:pk>/",
-        views.SubpositionDetail.as_view(),
-        name="subposition-detail",
-    ),
-    path(
-        "subposition/delete/<int:pk>/",
-        views.SubpositionDelete.as_view(),
-        name="subposition-delete",
-    ),
-    path(
-        "subposition/list/",
-        views.SubpositionList.as_view(),
-        name="subposition-list",
     ),
 ]

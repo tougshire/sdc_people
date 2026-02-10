@@ -69,39 +69,6 @@ class Subcommittee(models.Model):
         ordering = ("subcommitteetype", "name")
 
 
-class Subposition(models.Model):
-    subcommittee = models.ForeignKey(
-        Subcommittee,
-        on_delete=models.CASCADE,
-        help_text="The subcommittee to which this title is attached",
-    )
-    name = models.CharField(
-        "name", max_length=50, help_text="The name of the position,"
-    )
-
-    ordinal = models.IntegerField(
-        "ordinal",
-        choices=ORDINAL_CHOICES,
-        default=ORDINAL_MEDIUM,
-        help_text="A number assigned for sorting",
-    )
-    display_format = models.CharField(
-        max_length=60,
-        default="{position} {committee}",
-    )
-
-    def __str__(self):
-        try:
-            return self.display_format.format(
-                position=self.name, committee=self.subcommittee.name
-            )
-        except:
-            return "{} {}".format(self.name, self.subcommittee)
-
-    class Meta:
-        verbose_name = "Position"
-        ordering = ("subcommittee", "ordinal", "name")
-
 
 class Membershipclass(models.Model):
     MEMBERSHIP_NO = 0
@@ -523,12 +490,12 @@ class Person(models.Model):
     def get_memberships(self):
         submemberships = []
         for submembership in self.submembership_set.all():
-            submemberships.append(submembership.subposition.__str__())
+            submemberships.append(" ".join(submembership.position, submembership.subcommitee))
 
         return submemberships
 
-    def get_memberships_as_divs(self):
-        return "<div>" + ("</div><div>".join(self.get_memberships())) + "</div>"
+    # def get_memberships_as_divs(self):
+    #     return "<div>" + ("</div><div>".join(self.get_memberships())) + "</div>"
 
     class Meta:
         verbose_name = "Person"
@@ -656,18 +623,38 @@ class Submembership(models.Model):
         on_delete=models.CASCADE,
         help_text="The peson who is a member of the subcommittee",
     )
-    subposition = models.ForeignKey(
-        Subposition,
+    subcommittee = models.ForeignKey(
+        Subcommittee,
         on_delete=models.CASCADE,
-        help_text="The committee and position in which the person is a member",
+        null=True,
+        help_text="The committee in which the person is a member",
+    )
+    position = models.CharField(
+        "Position", max_length=50, default="Member", help_text="The name of the position",
+    )
+    ordinal = models.IntegerField(
+        "ordinal",
+        choices=ORDINAL_CHOICES,
+        default=ORDINAL_MEDIUM,
+        help_text="A number assigned for sorting, with lowest number first",
     )
 
     def __str__(self):
-        return "{}->{}".format(self.person, self.subposition)
+        return "{}->{}".format(self.person, self.position, self.subcommittee)
+
+    def save(self, **kwargs):
+        if self.ordinal is None:
+            try:
+                self.ordinal = settings.SDC_PEOPLE['submembership_ordinals'][self.position]
+            except Exception as e:
+                print(e)
+                self.ordinal=ORDINAL_MEDIUM
+        super().save(**kwargs)
+
 
     class Meta:
         verbose_name = "Subcommittee Membership"
-        ordering = ("subposition", "person")
+        ordering = ("ordinal", "person")
 
 
 class Attendance(models.Model):

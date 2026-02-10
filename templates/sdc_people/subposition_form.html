@@ -6,6 +6,48 @@
     {% include 'touglates/form_field.html' with field=form.name %}
     {% include 'touglates/form_field.html' with field=form.ordinal %}
 
+
+    <h3>Membership</h3>
+
+    {{ submemberships.management_form }}
+    {% if submemberships.errors %}{{ submemberships.errors }}{% endif %}
+    {% for submembershipform in submemberships.forms %}
+      {% if submembershipsform.errors %}{{ submembershipform.errors }}{% endif %}
+        {% if submembershipform.id.value  %}
+          <div id="div_submembership_value_{{ forloop.counter }}" class="submembership_value formset_value"  >
+            {% comment %}{% with button_html='<button id="button_showform_submembership_'|concate:forloop.counter|concate:'" class="show_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">edit</button>'|safe %}{% endcomment %}
+            {% with delete_html='<span class="formset_delete" id="ctl_delete_submembership_'|concate:forloop.counter|concate:'" class="delete_formsetform" data-formsetform="div_submembershipform_'|concate:forloop.counter|concate:'">'|concate:submembershipform.DELETE|concate:'</span>'|safe %}
+             {% include 'touglates/list_fields.html' with before_fields="<label>Member: </label>"|safe field_1=submembershipform.instance.subposition.name field_2=submembershipform.instance.person after_fields=delete_html %}
+            {% endwith %}
+          </div>
+          <div id="div_submembershipform_{{ forloop.counter }}" class="submembership_formsetform formsetform"  >
+            {% for hiddenfield in submembershipform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.person %}
+            {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+          </div>
+        {% else %}
+          <div id="div_submembershipform_{{ forloop.counter }}" class="submembership_formsetform submembership_formsetnewform formsetform formsetnewform"  >
+            {% for hiddenfield in submembershipform.hidden_fields %}
+              {{ hiddenfield }}
+            {% endfor %}
+            {% include 'touglates/form_field.html' with field=submembershipform.subposition %}
+            {% include 'touglates/form_field.html' with field=submembershipform.person %}
+            {% include 'touglates/form_field.html' with field=submembershipform.DELETE %}
+          </div>
+        {% endif %}
+        
+    {% endfor %}
+
+        {% with button_html='<button id="button_showform_submembership_new" class="show_newformsetform" data-formsetform="submembership_formsetnewform">add</button>'|safe %}
+            {% include 'touglates/list_fields.html' with field_1_label="New Member: " field_1=button_html %}
+        {% endwith %}
+
+
+
+
     <button type="Submit">Submit</button>
     </form>
   </div>

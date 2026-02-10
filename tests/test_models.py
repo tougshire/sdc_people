@@ -10,7 +10,7 @@ class ModelBasicsTestCase(TestModelSetupMixin, TestCase):
         self.str = {}
         self.str["subcommitteetype_executive"] = "Executive"
         self.str["subcommittee_technology"] = "Technology Committee"
-        self.str["subposition_technology_chair"] = "Chair, Technology Committee"
+        self.str["submembership_technology_chair"] = "Chair, Technology Committee"
         self.str["person_ben"] = "Mr. Benjamin Goldberg II (Ben)"
 
     def test_str(self):
