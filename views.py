@@ -41,6 +41,7 @@ from sdc_people.forms import (
     PersonsubmembershipFormset,
     SubcommitteeForm,
     SubcommitteetypeForm,
+    SubcommitteesubmembershipFormset,
 )
 from sdc_people.models import (
     DistrictBorough,
@@ -996,7 +997,7 @@ class SubcommitteeUpdate(PermissionRequiredMixin, UpdateView):
 class SubcommitteeDetail(PermissionRequiredMixin, DetailView):
     permission_required = "sdc_people.view_subcommittee"
     model = Subcommittee
-    template_name = "sdc_people/district_detail.html"
+    template_name = "sdc_people/subcommittee_detail.html"
 
 
 class SubcommitteeList(PermissionRequiredMixin, ListView):

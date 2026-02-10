@@ -1,0 +1,15 @@
+{% load touglates_tags %}
+  <h2>{{ object }}</h2>
+
+  <div class="detail">
+    {% include 'touglates/detail_field.html' with label=person_labels.name field=object.name %}
+    <h3>Membership</h3>
+    {% for submembership in subcommittee.submembership_set.all %}
+      {% include 'touglates/detail_fields.html' with label="Member" field_1=submembership.position|concate:" "|concate:submembership.person  %}
+    {% endfor %}
+
+  </div>
+
+  <script>
+
+  </script>
