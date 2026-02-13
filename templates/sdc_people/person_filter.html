@@ -132,7 +132,7 @@
             {% include 'touglates/list_field.html' with field=person.primary_email %}
           {% endif %}
           {% if 'memberships' in show_columns or not show_columns %}
-            {% include 'touglates/list_field.html' with field=person.get_memberships_as_divs|safe %}
+            {% include 'touglates/list_field.html' with field=person.get_submemberships_as_divs|safe %}
           {% endif %}
           {% if 'dues_next' in show_columns or not show_columns %}
             {% include 'touglates/list_field.html' with field=person.dues_next %}

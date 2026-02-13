@@ -487,15 +487,11 @@ class Person(models.Model):
                 attendance_binary = '-,' + attendance_binary
         return attendance_binary[:-1]
 
-    def get_memberships(self):
-        submemberships = []
-        for submembership in self.submembership_set.all():
-            submemberships.append(" ".join(submembership.position, submembership.subcommitee))
+    def get_submemberships(self):
+        return [ f'{ submembership.position }, { submembership.subcommittee }' for submembership in self.submembership_set.all() ]
 
-        return submemberships
-
-    # def get_memberships_as_divs(self):
-    #     return "<div>" + ("</div><div>".join(self.get_memberships())) + "</div>"
+    def get_submemberships_as_divs(self):
+        return '<div>' + ("</div><div>".join( self.get_submemberships()  )) + '</div>'
 
     class Meta:
         verbose_name = "Person"
